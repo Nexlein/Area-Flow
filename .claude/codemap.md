@@ -77,10 +77,10 @@ Per file: line count and purpose (first comment sentence of code, first heading 
 ## docs/plan
 
 - `README.md` (31): Plan
-- `architecture-questions.md` (8): Architecture questions
+- `architecture-questions.md` (10): Architecture questions
 - `features-selection.md` (29): Additional features selection
 - `management.md` (31): Project management: method and tools
-- `task-breakdown.md` (55): Task breakdown
+- `task-breakdown.md` (57): Task breakdown
 - `tech-backend.md` (27): Technology selection: back-end
 - `tech-frontend.md` (29): Technology selection: front-end
 - `tech-persistence.md` (28): Technology selection: persistence

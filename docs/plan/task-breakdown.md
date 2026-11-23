@@ -53,3 +53,5 @@ Checked at each milestone: work spread fairly (subject).
 | --------------- | ----- | -------- |
 | Nexlein         |       |          |
 | Saitamadupauvre |       |          |
+| TeddyBertrand   |       |          |
+| Quinceyyyy      |       |          |

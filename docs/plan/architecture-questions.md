@@ -6,3 +6,5 @@ At Plan, each member names a significant technical question to investigate. By F
 | --------------- | --------------- | -------------- | ---------------------------------------- | -------------- | -------------------------- |
 | Nexlein         |                 |                |                                          |                |                            |
 | Saitamadupauvre |                 |                |                                          |                |                            |
+| TeddyBertrand   |                 |                |                                          |                |                            |
+| Quinceyyyy      |                 |                |                                          |                |                            |
