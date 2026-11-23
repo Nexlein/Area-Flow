@@ -7,6 +7,7 @@ Per file: line count and purpose (first comment sentence of code, first heading 
 
 - `.gitattributes` (14): LF everywhere, also on Windows checkouts: hooks and scripts break with CRLF.
 - `.gitignore` (90): Files git never tracks: secrets, dependencies, build output, local settings.
+- `.gitleaks.toml` (11): Gitleaks rules for the pre-commit hook and CI: the default rules, plus what they miss for this project.
 - `CLAUDE.md` (35): Area-Flow
 - `HOWTOCONTRIBUTE.md` (81): How to contribute
 - `README.md` (76): Area-Flow
@@ -38,7 +39,7 @@ Per file: line count and purpose (first comment sentence of code, first heading 
 ## .husky
 
 - `commit-msg` (11): Enforces Conventional Commits on the first line: type(scope)!: subject.
-- `no-secrets.sh` (28): Blocks commits that stage .env files or secrets.
+- `no-secrets.sh` (29): Blocks commits that stage .env files or secrets.
 - `pre-commit` (8): Blocks secrets and .env files, formats staged files with Prettier, keeps .claude/codemap.md in sync.
 - `pre-push` (4): Local stand-in for CI: the same `npm run check` the GitHub workflow runs, before code leaves this machine.
 
