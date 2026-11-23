@@ -83,7 +83,7 @@ Per file: line count and purpose (first sentence of the leading comment, else th
 - `management.md` (31): Project management: method and tools
 - `task-breakdown.md` (57): Task breakdown
 - `tech-backend.md` (27): Technology selection: back-end
-- `tech-frontend.md` (29): Technology selection: front-end
+- `tech-frontend.md` (82): Technology selection: front-end
 - `tech-persistence.md` (28): Technology selection: persistence
 
 ## docs/security
