@@ -11,6 +11,10 @@ test('Markdown: first heading, without the hashes', () => {
 test('Markdown: a leading HTML comment wins over the heading', () => {
   const src = '<!-- Protocol of the spikes. Details below. -->\n\n# Back-end spikes\n';
   assert.equal(purpose('docs/a.md', src), 'Protocol of the spikes.');
+  assert.equal(
+    purpose('docs/a.md', '<!-- Protocol of the spikes --!>\n'),
+    'Protocol of the spikes',
+  );
 });
 
 test('line count: trailing newline ends the last line, empty file has none', () => {

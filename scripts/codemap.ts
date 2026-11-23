@@ -49,7 +49,7 @@ export function purpose(path: string, text: string): string {
   for (let line = lines[i]; line !== undefined && COMMENT.test(line); line = lines[++i]) {
     const body = line
       .replace(COMMENT, '')
-      .replace(/\*\/$|-->$/, '')
+      .replace(/\*\/$|--!?>$/, '')
       .trim();
     if (body) words.push(body);
     else if (words.length) break; // a bare `/**` opens the comment; a blank comment line ends the sentence
