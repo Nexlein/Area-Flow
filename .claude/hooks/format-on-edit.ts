@@ -2,6 +2,7 @@
 // Exit 2 sends the error back to Claude so it fixes it; files Prettier does not handle are left alone.
 // Plain Node, so it behaves the same on Windows. Add the stack's linters here once they are chosen.
 
+import { spawnSync } from 'node:child_process';
 import { existsSync, readFileSync, writeFileSync } from 'node:fs';
 import { isAbsolute, relative, resolve, sep } from 'node:path';
 import { text } from 'node:stream/consumers';
@@ -18,6 +19,9 @@ try {
 const inProject = relative(root, file);
 const outside = inProject === '..' || inProject.startsWith(`..${sep}`) || isAbsolute(inProject);
 if (!existsSync(file) || outside) process.exit(0);
+// Prettier's ignore files miss .git/info/exclude and global excludes, where personal notes usually live.
+if (spawnSync('git', ['check-ignore', '-q', '--', file], { cwd: root }).status === 0)
+  process.exit(0);
 
 let prettier: typeof import('prettier');
 try {

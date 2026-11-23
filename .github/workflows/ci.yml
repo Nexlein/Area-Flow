@@ -1,6 +1,6 @@
 # Repo-wide checks on every contribution: secret scan over the full history, formatting, tooling tests, fresh code map.
 # Lint, tests and build of the server, web and mobile clients are added as jobs once the stack is chosen (docs/plan/).
-# Third-party actions are pinned by commit SHA; Dependabot bumps them.
+# Third-party actions are pinned by commit SHA (a repository setting requires it); Dependabot bumps them.
 name: CI
 
 on:
@@ -38,6 +38,9 @@ jobs:
 
       # The squash or merge commit takes the PR title (repository setting), and GitHub runs no hook there: the same
       # check as the local commit-msg hook. The title goes through an env var, never inline, so it cannot inject shell.
+      # Accepted limit: this step and the next one run the pull request's own copy of this file and of the hook, so a
+      # pull request could weaken them. They catch mistakes, not attacks: an approval is required, and any change to
+      # this file or to .husky/ shows in the diff. Moving them to pull_request_target would also change the required check.
       - name: Pull request title follows Conventional Commits
         if: github.event_name == 'pull_request'
         env:
@@ -75,6 +78,10 @@ jobs:
 
       - name: Workflow lint (actionlint)
         run: actionlint
+
+      # actionlint only checks the shell inside workflows; the git hooks are shell scripts too.
+      - name: Git hooks lint (shellcheck)
+        run: shellcheck .husky/pre-commit .husky/pre-push .husky/commit-msg .husky/no-secrets.sh
 
       - uses: actions/cache@55cc8345863c7cc4c66a329aec7e433d2d1c52a9 # v6.1.0
         with:

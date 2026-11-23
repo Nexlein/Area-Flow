@@ -16,10 +16,11 @@ if command -v gitleaks >/dev/null 2>&1; then
   gitleaks git --pre-commit --staged --redact --no-banner --verbose || status=1
 else
   echo "no-secrets: gitleaks not found, using the fallback regex (run: mise install, in the repo)" >&2
-  # Added lines only. Patterns: Google OAuth client secrets, GitHub, Slack, AWS, OpenAI/Anthropic keys, PEM private keys.
+  # Added lines only. Patterns: Google OAuth client secrets, GitHub, Slack, AWS, OpenAI/Anthropic keys, PEM private keys,
+  # private JWKs in JSON (see .gitleaks.toml).
   hits=$(git diff --cached -U0 --no-color --diff-filter=ACMR \
     | grep '^+' | grep -v '^+++' \
-    | grep -nE 'GOCSPX-[A-Za-z0-9_-]{20,}|gh[pousr]_[A-Za-z0-9]{30,}|github_pat_[A-Za-z0-9_]{30,}|xox[abprs]-[A-Za-z0-9-]{10,}|AKIA[0-9A-Z]{16}|sk-(ant-|proj-)?[A-Za-z0-9_-]{20,}|-----BEGIN [A-Z ]*PRIVATE KEY-----' || true)
+    | grep -nE 'GOCSPX-[A-Za-z0-9_-]{20,}|gh[pousr]_[A-Za-z0-9]{30,}|github_pat_[A-Za-z0-9_]{30,}|xox[abprs]-[A-Za-z0-9-]{10,}|AKIA[0-9A-Z]{16}|sk-(ant-|proj-)?[A-Za-z0-9_-]{20,}|-----BEGIN [A-Z ]*PRIVATE KEY-----|"d"[[:space:]]*:[[:space:]]*"[A-Za-z0-9_-]{40,}"' || true)
   if [ -n "$hits" ]; then
     echo "no-secrets: staged changes contain what looks like a secret (values hidden). Unstage it, or use .env." >&2
     status=1

@@ -37,17 +37,19 @@ flowchart LR
 
 ## 3. Automation
 
-| Hook or command   | When                | Does                                                                       |
-| ----------------- | ------------------- | -------------------------------------------------------------------------- |
-| `pre-commit`      | each commit         | Secret scan (gitleaks, `.env` blocked), Prettier on staged files, code map |
-| `commit-msg`      | each commit         | Conventional Commits check                                                 |
-| `pre-push`        | each push           | `npm run check`                                                            |
-| `npm run check`   | pre-push, CI        | Formatting of tracked files, typecheck, tests                              |
-| `npm run format`  | by hand             | Prettier on tracked files (untracked ones are left alone)                  |
-| `npm run codemap` | pre-commit, by hand | Regenerates `.claude/codemap.md` from the git index                        |
-| `npm test`        | `check`             | Tests of the repo scripts (`node --test`, TypeScript run by Node)          |
+| Hook or command   | When                | Does                                                                                             |
+| ----------------- | ------------------- | ------------------------------------------------------------------------------------------------ |
+| `pre-commit`      | each commit         | Secret scan (gitleaks with `.gitleaks.toml`, `.env` blocked), Prettier on staged files, code map |
+| `commit-msg`      | each commit         | Conventional Commits check                                                                       |
+| `pre-push`        | each push           | `npm run check`                                                                                  |
+| `npm run check`   | pre-push, CI        | Formatting of tracked files, typecheck, tests                                                    |
+| `npm run format`  | by hand             | Prettier on tracked files (untracked ones are left alone)                                        |
+| `npm run codemap` | pre-commit, by hand | Regenerates `.claude/codemap.md` from the git index                                              |
+| `npm test`        | `check`             | Tests of the repo scripts and git hooks (`node --test`, TypeScript run by Node)                  |
 
 Repo tooling is TypeScript only, run by Node 26 without a build. Server, web and mobile commands come with the stack.
+
+On GitHub's side (repository settings): secret scanning with push protection, Dependabot alerts and security updates, CodeQL code scanning (default setup: TypeScript and workflows), actions required to be pinned by commit SHA, and private vulnerability reporting.
 
 ## 4. When you change…
 
