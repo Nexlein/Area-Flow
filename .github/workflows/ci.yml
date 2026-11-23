@@ -9,6 +9,7 @@ on:
     # (up to date with dev before merging), so a push run on dev would repeat the pull_request run.
     branches: [main]
   pull_request:
+    types: [opened, synchronize, reopened, edited] # edited: the title check reruns when the title changes
   workflow_dispatch: # manual run (Actions tab or `gh workflow run CI --ref <branch>`)
 
 permissions:
@@ -28,6 +29,16 @@ jobs:
         with:
           fetch-depth: 0 # full history for the secret scan
           persist-credentials: false # no step pushes: keeps the token away from npm install scripts
+
+      # The squash or merge commit takes the PR title (repository setting), and GitHub runs no hook there: the same
+      # check as the local commit-msg hook. The title goes through an env var, never inline, so it cannot inject shell.
+      - name: Pull request title follows Conventional Commits
+        if: github.event_name == 'pull_request'
+        env:
+          TITLE: ${{ github.event.pull_request.title }}
+        run: |
+          printf '%s\n' "$TITLE" > "$RUNNER_TEMP/pr-title"
+          sh .husky/commit-msg "$RUNNER_TEMP/pr-title"
 
       # Installs every tool pinned in mise.toml (Node, gitleaks, actionlint, shellcheck): same versions as local.
       - uses: jdx/mise-action@90f833d396d0cc3674b631d2d225e306476c303a # v5.2.10
