@@ -2,10 +2,21 @@
 
 import assert from 'node:assert/strict';
 import { test } from 'node:test';
-import { parseBatch, parseIndex, purpose, render } from './codemap.ts';
+import { lineCount, parseBatch, parseIndex, purpose, render } from './codemap.ts';
 
 test('Markdown: first heading, without the hashes', () => {
   assert.equal(purpose('docs/a.md', 'Intro text\n\n## Workflow model\n# Later'), 'Workflow model');
+});
+
+test('Markdown: a leading HTML comment wins over the heading', () => {
+  const src = '<!-- Protocol of the spikes. Details below. -->\n\n# Back-end spikes\n';
+  assert.equal(purpose('docs/a.md', src), 'Protocol of the spikes.');
+});
+
+test('line count: trailing newline ends the last line, empty file has none', () => {
+  assert.equal(lineCount(''), 0);
+  assert.equal(lineCount('a\nb\n'), 2);
+  assert.equal(lineCount('a\nb'), 2);
 });
 
 test('JavaScript: first sentence of the leading // comment, across lines', () => {
