@@ -18,7 +18,7 @@ Per file: line count and purpose (first comment sentence of code, first heading 
 
 ## .claude/hooks
 
-- `format-on-edit.ts` (42): Claude Code PostToolUse hook: formats each file Claude edits with the repo's Prettier.
+- `format-on-edit.ts` (43): Claude Code PostToolUse hook: formats each file Claude edits with the repo's Prettier.
 
 ## .github
 
@@ -101,4 +101,4 @@ Per file: line count and purpose (first comment sentence of code, first heading 
 
 - `codemap.test.ts` (80): Tests for scripts/codemap.ts: purpose extraction per language and the rendered layout.
 - `codemap.ts` (145): Generates .claude/codemap.md: every tracked file grouped by folder, with its line count and purpose.
-- `format.ts` (32): Runs Prettier on the files git tracks only, so untracked personal notes never block a check or get rewritten.
+- `format.ts` (38): Runs Prettier on the files git tracks only, so untracked personal notes never block a check or get rewritten.

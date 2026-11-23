@@ -3,7 +3,7 @@
 // Plain Node, so it behaves the same on Windows. Add the stack's linters here once they are chosen.
 
 import { existsSync, readFileSync, writeFileSync } from 'node:fs';
-import { isAbsolute, relative, resolve } from 'node:path';
+import { isAbsolute, relative, resolve, sep } from 'node:path';
 import { text } from 'node:stream/consumers';
 
 const root = resolve(process.env['CLAUDE_PROJECT_DIR'] ?? process.cwd());
@@ -16,7 +16,8 @@ try {
   process.exit(0); // not a tool call we understand
 }
 const inProject = relative(root, file);
-if (!existsSync(file) || inProject.startsWith('..') || isAbsolute(inProject)) process.exit(0);
+const outside = inProject === '..' || inProject.startsWith(`..${sep}`) || isAbsolute(inProject);
+if (!existsSync(file) || outside) process.exit(0);
 
 let prettier: typeof import('prettier');
 try {

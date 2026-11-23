@@ -16,11 +16,17 @@ for (const file of files) {
   if (info.ignored || !info.inferredParser) continue;
   const options = { ...(await prettier.resolveConfig(file)), filepath: file };
   const source = readFileSync(file, 'utf8');
-  if (write) {
-    const formatted = await prettier.format(source, options);
-    if (formatted !== source) writeFileSync(file, formatted);
-  } else if (!(await prettier.check(source, options))) {
-    console.error(`[warn] ${file}`);
+  try {
+    if (write) {
+      const formatted = await prettier.format(source, options);
+      if (formatted !== source) writeFileSync(file, formatted);
+    } else if (!(await prettier.check(source, options))) {
+      console.error(`[warn] ${file}`);
+      unformatted++;
+    }
+  } catch (error) {
+    // A file Prettier cannot parse: name it instead of crashing with a bare stack trace
+    console.error(`[error] ${file}: ${error instanceof Error ? error.message : error}`);
     unformatted++;
   }
 }
