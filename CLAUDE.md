@@ -10,7 +10,7 @@ Milestone 1 (Plan). **Stack not chosen**: no server, web or mobile code, and no 
 
 | Before you…            | Read                                                                                           |
 | ---------------------- | ---------------------------------------------------------------------------------------------- |
-| search or open code    | `.claude/codemap.md`: generated map of every file and its purpose                              |
+| search or open code    | `.claude/codemap.md`: generated map of tracked files, with line count and purpose when known   |
 | touch a requirement    | `docs/subject/SUBJECT.md`; a feature: its section of `docs/subject/FEATURES.md`. The PDFs win. |
 | look for a deliverable | `docs/README.md`                                                                               |
 | re-open a choice       | `docs/adr/`: accepted ADRs are settled unless the user asks                                    |
