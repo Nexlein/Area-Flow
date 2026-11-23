@@ -22,8 +22,10 @@ jobs:
   mirror_to_epitech:
     # Only a push to main of this repository. A pull request from a fork whose branch is also named main
     # triggers workflow_run with head_branch "main" too: its code must never reach the Epitech repository.
+    # Not in the Epitech organization (no Actions there) nor in a fork; no hard-coded name, so a rename keeps it.
     if: >-
-      github.repository == 'Nexlein/Area-Flow' &&
+      github.repository_owner != 'EpitechPGE3-2026' &&
+      !github.event.repository.fork &&
       github.event.workflow_run.conclusion == 'success' &&
       github.event.workflow_run.event == 'push' &&
       github.event.workflow_run.head_repository.full_name == github.repository
