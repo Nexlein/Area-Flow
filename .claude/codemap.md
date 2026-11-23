@@ -101,6 +101,6 @@ Per file: line count and purpose (first sentence of the leading comment, else th
 ## scripts
 
 - `codemap.test.ts` (91): Tests for scripts/codemap.ts: purpose extraction per language and the rendered layout.
-- `codemap.ts` (153): Generates .claude/codemap.md: every tracked file grouped by folder, with its line count and purpose.
+- `codemap.ts` (155): Generates .claude/codemap.md: every tracked file grouped by folder, with its line count and purpose.
 - `format.ts` (38): Runs Prettier on the files git tracks only, so untracked personal notes never block a check or get rewritten.
 - `hooks.test.ts` (153): Tests for the git hooks: the secret scan blocks .env files and private keys, commit-msg enforces Conventional Commits.

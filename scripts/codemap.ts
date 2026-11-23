@@ -25,7 +25,9 @@ const PREAMBLE =
 // Leading comment markers of the languages we may use; JSON and friends have none.
 const COMMENT = /^(\/\/\/?|\/\*+|\*\/?|#|--|<!--)\s?/;
 
+/** The text cut to MAX characters, ending with an ellipsis when cut. */
 const clip = (s: string): string => (s.length > MAX ? `${s.slice(0, MAX - 3).trimEnd()}...` : s);
+/** The text up to its first sentence end, or all of it when it has none. */
 const firstSentence = (s: string): string => s.match(/^.*?[.!?](?=\s|$)/)?.[0] ?? s;
 
 /** Purpose of a file from its text: first sentence of the leading comment, else a Markdown file's first heading; '' if none. */
@@ -55,7 +57,7 @@ export function purpose(path: string, text: string): string {
   return clip(firstSentence(words.join(' ')));
 }
 
-// Locale-independent order: the same map on every machine and in CI, whatever LANG is.
+/** Locale-independent order: the same map on every machine and in CI, whatever LANG is. */
 const byCodeUnit = (a: string, b: string): number => (a < b ? -1 : a > b ? 1 : 0);
 
 /** Markdown of the code map, grouped by folder, root first. */
