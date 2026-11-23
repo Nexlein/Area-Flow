@@ -2,9 +2,9 @@
 
 # AREA bootstrap (condensed)
 
-Restates the bootstrap sandbox "Choose. Plan. Ship." (v1.1.1), nothing more. It is offered, not imposed: pick the exercises the team needs, drop the rest. Each one takes 40 to 90 minutes, runs alone, and **produces a committed file**: a decision you cannot show is a decision you did not make.
+Restates [`area-bootstrap.pdf`](area-bootstrap.pdf), the bootstrap sandbox "Choose. Plan. Ship." (v1.1.1), nothing more; the PDF wins. It is offered, not imposed: pick the exercises the team needs, drop the rest. Each one takes 40 to 90 minutes, runs alone, and **produces a committed file**: a decision you cannot show is a decision you did not make.
 
-**Rule:** do at least one exercise from each section. Stack-only teams arrive with prototypes and no schedule; planning-only teams arrive with a schedule for a stack they cannot use.
+**Whatever else you skip**, do at least one exercise from each section. Stack-only teams arrive with prototypes and no schedule; planning-only teams arrive with a schedule for a stack they cannot use.
 
 **MUST-DOs** when time is tight: the three timeboxed spikes and the thirty-task breakdown.
 
@@ -22,7 +22,7 @@ The bootstrap names its own paths. We keep them under [`../plan/`](../plan/READM
 | `planning/moving-wbs.md`      | `docs/plan/exercises/moving-wbs.md` (practice, optional)                                                                                                                                 |
 | `planning/project-wbs.md`     | [`../plan/task-breakdown.md`](../plan/task-breakdown.md)                                                                                                                                 |
 | `planning/moscow-v1.md`, `v2` | `docs/plan/exercises/moscow-v1.md`, `moscow-v2.md` (practice); the feature sort goes in [`features-selection.md`](../plan/features-selection.md)                                         |
-| `planning/board-*.md`         | `docs/plan/exercises/board-before.md`, `board-after.md` (practice); the real board in [`management.md`](../plan/management.md)                                                           |
+| `planning/board-*.md`         | `docs/plan/exercises/board-before.md`, `board-after.md` (practice); `board-project.md`, the real board, in [`management.md`](../plan/management.md)                                      |
 
 ## Section 1: Stack Attack
 
@@ -32,7 +32,7 @@ Goal: select a language, a framework and a database for a real constraint set, a
 
 A spike buys information in a fixed slice of time. When the timer rings, **stop**, working or not.
 
-- Pick three backend technologies nobody on the team has shipped with. One timebox for all three; write down why that length.
+- Pick three backend technologies nobody on the team has shipped with. Agree on a single timebox per technology and write down why that length.
 - In each timebox, reach the same target:
   - a server listening on port 8080;
   - `GET /ping` answering exactly `{"status":"ok"}`;

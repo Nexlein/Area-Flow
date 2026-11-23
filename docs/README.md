@@ -4,7 +4,7 @@ Where each deliverable of the [subject](subject/SUBJECT.md) lives. Dates: [`plan
 
 | Deliverable                                                      | Milestone   | File                                                                                                                                             |
 | ---------------------------------------------------------------- | ----------- | ------------------------------------------------------------------------------------------------------------------------------------------------ |
-| Bootstrap exercises: spikes, matrix, planning practice           | Plan        | [`subject/BOOTSTRAP.md`](subject/BOOTSTRAP.md)                                                                                                   |
+| Bootstrap exercises (optional): where their outputs go           | Plan        | [`subject/BOOTSTRAP.md`](subject/BOOTSTRAP.md)                                                                                                   |
 | Technology selection: front-end, back-end, persistence           | Plan        | [`plan/tech-frontend.md`](plan/tech-frontend.md), [`tech-backend.md`](plan/tech-backend.md), [`tech-persistence.md`](plan/tech-persistence.md)   |
 | Features selection: learning rationale, ownership                | Plan, MVP   | [`plan/features-selection.md`](plan/features-selection.md)                                                                                       |
 | One architecture question per member                             | Plan        | [`plan/architecture-questions.md`](plan/architecture-questions.md)                                                                               |
