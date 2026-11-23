@@ -87,6 +87,12 @@ Per file: line count and purpose (first sentence of the leading comment, else th
 - `tech-frontend.md` (29): Technology selection: front-end
 - `tech-persistence.md` (28): Technology selection: persistence
 
+## docs/plan/spikes
+
+- `prompts.md` (55): The identical prompts, cold-read questions and load settings used for every back-end spike, so no framework got more help than another.
+- `runs.md` (228): Log of every spike probe run: what each framework produced, what was verified independently, and what the result does not prove.
+- `security-and-weight.md` (92): Security advisory history and heaviness of the three back-end spike candidates, with the method, sources and what the numbers cannot tell.
+
 ## docs/security
 
 - `0000-template.md` (38): SEC-XXX: Template
