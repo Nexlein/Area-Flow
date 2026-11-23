@@ -48,7 +48,7 @@ Per file: line count and purpose (first comment sentence of code, first heading 
 
 ## docs
 
-- `README.md` (26): Documentation
+- `README.md` (27): Documentation
 - `defense.md` (21): Defense
 - `postmortem.md` (11): Post-mortem
 
