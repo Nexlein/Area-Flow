@@ -60,7 +60,7 @@ Per file: line count and purpose (first sentence of the leading comment, else th
 ## docs/adr
 
 - `0000-template.md` (35): ADR 0000: Template
-- `0001-backend-fastify.md` (54): ADR 0001: Back-end framework: Fastify
+- `0001-backend-fastify.md` (56): ADR 0001: Back-end framework: Fastify
 - `README.md` (19): Architecture Decision Records
 
 ## docs/architecture
@@ -83,7 +83,7 @@ Per file: line count and purpose (first sentence of the leading comment, else th
 - `features-selection.md` (29): Additional features selection
 - `management.md` (31): Project management: method and tools
 - `task-breakdown.md` (57): Task breakdown
-- `tech-backend.md` (74): Technology selection: back-end
+- `tech-backend.md` (75): Technology selection: back-end
 - `tech-frontend.md` (29): Technology selection: front-end
 - `tech-persistence.md` (28): Technology selection: persistence
 

@@ -45,9 +45,9 @@ Spike code is in local repositories, not pushed. Full logs and raw runs: [`spike
 
 ## Weighted matrix
 
-Weights: **3** = the subject requires it, **2** = shapes cost or risk over the project, **1** = a tiebreaker. Scores 1 to 5 (5 is best), the number in brackets is score times weight. "Team knowledge and learning goal" has no evidence yet, so it is not scored: total weight 17, maximum 85.
+Weights: **3** = the subject requires it, **2** = shapes cost or risk over the project, **1** = a tiebreaker. Scores 1 to 5 (5 is best), the number in brackets is score times weight: total weight 20, maximum 100.
 
-**Scored from the tests above; the weights are the owner's proposal.** The team can challenge any weight or score when it accepts the ADR; the matrix is not redone per member.
+**Scored from the tests above; the weights are the owner's proposal**, and the learning-curve row was added in review. Before the ADR is accepted, each member scores the matrix alone, as the [bootstrap](../subject/BOOTSTRAP.md#weighted-decision-matrix) asks; any criterion where two members differ by more than 2 points is discussed and recorded here.
 
 | Criterion                                                | Weight | NestJS   | Fastify  | Effect   |
 | -------------------------------------------------------- | ------ | -------- | -------- | -------- |
@@ -58,17 +58,18 @@ Weights: **3** = the subject requires it, **2** = shapes cost or risk over the p
 | Testing: unit, functional, mocked third parties          | 2      | 4 (8)    | 3 (6)    | 3 (6)    |
 | Speed and weight                                         | 2      | 3 (6)    | 5 (10)   | 2 (4)    |
 | Ease of getting it right: fixes, wrong APIs, conventions | 2      | 3 (6)    | 4 (8)    | 2 (4)    |
-| **Total, out of 85**                                     |        | **50**   | **54**   | **59**   |
-| **Weighted average, 1 to 5**                             |        | **2.94** | **3.18** | **3.47** |
+| Learning curve and oral defense                          | 3      | 3 (9)    | 4 (12)   | 2 (6)    |
+| **Total, out of 100**                                    |        | **59**   | **66**   | **65**   |
+| **Weighted average, 1 to 5**                             |        | **2.95** | **3.30** | **3.25** |
 
-Why: **Security** NestJS has the fewest advisories but fails open and has the widest dependency tree; Fastify has by far the most advisories; Effect refuses to start on missing configuration and has the smallest tree but is young. **OpenAPI** NestJS's DTO classes do not validate, so description and validation can drift; the other two derive both from one definition. **Background work** only Effect has it built in. **OAuth2 / OIDC** all three used `jose`, and the flows were not tested, so no difference is scored. **Testing** Fastify's tests hang unless configured, Effect's refusal test is blind. **Speed and weight** Fastify leads every measure. **Ease of getting it right** NestJS needed the most fixes, Effect used the most non-existent APIs.
+Why: **Security** NestJS has the fewest advisories but fails open and has the widest dependency tree; Fastify has by far the most advisories; Effect refuses to start on missing configuration and has the smallest tree but is young. **OpenAPI** NestJS's DTO classes do not validate, so description and validation can drift; the other two derive both from one definition. **Background work** only Effect has it built in. **OAuth2 / OIDC** all three used `jose`, and the flows were not tested, so no difference is scored. **Testing** Fastify's tests hang unless configured, Effect's refusal test is blind. **Speed and weight** Fastify leads every measure. **Ease of getting it right** NestJS needed the most fixes, Effect used the most non-existent APIs. **Learning curve and oral defense** weight 3 because the subject has every member explain an architecture decision they contributed to ([subject](../subject/SUBJECT.md#documentation)); nobody on the team has shipped any of the three, so knowledge does not separate them, the learning curve does. Fastify is plain functions and route schemas; NestJS adds decorators and dependency injection that hide the wiring (its DI hung silently in probe 2); Effect is a different programming model, its version 4 is two months old (4.0.0 on 2026-10-01) and most examples still target version 3, which is where its four non-existent APIs came from.
 
-**How fragile it is.** Across 20,000 random weightings (each criterion 1 to 3), NestJS never won; Effect won 45%, Fastify 44%, the rest tied. Effect wins when security and built-in background work count most; Fastify wins when speed and ease of getting it right count most. Effect's security score (4) and Fastify's (2) are the most contestable.
+**How fragile it is.** Across every integer weighting from 1 to 3 (6,561 of them), NestJS never wins; Fastify wins 77%, Effect 17%, the rest tie. Effect wins when security and built-in background work count most and the learning curve least. Without the learning-curve row the two were level (44% each). The most contestable scores are security (Effect 4, Fastify 2) and the learning-curve row itself.
 
 ## Decision
 
 **Proposed choice: Fastify (TypeScript)**, by the owner, pending the team's acceptance of [ADR 0001](../adr/0001-backend-fastify.md).
 
-- **The two criteria that decided it:** speed and weight (it leads every runtime measure) and ease of getting it right (fewest fixes, no decorators, one wrong API used).
+- **The two criteria that decided it:** the learning curve and oral defense (plain code every member can explain, where Effect asks the team to learn a new model on a two-month-old major version) and speed and weight (it leads every runtime measure).
 - **Trade-off we accept:** the most security advisories, nine of them validation bypasses, and no built-in scheduler. To survive it: pin a recent version (at least 5.12.6) and let Dependabot track it, keep an application-level check behind the schema (as the save-time probe did), and write the hook scheduler ourselves with deduplication stored in the database, not in memory.
-- **Runner-up: Effect.** It scored higher under the proposed weights (59 against 54), which favour built-in background work and security defaults, and the matrix did not separate the two clearly (Effect won 45% of random weightings, Fastify 44%). So this choice rests on the owner's priorities (speed, weight, readable code), not on a measured win, which the team can challenge when it accepts the ADR.
+- **Runner-up: Effect**, one point behind (65 against 66). It leads on built-in background work and security defaults; Fastify leads on the learning curve, speed and weight. The margin is thin under these weights but holds across most weightings (Fastify 77%, Effect 17%), so the team should weigh the learning-curve row carefully when it accepts the ADR.
