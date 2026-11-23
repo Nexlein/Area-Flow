@@ -20,10 +20,10 @@ flowchart LR
   D -->|release PR| M[main<br/>delivered] -->|CI green| E[Epitech repository<br/>graded]
 ```
 
-| Branch | Receives                                             | Rules (rulesets)                                                                                                          |
-| ------ | ---------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------- |
-| `dev`  | Feature PRs, Dependabot and Renovate version updates | PR only · CI green · branch up to date · 1 approval of the last push · conversations resolved · no force-push or deletion |
-| `main` | Release PRs from `dev`; Dependabot security updates  | Same, except the branch need not be up to date (a release PR is already tested on `dev`)                                  |
+| Branch | Receives                                             | Rules (rulesets)                                                                                                                |
+| ------ | ---------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------- |
+| `dev`  | Feature PRs, Dependabot and Renovate version updates | PR only · CI green · branch up to date · 1 approval of the last push · conversations resolved · no force-push or deletion       |
+| `main` | Release PRs from `dev`; Dependabot security updates  | Same, except the branch need not be up to date (a release PR is already tested on `dev`); CI rejects a PR from any other branch |
 
 - Release before every milestone deadline: open a PR `dev` → `main`, merge it with a merge commit. Only `main` reaches the Epitech repository.
 - After anything lands on `main` without coming from `dev` (a Dependabot security update), merge `main` back into `dev`.
