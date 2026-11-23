@@ -7,10 +7,10 @@ Per file: line count and purpose (first comment sentence of code, first heading 
 
 - `.gitattributes` (14): LF everywhere, also on Windows checkouts: hooks and scripts break with CRLF.
 - `.gitignore` (90): Files git never tracks: secrets, dependencies, build output, local settings.
-- `CLAUDE.md` (53): Area-Flow — AREA (Epitech Tek3)
-- `HOWTOCONTRIBUTE.md` (85): How to contribute
-- `README.md` (72): Area-Flow
-- Also: `.editorconfig`, `.lintstagedrc`, `.prettierignore`, `.prettierrc`, `mise.toml`, `package.json`
+- `CLAUDE.md` (34): Area-Flow
+- `HOWTOCONTRIBUTE.md` (71): How to contribute
+- `README.md` (74): Area-Flow
+- Also: `.editorconfig`, `.lintstagedrc`, `.prettierignore`, `.prettierrc`, `mise.toml`, `package.json`, `tsconfig.json`
 
 ## .claude
 
@@ -18,7 +18,7 @@ Per file: line count and purpose (first comment sentence of code, first heading 
 
 ## .claude/hooks
 
-- `format-on-edit.sh` (19): Claude Code PostToolUse hook: formats each file Claude edits with the repo's Prettier.
+- `format-on-edit.ts` (43): Claude Code PostToolUse hook: formats each file Claude edits with the repo's Prettier.
 
 ## .github
 
@@ -33,7 +33,7 @@ Per file: line count and purpose (first comment sentence of code, first heading 
 ## .github/workflows
 
 - `ci.yml` (52): Repo-wide checks on every contribution: secret scan over the full history, formatting, tooling tests, fresh code map.
-- `mirror.yml` (67): Pushes main to the Epitech repository once CI passed on it: Epitech grades that repository.
+- `mirror.yml` (69): Pushes main to the Epitech repository once CI passed on it: Epitech grades that repository.
 
 ## .husky
 
@@ -48,42 +48,42 @@ Per file: line count and purpose (first comment sentence of code, first heading 
 
 ## docs
 
-- `README.md` (55): Documentation
-- `defense.md` (26): Defense
-- `postmortem.md` (20): Post-mortem
+- `README.md` (27): Documentation
+- `defense.md` (21): Defense
+- `postmortem.md` (11): Post-mortem
 
 ## docs/accessibility
 
-- `audit.md` (32): Accessibility audit
+- `audit.md` (30): Accessibility audit
 
 ## docs/adr
 
-- `0000-template.md` (40): ADR 0000: Template
-- `README.md` (26): Architecture Decision Records
+- `0000-template.md` (35): ADR 0000: Template
+- `README.md` (18): Architecture Decision Records
 
 ## docs/architecture
 
-- `README.md` (31): Architecture
-- `auth.md` (27): Authentication and delegated access
-- `hooks.md` (29): Hooks
-- `persistence-model.md` (30): Persistence model and data structures
-- `service-discovery.md` (19): Service discovery (`about.json`)
-- `workflow-model.md` (40): Workflow model and failure semantics
+- `README.md` (42): Architecture
+- `auth.md` (38): Authentication and delegated access
+- `hooks.md` (19): Hooks
+- `persistence-model.md` (31): Persistence model and data structures
+- `service-discovery.md` (13): Service discovery (`about.json`)
+- `workflow-model.md` (35): Workflow model and failure semantics
 
 ## docs/features
 
-- `README.md` (22): Selected features: where each criterion is observed
+- `README.md` (21): Selected features: where each criterion is observed
 
 ## docs/plan
 
 - `README.md` (31): Plan
-- `architecture-questions.md` (17): Architecture questions
-- `features-selection.md` (37): Additional features selection
-- `management.md` (35): Project management: method and tools
-- `task-breakdown.md` (42): Task breakdown
-- `tech-backend.md` (51): Technology selection: back-end
-- `tech-frontend.md` (52): Technology selection: front-end
-- `tech-persistence.md` (49): Technology selection: persistence
+- `architecture-questions.md` (8): Architecture questions
+- `features-selection.md` (29): Additional features selection
+- `management.md` (31): Project management: method and tools
+- `task-breakdown.md` (55): Task breakdown
+- `tech-backend.md` (27): Technology selection: back-end
+- `tech-frontend.md` (29): Technology selection: front-end
+- `tech-persistence.md` (28): Technology selection: persistence
 
 ## docs/security
 
@@ -92,13 +92,13 @@ Per file: line count and purpose (first comment sentence of code, first heading 
 
 ## docs/subject
 
-- `FEATURES.md` (306): Additional features catalogue (condensed)
+- `FEATURES.md` (316): Additional features catalogue (condensed)
 - `README.md` (11): AREA subject
-- `SUBJECT.md` (163): AREA — Subject (condensed)
+- `SUBJECT.md` (184): AREA — Subject (condensed)
 - Also: `area-additional_features.pdf`, `area-project.pdf`, `area-security_evidence.pdf`
 
 ## scripts
 
-- `codemap.mjs` (140): Generates .claude/codemap.md: every tracked file grouped by folder, with its line count and purpose.
-- `codemap.test.mjs` (80): Tests for scripts/codemap.mjs: purpose extraction per language and the rendered layout.
-- `format.mjs` (32): Runs Prettier on the files git tracks only, so untracked personal notes never block a check or get rewritten.
+- `codemap.test.ts` (80): Tests for scripts/codemap.ts: purpose extraction per language and the rendered layout.
+- `codemap.ts` (145): Generates .claude/codemap.md: every tracked file grouped by folder, with its line count and purpose.
+- `format.ts` (38): Runs Prettier on the files git tracks only, so untracked personal notes never block a check or get rewritten.

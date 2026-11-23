@@ -1,85 +1,71 @@
 # How to contribute
 
-Development setup, conventions, and how to extend the product with new Services, Actions, REActions and workflow nodes. Running the product: [`README.md`](README.md).
+Developer setup, git flow, and how to extend the product. Running the product: [`README.md`](README.md).
 
-## 1. Prerequisites
+## 1. Setup
 
-- Git and Node.js 26. With [mise](https://mise.jdx.dev), `mise install` in the repo installs the versions pinned in `mise.toml` (Node, gitleaks, actionlint, shellcheck).
-- Docker and Docker Compose v2, once the stack exists.
-- gitleaks is optional: without it, the pre-commit hook falls back to a short regex list.
-
-## 2. Setup
+Needs Git, Node.js 26 and, once the stack exists, Docker Compose v2. [mise](https://mise.jdx.dev) installs the pinned tools (`mise.toml`: Node, gitleaks, actionlint, shellcheck); without gitleaks, the pre-commit hook falls back to a short regex list.
 
 ```bash
 git clone git@github.com:Nexlein/Area-Flow.git && cd Area-Flow
-mise install   # optional, see above
-npm install    # installs the repo tooling and enables the git hooks
+mise install   # optional
+npm install    # repo tooling and git hooks
 ```
 
-## 3. Git flow
+## 2. Git flow
 
-- `main` is the delivered branch. Never push to it directly: work on a short branch named `feat/…`, `fix/…`, `docs/…` or `chore/…`, then open a pull request into `main`.
-- One issue per task ("Task" template), one pull request per issue, which closes it (`Closes #N`) and fills the PR checklist.
-- Commits follow [Conventional Commits](https://www.conventionalcommits.org): `type(scope): subject`, with `type` among `feat`, `fix`, `docs`, `style`, `refactor`, `perf`, `test`, `build`, `ci`, `chore`, `revert`. The `commit-msg` hook rejects other messages.
-- CI must pass before merging. Never bypass the hooks with `--no-verify`.
-- Once CI passes on `main`, the Epitech Mirror workflow pushes `main` to the Epitech repository, which is the one graded. It never force-pushes: never push to the Epitech repository by hand, or the mirror stops (non fast-forward).
-- `.claude/codemap.md` is generated: on a merge conflict in it, or after GitHub's "Update branch" button (which runs no hook), run `npm run codemap` and commit the result.
+```mermaid
+flowchart LR
+  I[Issue<br/>Task template] --> B[Branch<br/>feat/ fix/ docs/ chore/] --> P[Pull request<br/>Closes #N]
+  P -->|CI green, branch up to date, 1 approval| M[main] -->|CI green| E[Epitech repository<br/>graded]
+```
 
-## 4. Git hooks
+- `main` only changes through a pull request: CI green, branch up to date, the other member's approval, conversations resolved. No force-push, no deletion.
+- Commits: [Conventional Commits](https://www.conventionalcommits.org), `type(scope): subject` with `type` in `feat fix docs style refactor perf test build ci chore revert` (the `commit-msg` hook checks it). Never `--no-verify`.
+- Never push to the Epitech repository by hand: the mirror only fast-forwards and would stop.
+- `.claude/codemap.md` conflicts, or is stale after GitHub's "Update branch" (no hook runs there): `npm run codemap`, then commit.
 
-Installed by `npm install` (Husky):
+## 3. Automation
 
-| Hook         | Runs                                                                                    |
-| ------------ | --------------------------------------------------------------------------------------- |
-| `pre-commit` | Secret scan (gitleaks, `.env` files blocked), Prettier on staged files, code map update |
-| `commit-msg` | Conventional Commits check of the first line                                            |
-| `pre-push`   | `npm run check`, the same gate as CI                                                    |
+| Hook or command   | When                | Does                                                                       |
+| ----------------- | ------------------- | -------------------------------------------------------------------------- |
+| `pre-commit`      | each commit         | Secret scan (gitleaks, `.env` blocked), Prettier on staged files, code map |
+| `commit-msg`      | each commit         | Conventional Commits check                                                 |
+| `pre-push`        | each push           | `npm run check`                                                            |
+| `npm run check`   | pre-push, CI        | Formatting of tracked files, typecheck, tests                              |
+| `npm run format`  | by hand             | Prettier on tracked files (untracked ones are left alone)                  |
+| `npm run codemap` | pre-commit, by hand | Regenerates `.claude/codemap.md` from the git index                        |
+| `npm test`        | `check`             | Tests of the repo scripts (`node --test`, TypeScript run by Node)          |
 
-## 5. Commands
+Repo tooling is TypeScript only, run by Node 26 without a build. Server, web and mobile commands come with the stack.
 
-| Command                | Action                                                                       |
-| ---------------------- | ---------------------------------------------------------------------------- |
-| `npm run check`        | Formatting check and tooling tests: the gate CI and `pre-push` run           |
-| `npm run format`       | Formats every tracked file with Prettier (untracked files are left alone)    |
-| `npm run format:check` | Checks the formatting of tracked files without writing                       |
-| `npm test`             | Tests of the repo scripts (`node --test`)                                    |
-| `npm run codemap`      | Regenerates `.claude/codemap.md` from the git index: `git add` changes first |
+## 4. When you change…
 
-Server, web and mobile commands are added here with the stack.
+| You change                   | Also update                                                                                                         |
+| ---------------------------- | ------------------------------------------------------------------------------------------------------------------- |
+| A technical choice           | An ADR from [`docs/adr/0000-template.md`](docs/adr/0000-template.md), indexed                                       |
+| An endpoint the clients call | The OpenAPI description, errors included, in the same PR                                                            |
+| Behavior                     | [`docs/architecture/`](docs/architecture/README.md); a feature's row in [`docs/features/`](docs/features/README.md) |
+| A SEC feature                | Its evidence note from [`docs/security/0000-template.md`](docs/security/0000-template.md)                           |
+| The plan                     | The changes table of [`docs/plan/README.md`](docs/plan/README.md)                                                   |
 
-## 6. Documentation and decisions
+Code, comments, commits and docs: English. Every source file opens with a comment whose first sentence is its purpose (the code map shows it).
 
-- A technical choice: an ADR in `docs/adr/` from `0000-template.md`, indexed in its README. A reversed decision gets a new ADR; the old one points to it.
-- A behavior change: update `docs/architecture/` and, for a selected feature, the row of its criterion in `docs/features/README.md`.
-- A SEC feature: its evidence note in `docs/security/`, from `0000-template.md`.
-- An endpoint the clients call: update the OpenAPI description in the same pull request, error responses included.
-- Code, comments, commits and docs are in English.
+## 5. Epitech mirror (maintainer)
 
-## 7. Epitech mirror
+After CI passes on a push to `main`, [`mirror.yml`](.github/workflows/mirror.yml) pushes `main` to `EpitechPGE3-2026/G-YEP-500-MPL-5-1-area-1`. Students are not admin there, so no deploy key: it uses an SSH key of the owner's GitHub account (title "GitHub Action Mirror"), private half in the Actions secret `SSH_PRIVATE_KEY`.
 
-One-time setup, done by a repository admin:
+> **Warning:** that key can push to every repository of the owner's account. Never print it; revoke it in GitHub settings if a copy is lost.
 
-1. Generate a key pair: `ssh-keygen -t ed25519 -C "area-flow-mirror" -f area-mirror -N ""`.
-2. On the Epitech repository (`EpitechPGE3-2026/G-YEP-500-MPL-5-1-area-1`), add `area-mirror.pub` as a deploy key with write access.
-3. On `Nexlein/Area-Flow`, add the content of `area-mirror` as the Actions secret `SSH_PRIVATE_KEY`.
-4. Delete both local files.
+To replace the key: `ssh-keygen -t ed25519 -f mirror -N ""`, add `mirror.pub` to the account's SSH keys, `gh secret set SSH_PRIVATE_KEY --repo Nexlein/Area-Flow < mirror`, delete both files, revoke the old key, then re-run the last CI run of `main` (`gh run rerun <id>`; a manual run does not mirror).
 
-## 8. Extending the product
+## 6. Extending the product
 
-Required by the subject. Each procedure below is written once the engine exists, and must be reproducible as is: a trivial node type is added from it during the defense if ENG-EXT is selected.
+Written once the engine exists, reproducible as is: with ENG-EXT, a trivial node type is added from it during the defense.
 
-### Add a Service
-
-Files to create, how it registers, how its OAuth2 subscription is configured, how it appears in `about.json`, tests to add.
-
-### Add an Action
-
-Interface to implement, how its hook detects and identifies occurrences, the keys it publishes, tests to add.
-
-### Add a REAction
-
-Interface to implement, its parameters and their validation, the keys it publishes, side effects and retries, tests to add.
-
-### Add a workflow node type
-
-Interface to implement (validation and execution), registration at startup, declared keys, tests to add, what must not change in the engine.
+| Add a…             | To write: files, interface, registration, published keys, tests    |
+| ------------------ | ------------------------------------------------------------------ |
+| Service            | TBD (including its OAuth2 subscription and its `about.json` entry) |
+| Action             | TBD (including how its hook detects and identifies occurrences)    |
+| REAction           | TBD (including parameters, side effects, retries)                  |
+| Workflow node type | TBD (validation and execution; what must not change in the engine) |

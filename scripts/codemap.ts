@@ -7,6 +7,12 @@ import { execFileSync } from 'node:child_process';
 import { mkdirSync, writeFileSync } from 'node:fs';
 import { basename, dirname } from 'node:path';
 
+export interface Entry {
+  path: string;
+  lines: number;
+  purpose: string;
+}
+
 export const OUT = '.claude/codemap.md';
 const SKIP = /(^|\/)(package-lock\.json|pnpm-lock\.yaml|yarn\.lock)$|^\.claude\/codemap\.md$/;
 const BINARY =
@@ -19,25 +25,26 @@ const PREAMBLE =
 // Leading comment markers of the languages we may use; JSON and friends have none.
 const COMMENT = /^(\/\/\/?|\/\*+|\*\/?|#|--|<!--)\s?/;
 
-const clip = (s) => (s.length > MAX ? `${s.slice(0, MAX - 3).trimEnd()}...` : s);
-const firstSentence = (s) => s.match(/^.*?[.!?](?=\s|$)/)?.[0] ?? s;
+const clip = (s: string): string => (s.length > MAX ? `${s.slice(0, MAX - 3).trimEnd()}...` : s);
+const firstSentence = (s: string): string => s.match(/^.*?[.!?](?=\s|$)/)?.[0] ?? s;
 
 /** Purpose of a file from its text: first Markdown heading, or first sentence of the leading comment; '' if none. */
-export function purpose(path, text) {
+export function purpose(path: string, text: string): string {
   const lines = text.split(/\r?\n/).map((l) => l.trim());
   if (/\.mdx?$/i.test(path)) {
     const heading = lines.find((l) => /^#{1,6}\s/.test(l));
     return heading ? clip(heading.replace(/^#+\s*/, '')) : '';
   }
   let i = 0;
-  while (i < lines.length && (lines[i] === '' || PREAMBLE.test(lines[i]))) i++;
+  while (i < lines.length && (lines[i] === '' || PREAMBLE.test(lines[i] ?? ''))) i++;
   const first = lines[i] ?? '';
   const docstring = first.match(/^(?:"""|''')(.*)/);
-  if (docstring) return clip(firstSentence(docstring[1].replace(/("""|''').*$/, '').trim()));
+  if (docstring)
+    return clip(firstSentence((docstring[1] ?? '').replace(/("""|''').*$/, '').trim()));
   if (!COMMENT.test(first)) return '';
-  const words = [];
-  for (; i < lines.length && COMMENT.test(lines[i]); i++) {
-    const body = lines[i]
+  const words: string[] = [];
+  for (let line = lines[i]; line !== undefined && COMMENT.test(line); line = lines[++i]) {
+    const body = line
       .replace(COMMENT, '')
       .replace(/\*\/$|-->$/, '')
       .trim();
@@ -48,15 +55,14 @@ export function purpose(path, text) {
 }
 
 // Locale-independent order: the same map on every machine and in CI, whatever LANG is.
-const byCodeUnit = (a, b) => (a < b ? -1 : a > b ? 1 : 0);
+const byCodeUnit = (a: string, b: string): number => (a < b ? -1 : a > b ? 1 : 0);
 
-/** Markdown of the code map from [{ path, lines, purpose }], grouped by folder, root first. */
-export function render(entries) {
-  const byDir = new Map();
+/** Markdown of the code map, grouped by folder, root first. */
+export function render(entries: Entry[]): string {
+  const byDir = new Map<string, Entry[]>();
   for (const e of entries.toSorted((a, b) => byCodeUnit(a.path, b.path))) {
     const dir = dirname(e.path);
-    if (!byDir.has(dir)) byDir.set(dir, []);
-    byDir.get(dir).push(e);
+    byDir.set(dir, [...(byDir.get(dir) ?? []), e]);
   }
   const dirs = [...byDir.keys()].toSorted((a, b) =>
     a === '.' ? -1 : b === '.' ? 1 : byCodeUnit(a, b),
@@ -68,37 +74,36 @@ export function render(entries) {
     'Per file: line count and purpose (first comment sentence of code, first heading of Markdown). Reads the git index: `git add` changes first.',
   ];
   for (const dir of dirs) {
-    const files = byDir.get(dir);
-    const described = files.filter((f) => f.purpose);
+    const files = byDir.get(dir) ?? [];
     const bare = files.filter((f) => !f.purpose).map((f) => `\`${basename(f.path)}\``);
     out.push('', `## ${dir === '.' ? '(root)' : dir}`, '');
-    for (const f of described) out.push(`- \`${basename(f.path)}\` (${f.lines}): ${f.purpose}`);
+    for (const f of files.filter((f) => f.purpose)) {
+      out.push(`- \`${basename(f.path)}\` (${f.lines}): ${f.purpose}`);
+    }
     if (bare.length) out.push(`- Also: ${bare.join(', ')}`);
   }
   return `${out.join('\n')}\n`;
 }
 
-/** Entries of `git ls-files -z -s` output: { path, sha }, submodules left out. */
-export function parseIndex(out) {
+/** Entries of `git ls-files -z -s` output, submodules left out. */
+export function parseIndex(out: string): { path: string; sha: string }[] {
   return out
     .split('\0')
     .filter(Boolean)
-    .map((line) => {
-      const [meta, path] = line.split('\t');
-      const [mode, sha] = meta.split(' ');
-      return { mode, sha, path };
-    })
-    .filter((e) => e.mode !== '160000')
-    .map(({ path, sha }) => ({ path, sha }));
+    .flatMap((line) => {
+      const [meta = '', path = ''] = line.split('\t');
+      const [mode, sha = ''] = meta.split(' ');
+      return mode === '160000' ? [] : [{ path, sha }];
+    });
 }
 
-/** Blob contents by sha from `git cat-file --batch` output (a Buffer). */
-export function parseBatch(buf) {
-  const blobs = new Map();
+/** Blob contents by sha from `git cat-file --batch` output. */
+export function parseBatch(buf: Buffer): Map<string, string> {
+  const blobs = new Map<string, string>();
   let i = 0;
   while (i < buf.length) {
     const eol = buf.indexOf(10, i);
-    const [sha, type, size] = buf.subarray(i, eol).toString().split(' ');
+    const [sha = '', type, size] = buf.subarray(i, eol).toString().split(' ');
     if (type === 'missing') {
       i = eol + 1;
       continue;
@@ -111,7 +116,7 @@ export function parseBatch(buf) {
   return blobs;
 }
 
-function main() {
+function main(): void {
   const index = parseIndex(execFileSync('git', ['ls-files', '-z', '-s'], { encoding: 'utf8' }));
   const files = index.filter((e) => !SKIP.test(e.path));
   const text = files.filter((e) => !BINARY.test(e.path));
@@ -122,8 +127,8 @@ function main() {
           maxBuffer: 1024 ** 3,
         }),
       )
-    : new Map();
-  const entries = files.map(({ path, sha }) => {
+    : new Map<string, string>();
+  const entries = files.map(({ path, sha }): Entry => {
     const content = blobs.get(sha);
     if (content === undefined) return { path, lines: 0, purpose: '' };
     return {

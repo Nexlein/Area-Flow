@@ -2,7 +2,7 @@
 
 Official Epitech subject of the project (G-YEP-500), as downloaded on 2026-11-23, and its condensed Markdown versions:
 
-- [`SUBJECT.md`](SUBJECT.md): the common base, milestones and quantities, condensed. Imported into `CLAUDE.md`.
+- [`SUBJECT.md`](SUBJECT.md): the common base, milestones and quantities, condensed.
 - [`FEATURES.md`](FEATURES.md): the 24 additional features and their acceptance criteria, condensed.
 - [`area-project.pdf`](area-project.pdf): original subject (common base).
 - [`area-additional_features.pdf`](area-additional_features.pdf): original feature catalogue (v6.4.0).

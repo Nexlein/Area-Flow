@@ -1,8 +1,8 @@
-// Tests for scripts/codemap.mjs: purpose extraction per language and the rendered layout.
+// Tests for scripts/codemap.ts: purpose extraction per language and the rendered layout.
 
 import assert from 'node:assert/strict';
 import { test } from 'node:test';
-import { parseBatch, parseIndex, purpose, render } from './codemap.mjs';
+import { parseBatch, parseIndex, purpose, render } from './codemap.ts';
 
 test('Markdown: first heading, without the hashes', () => {
   assert.equal(purpose('docs/a.md', 'Intro text\n\n## Workflow model\n# Later'), 'Workflow model');

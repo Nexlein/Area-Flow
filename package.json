@@ -4,17 +4,23 @@
   "private": true,
   "description": "Epitech Tek3 AREA: automation platform with an application server, a web client and an Android client",
   "type": "module",
+  "engines": {
+    "node": ">=26"
+  },
   "scripts": {
     "prepare": "husky",
-    "codemap": "node scripts/codemap.mjs",
-    "format": "node scripts/format.mjs --write",
-    "format:check": "node scripts/format.mjs --check",
-    "test": "node --test \"scripts/*.test.mjs\"",
-    "check": "npm run -s format:check && npm run -s test"
+    "codemap": "node scripts/codemap.ts",
+    "format": "node scripts/format.ts --write",
+    "format:check": "node scripts/format.ts --check",
+    "typecheck": "tsc",
+    "test": "node --test \"scripts/*.test.ts\"",
+    "check": "npm run -s format:check && npm run -s typecheck && npm run -s test"
   },
   "devDependencies": {
+    "@types/node": "^26.6.6",
     "husky": "^9.1.7",
     "lint-staged": "^17.6.2",
-    "prettier": "^3.10.1"
+    "prettier": "^3.10.1",
+    "typescript": "^6.0.3"
   }
 }

@@ -1,49 +1,28 @@
 # Technology selection: persistence
 
-**Status:** Draft · **Owner:** name · **Decision:** ADR NNNN (to write)
+**Status:** Draft · **Owner:** name · **Decision:** ADR NNNN
 
-Scope: the database, its access layer (ORM, query builder or plain SQL), migrations, and any other store (cache, queue).
+**Scope:** the database, its access layer (ORM, query builder, plain SQL), migrations, any other store (cache, queue).
 
-## What the product must persist
-
-- Users, local credentials, linked external identities (OIDC).
-- Service subscriptions and their delegated credentials (OAuth2 tokens, refresh tokens, expiry).
-- Workflows: nodes, their order, the condition and its two branches, key path mappings; validated at save.
-- Hook state: which occurrences were already seen, cursors, schedules, so no event triggers twice.
-- Runs: what ran, when, with which result (more if SYS-OBS: immutable records with node inputs and outputs).
-- Selected features that weigh on storage: [`features-selection.md`](features-selection.md).
+**Drives the choice:** the entities of [`../architecture/persistence-model.md`](../architecture/persistence-model.md) · no event triggering twice · delegated tokens stored safely · Docker Compose.
 
 ## Criteria
 
-| Criterion                                                                             | Weight | Why it matters here |
-| ------------------------------------------------------------------------------------- | ------ | ------------------- |
-| Security: access control, injection safety of the access layer, encryption options    |        |                     |
-| Data model fit: relational links (users, subscriptions, workflows, runs) vs documents |        |                     |
-| Integrity: transactions, unique constraints for hook deduplication                    |        |                     |
-| Migrations: versioned, reproducible from a fresh clone                                |        |                     |
-| Backup and restore tooling                                                            |        |                     |
-| Runs in Docker Compose with a small footprint                                         |        |                     |
-| Testing: throwaway databases in tests and CI                                          |        |                     |
-| Team knowledge and learning goal                                                      |        |                     |
+| Criterion                                                                | Weight |
+| ------------------------------------------------------------------------ | ------ |
+| Security: access control, injection safety, encryption options           |        |
+| Model fit: users, subscriptions, workflows, runs (relational, documents) |        |
+| Integrity: transactions, unique constraints for hook deduplication       |        |
+| Migrations: versioned, reproducible from a fresh clone                   |        |
+| Backup and restore tooling                                               |        |
+| Small footprint in Docker Compose                                        |        |
+| Throwaway databases in tests and CI                                      |        |
+| Team knowledge and learning goal                                         |        |
 
 ## Candidates
 
-| Candidate | Score | Strengths | Weaknesses |
-| --------- | ----- | --------- | ---------- |
-|           |       |           |            |
+| Candidate | Score | Strengths | Weaknesses | Why not |
+| --------- | ----- | --------- | ---------- | ------- |
+|           |       |           |            |         |
 
-## Comparison
-
-How each candidate was evaluated against each criterion: reading (with sources), PoC, measurement.
-
-## Evidence (exploratory code)
-
-- PoC: what was built, where (branch or folder), what it showed, with numbers.
-
-## Decision
-
-Concise, justified choice. Record it in an ADR from [`../adr/0000-template.md`](../adr/0000-template.md).
-
-## Rejected
-
-- **Candidate:** why not for this project.
+**Compared by:** sources read, PoC, measurements, each linked. **PoC:** link, what it showed, with numbers.

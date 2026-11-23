@@ -1,12 +1,19 @@
 version: 2
 updates:
-  # Root tooling (Husky, lint-staged, Prettier). Add one entry per server/web/mobile package once the stack exists.
+  # Root tooling (Husky, lint-staged, Prettier, TypeScript). Add one entry per server/web/mobile package with the stack.
   - package-ecosystem: npm
     directory: /
     schedule:
       interval: weekly
       day: monday
     open-pull-requests-limit: 5
+    ignore:
+      # Node types follow the Node major of mise.toml
+      - dependency-name: '@types/node'
+        update-types: ['version-update:semver-major']
+      # TypeScript 7.0 ships no tsserver, so editors lose it: before merging the 7.1 PR, check code navigation
+      - dependency-name: typescript
+        versions: ['7.0.x']
     commit-message:
       prefix: chore(deps)
     groups:

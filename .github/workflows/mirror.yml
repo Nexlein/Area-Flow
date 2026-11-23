@@ -1,6 +1,6 @@
 # Pushes main to the Epitech repository once CI passed on it: Epitech grades that repository.
-# Setup (once): a deploy key with write access on the Epitech repository, its private half in the
-# SSH_PRIVATE_KEY secret of this repository (HOWTOCONTRIBUTE.md, "Epitech mirror").
+# Auth: the private half of an SSH key on the owner's GitHub account, in the SSH_PRIVATE_KEY secret
+# (students are not admin of the Epitech repository, so no deploy key). Setup: HOWTOCONTRIBUTE.md, "Epitech mirror".
 name: Epitech Mirror
 
 on:
@@ -13,7 +13,7 @@ concurrency:
   group: mirror-${{ github.ref }}
   cancel-in-progress: true
 
-# The push to the Epitech repository uses the SSH deploy key, not the GitHub token: read is enough.
+# The push to the Epitech repository uses the SSH key, not the GitHub token: read is enough.
 permissions:
   contents: read
 
@@ -32,7 +32,7 @@ jobs:
       HAS_KEY: ${{ secrets.SSH_PRIVATE_KEY != '' }}
 
     steps:
-      - name: Deploy key missing
+      - name: Mirror key missing
         if: env.HAS_KEY != 'true'
         run: echo "::warning::SSH_PRIVATE_KEY is not set, main is not mirrored (HOWTOCONTRIBUTE.md, Epitech mirror)."
 
@@ -61,7 +61,9 @@ jobs:
             echo "::notice::main moved past $HEAD_SHA: the run of the newer commit mirrors it."
             exit 0
           fi
-          ssh-keyscan github.com >> ~/.ssh/known_hosts
+          # GitHub's published host key (docs.github.com, "GitHub's SSH key fingerprints"), pinned instead of trusted on first use.
+          mkdir -p ~/.ssh
+          echo 'github.com ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIOMqqnkVzrm0SdG6UOoqKLsabgH5C9okWi0dh2l9GKJl' >> ~/.ssh/known_hosts
           git remote add epitech "$EPITECH_REPO_URL"
           # No --force: a push that is not a fast-forward fails visibly instead of overwriting the Epitech history.
           git push epitech HEAD:refs/heads/main

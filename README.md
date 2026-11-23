@@ -3,28 +3,35 @@
 [![CI](https://github.com/Nexlein/Area-Flow/actions/workflows/ci.yml/badge.svg)](https://github.com/Nexlein/Area-Flow/actions/workflows/ci.yml)
 [![Epitech Mirror](https://github.com/Nexlein/Area-Flow/actions/workflows/mirror.yml/badge.svg)](https://github.com/Nexlein/Area-Flow/actions/workflows/mirror.yml)
 
-> **Epitech Tek3 AREA project.** An automation platform inspired by IFTTT and Zapier: users connect their accounts on third-party Services and build workflows in which an Action detected in one Service triggers REActions in others, with an optional condition.
+Epitech Tek3 AREA project: an automation platform inspired by IFTTT and Zapier. Users connect their accounts on third-party Services; an Action detected in one Service triggers REActions in others.
 
-**Status:** Milestone 1 (Plan). The stack is being chosen: [`docs/plan/`](docs/plan/README.md).
+**Status:** Milestone 1 (Plan), stack being chosen: [`docs/plan/`](docs/plan/README.md).
 
----
+```mermaid
+flowchart LR
+  E([Event in a Service<br/>e.g. a new mail]) --> H[Hook<br/>detects it] --> W[Workflow engine] --> R1[REAction] --> C{condition}
+  C -->|branch 1| R2[REAction]
+  C -->|branch 2| R3[REAction]
+  B[Web client<br/>builds workflows] -.-> W
+  M[Android client<br/>monitors runs] -.-> W
+```
 
-## Components
+## Glossary
 
-| Component          | Role                                                                                      |
-| ------------------ | ----------------------------------------------------------------------------------------- |
-| Application server | Business logic: accounts, Service subscriptions, workflow engine, hooks, OpenAPI          |
-| Web client         | Uses the server from a browser; hosts the workflow builder                                |
-| Android client     | Lists workflows, enables and disables them, shows their runs; server address configurable |
+| Term     | Meaning                                                                        |
+| -------- | ------------------------------------------------------------------------------ |
+| Service  | A third-party platform the user subscribes to (often through OAuth2)           |
+| Action   | An event in a Service that the product detects                                 |
+| REAction | A task the product performs in a Service                                       |
+| Hook     | What detects an Action and starts the workflows, with no client open           |
+| AREA     | The smallest workflow: one Action, one REAction                                |
+| Workflow | A trigger, a chain of reactions, at most one condition with two branches       |
+| Key path | A reference to a value an earlier node published, e.g. `{{ trigger.subject }}` |
+| Builder  | The web screen where workflows are assembled                                   |
 
 ## Setup
 
-To be written with the stack. Target: one Docker Compose command builds and runs the whole product.
-
-```bash
-git clone git@github.com:Nexlein/Area-Flow.git && cd Area-Flow
-# cp .env.example .env, then docker compose up --build (once the stack exists)
-```
+To be written with the stack. Target: one Docker Compose command builds and runs everything.
 
 | Endpoint or artifact             | Where |
 | -------------------------------- | ----- |
@@ -36,37 +43,32 @@ git clone git@github.com:Nexlein/Area-Flow.git && cd Area-Flow
 
 ## Operation
 
-How to create an account, subscribe to a Service, build a workflow and follow its runs: TBD.
+Create an account, subscribe to a Service, build a workflow, follow its runs: TBD.
 
 ## Public API
 
-Served by the server as an OpenAPI description with a browsable interface (URL TBD). It covers every endpoint the clients call, error responses included, and a test checks it against the implementation.
+An OpenAPI description with a browsable interface, served by the server (URL TBD), covering every endpoint the clients call, errors included; a test checks it against the code.
 
 ## Services, Actions and REActions
 
 | Service | Auth | Actions | REActions |
 | ------- | ---- | ------- | --------- |
 
-**Counts**, on the less complete client (subject minimums for M = 2): S = 0 / 3, of which via OAuth2 0 / 2; A + R = 0 / 6. Feature difficulty D: [`docs/plan/features-selection.md`](docs/plan/features-selection.md).
+| Count (on the less complete client) | Now | Minimum (M = 2) |
+| ----------------------------------- | --- | --------------- |
+| Services S                          | 0   | 3               |
+| … of which via OAuth2               | 0   | 2               |
+| Actions + REActions                 | 0   | 6               |
 
-## Documentation
+Feature difficulty D: [`docs/plan/features-selection.md`](docs/plan/features-selection.md).
 
-- [`HOWTOCONTRIBUTE.md`](HOWTOCONTRIBUTE.md): development setup, conventions, and how to add Services, Actions, REActions and workflow nodes.
-- [`docs/`](docs/README.md): plan, architecture, decisions (ADRs), selected features, security evidence, accessibility audit.
-- [`docs/subject/`](docs/subject/README.md): the Epitech subject.
+## More
 
-## Project structure
+| Folder or file                             | What                                                           |
+| ------------------------------------------ | -------------------------------------------------------------- |
+| [`HOWTOCONTRIBUTE.md`](HOWTOCONTRIBUTE.md) | Setup for developers, git flow, extending the product          |
+| [`docs/`](docs/README.md)                  | Subject, plan, architecture, ADRs, features, security, defense |
+| `.github/`, `.husky/`, `scripts/`          | CI and mirror, git hooks, repo tooling (TypeScript)            |
+| `.claude/`, `CLAUDE.md`                    | Agent settings, formatting hook, generated code map            |
 
-```
-├── .claude/       # Agent settings, formatting hook, generated code map
-├── .github/       # CI, Epitech mirror, Dependabot, PR and issue templates
-├── .husky/        # Git hooks: secret scan, formatting, commit format, pre-push check
-├── docs/          # Subject, plan, architecture, ADRs, features, security, accessibility
-├── scripts/       # Code map generator and its test
-├── CLAUDE.md      # Agent instructions and project rules
-└── HOWTOCONTRIBUTE.md
-```
-
-## Team
-
-Nexlein, Saitamadupauvre.
+Team: Nexlein, Saitamadupauvre.
