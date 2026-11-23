@@ -60,7 +60,8 @@ Per file: line count and purpose (first sentence of the leading comment, else th
 ## docs/adr
 
 - `0000-template.md` (35): ADR 0000: Template
-- `README.md` (18): Architecture Decision Records
+- `0001-backend-fastify.md` (54): ADR 0001: Back-end framework: Fastify
+- `README.md` (19): Architecture Decision Records
 
 ## docs/architecture
 
