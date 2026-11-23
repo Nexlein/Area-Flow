@@ -9,7 +9,9 @@ Epitech Tek3 AREA project: an automation platform inspired by IFTTT and Zapier. 
 
 ```mermaid
 flowchart LR
-  E([Event in a Service<br/>e.g. a new mail]) --> H[Hook<br/>detects it] --> W[Workflow engine] --> R1[REAction] --> R2[REAction] --> C{condition} --> R3[REAction]
+  E([Event in a Service<br/>e.g. a new mail]) --> H[Hook<br/>detects it] --> W[Workflow engine] --> R1[REAction] --> C{condition}
+  C -->|branch 1| R2[REAction]
+  C -->|branch 2| R3[REAction]
   B[Web client<br/>builds workflows] -.-> W
   M[Android client<br/>monitors runs] -.-> W
 ```

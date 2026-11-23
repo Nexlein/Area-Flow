@@ -15,8 +15,8 @@ gantt
   MVP   :milestone, m2, 2026-12-21, 0d
   section Work
   Plan deliverables       :p, 2026-11-23, 2026-11-30
-  MVP: end-to-end product :v, 2026-11-30, 2026-12-21
-  Final: features, docs   :f, 2026-12-21, 21d
+  MVP end-to-end product :v, 2026-11-30, 2026-12-21
+  Final features and docs :f, 2026-12-21, 21d
 ```
 
 Final date: to set (the bar above is a placeholder).

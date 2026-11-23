@@ -1,6 +1,6 @@
 # Workflow model and failure semantics
 
-What the subject fixes (diagram and 7 bounds): [`../subject/SUBJECT.md`](../subject/SUBJECT.md#workflows). Below, what we decide; each row is a rule the engine applies everywhere and a test covers.
+What the subject fixes (6 bounds, validation at save, data between nodes): [`../subject/SUBJECT.md`](../subject/SUBJECT.md#workflows). Below, what we decide; each row is a rule the engine applies everywhere and a test covers.
 
 ## Our decisions
 

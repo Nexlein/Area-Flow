@@ -8,6 +8,8 @@ We act as software architects: understand the need, compare alternatives (state 
 
 ## Product
 
+A software suite inspired by IFTTT and Zapier.
+
 | Part               | Subject requirement                                                    |
 | ------------------ | ---------------------------------------------------------------------- |
 | Application server | Implements every feature; all business logic and rules live here       |
@@ -45,6 +47,8 @@ The server declares the available Services, Actions and REActions and exposes th
 
 The server walks the nodes in order once the Action is detected. An **AREA** (one Action → one REAction) is the smallest workflow.
 
+One possible shape (where the condition sits and what each branch holds is ours to decide: [`../architecture/workflow-model.md`](../architecture/workflow-model.md)):
+
 ```mermaid
 flowchart LR
   T([trigger<br/>the Action]) --> R1[reaction] --> R2[reaction] --> C{condition<br/>optional}
@@ -60,9 +64,8 @@ Bounds of the common base:
 4. Branches end the workflow and never merge.
 5. Workflows without a condition, or with a single reaction, stay valid.
 6. The engine must demo a meaningful workflow with **at least four reaction nodes**; the data model must not make four a structural maximum.
-7. Structural validity is checked **when the workflow is saved**.
 
-Cases left open (e.g. is an empty branch valid?) are ours to decide, document and apply consistently. Each workflow we offer should save its user real time or effort.
+Structural validity is checked **when the workflow is saved**. Cases left open (e.g. is an empty branch valid?) are ours to decide, document and apply consistently. Each workflow we offer should save its user real time or effort.
 
 **Builder** (where users assemble workflows): free form but justified (canvas, step list, form wizard...). **Web only**: nodes and the data mapping between them are edited from the web client alone. The mobile client lists workflows, enables and disables them, shows what they did; no building on mobile.
 

@@ -5,13 +5,17 @@ Source: [`area-additional_features.pdf`](area-additional_features.pdf) (v6.4.0).
 - A feature is delivered only when every criterion below can be observed.
 - A criterion met by a document needs claims we can demonstrate live; a document nobody in the group can defend is not a deliverable.
 - Each SEC feature also needs an evidence note: attack scenario, reproduction, observation, protection and where it lives, protected result, limits ([`../security/`](../security/README.md)).
-- Dependencies: only AI-EVAL needs another feature (AI-NODE; both count). A deterministic (no model) implementation shared by AI features counts once.
+- Dependencies: only AI-EVAL requires another feature (AI-NODE; both count). AI-GUARD, AI-MULTIMODAL, AI-PROMPT and AI-REVIEW do not require AI-NODE. A deterministic (no model) implementation shared by AI-NODE, AI-GUARD, AI-MULTIMODAL and AI-PROMPT counts once; AI-EVAL measures against it as its control.
 
 ```mermaid
 flowchart LR
   EVAL[AI-EVAL] -->|requires| NODE[AI-NODE]
-  NODE & GUARD[AI-GUARD] & MULTI[AI-MULTIMODAL] & PROMPT[AI-PROMPT] -.-> DET[(shared deterministic<br/>implementation: counts once)]
+  DET[(deterministic implementation<br/>no model: counts once when shared)]
+  NODE & GUARD[AI-GUARD] & MULTI[AI-MULTIMODAL] & PROMPT[AI-PROMPT] -.->|own or shared| DET
+  EVAL -.->|control| DET
 ```
+
+Solid arrow: requires. Dotted arrow: needs a deterministic implementation, its own or a shared one.
 
 "Need" restates the customer's quote in our words; the bullets are the definition of done.
 

@@ -9,7 +9,7 @@ Per file: line count and purpose (first comment sentence of code, first heading 
 - `.gitignore` (90): Files git never tracks: secrets, dependencies, build output, local settings.
 - `CLAUDE.md` (34): Area-Flow
 - `HOWTOCONTRIBUTE.md` (71): How to contribute
-- `README.md` (72): Area-Flow
+- `README.md` (74): Area-Flow
 - Also: `.editorconfig`, `.lintstagedrc`, `.prettierignore`, `.prettierrc`, `mise.toml`, `package.json`, `tsconfig.json`
 
 ## .claude
@@ -48,7 +48,7 @@ Per file: line count and purpose (first comment sentence of code, first heading 
 
 ## docs
 
-- `README.md` (25): Documentation
+- `README.md` (26): Documentation
 - `defense.md` (21): Defense
 - `postmortem.md` (11): Post-mortem
 
@@ -92,9 +92,9 @@ Per file: line count and purpose (first comment sentence of code, first heading 
 
 ## docs/subject
 
-- `FEATURES.md` (312): Additional features catalogue (condensed)
+- `FEATURES.md` (316): Additional features catalogue (condensed)
 - `README.md` (11): AREA subject
-- `SUBJECT.md` (181): AREA — Subject (condensed)
+- `SUBJECT.md` (184): AREA — Subject (condensed)
 - Also: `area-additional_features.pdf`, `area-project.pdf`, `area-security_evidence.pdf`
 
 ## scripts
