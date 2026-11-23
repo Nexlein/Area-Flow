@@ -19,7 +19,7 @@ Per file: line count and purpose (first comment sentence of code, first heading 
 
 ## .claude/hooks
 
-- `format-on-edit.ts` (43): Claude Code PostToolUse hook: formats each file Claude edits with the repo's Prettier.
+- `format-on-edit.ts` (47): Claude Code PostToolUse hook: formats each file Claude edits with the repo's Prettier.
 
 ## .github
 
