@@ -6,9 +6,9 @@ Per file: line count and purpose (first sentence of the leading comment, else th
 ## (root)
 
 - `.gitattributes` (14): LF everywhere, also on Windows checkouts: hooks and scripts break with CRLF.
-- `.gitignore` (90): Files git never tracks: secrets, dependencies, build output, local settings.
+- `.gitignore` (91): Files git never tracks: secrets, dependencies, build output, local settings.
 - `.gitleaks.toml` (11): Gitleaks rules for the pre-commit hook and CI: the default rules, plus what they miss for this project.
-- `CLAUDE.md` (35): Area-Flow
+- `CLAUDE.md` (40): Area-Flow
 - `HOWTOCONTRIBUTE.md` (83): How to contribute
 - `README.md` (76): Area-Flow
 - Also: `.editorconfig`, `.lintstagedrc`, `.prettierignore`, `.prettierrc`, `mise.toml`, `package.json`, `tsconfig.json`
@@ -49,7 +49,7 @@ Per file: line count and purpose (first sentence of the leading comment, else th
 
 ## docs
 
-- `README.md` (27): Documentation
+- `README.md` (28): Documentation
 - `defense.md` (21): Defense
 - `postmortem.md` (11): Post-mortem
 
@@ -93,8 +93,9 @@ Per file: line count and purpose (first sentence of the leading comment, else th
 
 ## docs/subject
 
+- `BOOTSTRAP.md` (107): Condensed restatement of the AREA bootstrap sandbox (v1.1.1): what each exercise asks and where its output lives in this repository.
 - `FEATURES.md` (316): Additional features catalogue (condensed)
-- `README.md` (12): AREA subject
+- `README.md` (13): AREA subject
 - `SUBJECT.md` (184): AREA — Subject (condensed)
 - Also: `area-additional_features.pdf`, `area-bootstrap.pdf`, `area-project.pdf`, `area-security_evidence.pdf`
 
