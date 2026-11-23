@@ -24,6 +24,10 @@ concurrency:
 jobs:
   repo:
     name: Secrets, format, tooling tests, code map
+    # The mirror copies this file into the Epitech repository, where Actions cannot start (no minutes): skipped
+    # there, not failed. Excludes that organization rather than naming this repository: a rename must not turn
+    # the required check into a silent skip (GitHub counts a skipped required check as passed).
+    if: github.repository_owner != 'EpitechPGE3-2026'
     runs-on: ubuntu-latest
     timeout-minutes: 10
     steps:

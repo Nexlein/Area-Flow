@@ -9,7 +9,7 @@ Per file: line count and purpose (first comment sentence of code, first heading 
 - `.gitignore` (90): Files git never tracks: secrets, dependencies, build output, local settings.
 - `CLAUDE.md` (35): Area-Flow
 - `HOWTOCONTRIBUTE.md` (81): How to contribute
-- `README.md` (74): Area-Flow
+- `README.md` (76): Area-Flow
 - Also: `.editorconfig`, `.lintstagedrc`, `.prettierignore`, `.prettierrc`, `mise.toml`, `package.json`, `tsconfig.json`
 
 ## .claude
@@ -32,8 +32,8 @@ Per file: line count and purpose (first comment sentence of code, first heading 
 
 ## .github/workflows
 
-- `ci.yml` (72): Repo-wide checks on every contribution: secret scan over the full history, formatting, tooling tests, fresh code map.
-- `mirror.yml` (74): Pushes main to the Epitech repository once CI passed on it: Epitech grades that repository.
+- `ci.yml` (76): Repo-wide checks on every contribution: secret scan over the full history, formatting, tooling tests, fresh code map.
+- `mirror.yml` (76): Pushes main to the Epitech repository once CI passed on it: Epitech grades that repository.
 
 ## .husky
 
