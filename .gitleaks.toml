@@ -1,0 +1,11 @@
+# Gitleaks rules for the pre-commit hook and CI: the default rules, plus what they miss for this project.
+# Read from the repository root by `gitleaks git`, with no flag needed.
+
+[extend]
+useDefault = true
+
+[[rules]]
+id = "jwk-private-key"
+# A private JWK (RSA, EC or OKP) always has a "d" member; public JWKs never do.
+description = "Private key in JWK form"
+regex = '''["']?\bd["']?\s*:\s*["'][A-Za-z0-9_-]{40,}["']'''
