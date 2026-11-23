@@ -24,6 +24,9 @@ concurrency:
 jobs:
   repo:
     name: Secrets, format, tooling tests, code map
+    # The mirror copies this file into the Epitech repository, where Actions cannot start (no minutes): skipped
+    # there, not failed. Pull requests from forks still run here, in the context of this repository.
+    if: github.repository == 'Nexlein/Area-Flow'
     runs-on: ubuntu-latest
     timeout-minutes: 10
     steps:

@@ -32,7 +32,7 @@ Per file: line count and purpose (first comment sentence of code, first heading 
 
 ## .github/workflows
 
-- `ci.yml` (72): Repo-wide checks on every contribution: secret scan over the full history, formatting, tooling tests, fresh code map.
+- `ci.yml` (75): Repo-wide checks on every contribution: secret scan over the full history, formatting, tooling tests, fresh code map.
 - `mirror.yml` (74): Pushes main to the Epitech repository once CI passed on it: Epitech grades that repository.
 
 ## .husky
