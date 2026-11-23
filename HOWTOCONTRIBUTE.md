@@ -16,11 +16,19 @@ npm install    # repo tooling and git hooks
 
 ```mermaid
 flowchart LR
-  I[Issue<br/>Task template] --> B[Branch<br/>feat/ fix/ docs/ chore/] --> P[Pull request<br/>Closes #N]
-  P -->|CI green, branch up to date, 1 approval| M[main] -->|CI green| E[Epitech repository<br/>graded]
+  I[Issue<br/>Task template] --> B[Branch from dev<br/>feat/ fix/ docs/ chore/] -->|PR, Closes #N| D[dev<br/>integration]
+  D -->|release PR| M[main<br/>delivered] -->|CI green| E[Epitech repository<br/>graded]
 ```
 
-- `main` only changes through a pull request: CI green, branch up to date, the other member's approval, conversations resolved. No force-push, no deletion.
+| Branch | Receives                                             | Rules (rulesets)                                                                                                          |
+| ------ | ---------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------- |
+| `dev`  | Feature PRs, Dependabot and Renovate version updates | PR only · CI green · branch up to date · 1 approval of the last push · conversations resolved · no force-push or deletion |
+| `main` | Release PRs from `dev`; Dependabot security updates  | Same, except the branch need not be up to date (a release PR is already tested on `dev`)                                  |
+
+- Release before every milestone deadline: open a PR `dev` → `main`, merge it with a merge commit. Only `main` reaches the Epitech repository.
+- After anything lands on `main` without coming from `dev` (a Dependabot security update), merge `main` back into `dev`.
+- Merge method: squash a one-commit PR, merge commit otherwise (keeps the commit history of the PR).
+- The repository admin may bypass the approval, only by merging a pull request.
 - Commits: [Conventional Commits](https://www.conventionalcommits.org), `type(scope): subject` with `type` in `feat fix docs style refactor perf test build ci chore revert` (the `commit-msg` hook checks it). Never `--no-verify`.
 - Never push to the Epitech repository by hand: the mirror only fast-forwards and would stop.
 - `.claude/codemap.md` conflicts, or is stale after GitHub's "Update branch" (no hook runs there): `npm run codemap`, then commit.
@@ -53,11 +61,11 @@ Code, comments, commits and docs: English. Every source file opens with a commen
 
 ## 5. Epitech mirror (maintainer)
 
-After CI passes on a push to `main`, [`mirror.yml`](.github/workflows/mirror.yml) pushes `main` to `EpitechPGE3-2026/G-YEP-500-MPL-5-1-area-1`. Students are not admin there, so no deploy key: it uses an SSH key of the owner's GitHub account (title "GitHub Action Mirror"), private half in the Actions secret `SSH_PRIVATE_KEY`.
+After CI passes on a push to `main`, [`mirror.yml`](.github/workflows/mirror.yml) pushes `main` to `EpitechPGE3-2026/G-YEP-500-MPL-5-1-area-1`. Students are not admin there, so no deploy key: it uses an SSH key of the owner's GitHub account (title "GitHub Action Mirror"), private half in the secret `SSH_PRIVATE_KEY` of the **`epitech-mirror` environment**. That environment only deploys from `main`: a workflow pushed on any other branch cannot read the key, and `main` needs an approved pull request.
 
-> **Warning:** that key can push to every repository of the owner's account. Never print it; revoke it in GitHub settings if a copy is lost.
+> **Warning:** that key can push to every repository of the owner's account. Never print it, never store it as a repository secret; revoke it in GitHub settings if a copy is lost.
 
-To replace the key: `ssh-keygen -t ed25519 -f mirror -N ""`, add `mirror.pub` to the account's SSH keys, `gh secret set SSH_PRIVATE_KEY --repo Nexlein/Area-Flow < mirror`, delete both files, revoke the old key, then re-run the last CI run of `main` (`gh run rerun <id>`; a manual run does not mirror).
+To replace the key: `ssh-keygen -t ed25519 -f mirror -N ""`, add `mirror.pub` to the account's SSH keys, `gh secret set SSH_PRIVATE_KEY --env epitech-mirror --repo Nexlein/Area-Flow < mirror`, delete both files, revoke the old key, then re-run the last CI run of `main` (`gh run rerun <id>`; a manual run does not mirror).
 
 ## 6. Extending the product
 
