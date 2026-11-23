@@ -25,6 +25,7 @@ const EMPTY_CONFIG = join(TMP, 'gitconfig');
 writeFileSync(EMPTY_CONFIG, '');
 
 const EXE = process.platform === 'win32' ? '.exe' : '';
+const EXECUTABLE = 0o755;
 const PATH_DIRS = (process.env['PATH'] ?? '').split(delimiter).filter(Boolean);
 /** Whether a PATH directory holds the given executable. */
 const hasTool = (dir: string, name: string): boolean => existsSync(join(dir, `${name}${EXE}`));
@@ -71,7 +72,7 @@ function freshRepo(hook: Hook): string {
   const hooks = join(dir, '.hooks');
   mkdirSync(hooks, { recursive: true });
   copyFileSync(join(ROOT, '.husky', HOOK_SOURCES[hook]), join(hooks, hook));
-  chmodSync(join(hooks, hook), 0o755);
+  chmodSync(join(hooks, hook), EXECUTABLE);
   copyFileSync(join(ROOT, '.gitleaks.toml'), join(dir, '.gitleaks.toml'));
   assert.equal(git(dir, ['init', '-q', '-b', 'main']).status, 0);
   assert.equal(git(dir, ['config', 'core.hooksPath', '.hooks']).status, 0);
