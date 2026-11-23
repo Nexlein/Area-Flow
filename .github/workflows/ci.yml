@@ -51,6 +51,21 @@ jobs:
           printf '%s\n' "$TITLE" > "$RUNNER_TEMP/pr-title"
           sh .husky/commit-msg "$RUNNER_TEMP/pr-title"
 
+      # GitHub proposes main, the default branch, for every new pull request: only release PRs from dev, and Dependabot
+      # security updates (they always target main), may go there. Changing the base reruns this (edited event).
+      - name: Pull request into main comes from dev
+        if: github.event_name == 'pull_request' && github.base_ref == 'main'
+        env:
+          HEAD_REF: ${{ github.head_ref }}
+          HEAD_REPO: ${{ github.event.pull_request.head.repo.full_name }}
+        run: |
+          case "$HEAD_REPO:$HEAD_REF" in
+            "$GITHUB_REPOSITORY:dev" | "$GITHUB_REPOSITORY:dependabot/"*) ;;
+            *)
+              echo "::error::Pull requests into main come from dev (releases) or Dependabot only: change the base to dev."
+              exit 1 ;;
+          esac
+
       # Installs every tool pinned in mise.toml (Node, gitleaks, actionlint, shellcheck): same versions as local.
       - uses: jdx/mise-action@90f833d396d0cc3674b631d2d225e306476c303a # v5.2.10
 
