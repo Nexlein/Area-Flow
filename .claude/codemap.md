@@ -44,6 +44,13 @@ Per file: line count and purpose (first comment sentence of code, first heading 
 
 - Also: `extensions.json`, `settings.json`
 
+## docs/subject
+
+- `FEATURES.md` (306): Additional features catalogue (condensed)
+- `README.md` (11): AREA subject
+- `SUBJECT.md` (163): AREA — Subject (condensed)
+- Also: `area-additional_features.pdf`, `area-project.pdf`, `area-security_evidence.pdf`
+
 ## scripts
 
 - `codemap.mjs` (140): Generates .claude/codemap.md: every tracked file grouped by folder, with its line count and purpose.
