@@ -1,6 +1,6 @@
 # Repo-wide checks on every contribution: secret scan over the full history, formatting, tooling tests, fresh code map.
 # Lint, tests and build of the server, web and mobile clients are added as jobs once the stack is chosen (docs/plan/).
-# Third-party actions are pinned by commit SHA; Dependabot bumps them.
+# Third-party actions are pinned by commit SHA (a repository setting requires it); Dependabot bumps them.
 name: CI
 
 on:

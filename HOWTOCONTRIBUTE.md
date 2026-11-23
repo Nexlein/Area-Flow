@@ -49,6 +49,8 @@ flowchart LR
 
 Repo tooling is TypeScript only, run by Node 26 without a build. Server, web and mobile commands come with the stack.
 
+On GitHub's side (repository settings): secret scanning with push protection, Dependabot alerts and security updates, CodeQL code scanning (default setup: TypeScript and workflows), actions required to be pinned by commit SHA, and private vulnerability reporting.
+
 ## 4. When you change…
 
 | You change                   | Also update                                                                                                         |
