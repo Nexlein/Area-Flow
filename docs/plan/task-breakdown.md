@@ -1,40 +1,53 @@
 # Task breakdown
 
-Source of truth: the GitHub issues of [Nexlein/Area-Flow](https://github.com/Nexlein/Area-Flow/issues), one per task, opened from the "Task" template: goal, "Done when", owner, due date, estimate, dependencies (also set as "blocked by"). Each issue belongs to a GitHub milestone (Plan, MVP, Final) and to an epic. This file gives the overview and the critical path; the issues hold the detail.
+One GitHub issue per task ([Nexlein/Area-Flow](https://github.com/Nexlein/Area-Flow/issues), "Task" template): goal, "Done when", owner, due date, estimate, dependencies as "blocked by". Each issue has a GitHub milestone (Plan, MVP, Final) and an epic. This file is the overview; the issues hold the detail.
 
-## Milestones
+## Timeline
 
-| Milestone | Due        | Must contain                                                                                   |
-| --------- | ---------- | ---------------------------------------------------------------------------------------------- |
-| Plan      | 2026-11-30 | The subject's five deliverables (7 files, [`README.md`](README.md))                            |
-| MVP       | 2026-12-21 | Deployable product, one workflow with trigger + 2 reactions + condition, CI, OpenAPI, 1/3 of D |
-| Final     | to set     | Everything, docs, audit, post-mortem, defense                                                  |
+The only place for the dates. Start assumed on 2026-11-23 (subject download): confirm on the intranet.
 
-Dates assume a start on 2026-11-23: confirm on the intranet.
+```mermaid
+gantt
+  dateFormat YYYY-MM-DD
+  axisFormat %d/%m
+  section Milestones
+  Plan  :milestone, m1, 2026-11-30, 0d
+  MVP   :milestone, m2, 2026-12-21, 0d
+  section Work
+  Plan deliverables       :p, 2026-11-23, 2026-11-30
+  MVP: end-to-end product :v, 2026-11-30, 2026-12-21
+  Final: features, docs   :f, 2026-12-21, 21d
+```
+
+Final date: to set (the bar above is a placeholder).
 
 ## Epics
 
-Starting structure drawn from the subject (our proposal, to adjust once the stack is chosen):
+Proposed from the subject, to adjust once the stack is chosen.
 
-| Epic                | Covers                                                                             | Owner | Issue |
-| ------------------- | ---------------------------------------------------------------------------------- | ----- | ----- |
-| Plan                | Technology selections, features selection, architecture questions, management      |       |       |
-| Tooling and CI      | Repository, CI (lint, tests, build), Docker Compose stack, automated deployment    |       |       |
-| Server core         | HTTP API and OpenAPI contract, accounts, local and OIDC login                      |       |       |
-| Workflow engine     | Model, validation at save, key paths, execution, failure semantics                 |       |       |
-| Services and hooks  | Service subscriptions (OAuth2), Actions, REActions, hooks, `about.json`            |       |       |
-| Web client          | Login, subscriptions, builder, runs, i18n, WCAG AA                                 |       |       |
-| Mobile client       | Server address, login, workflow list, enable and disable, runs, i18n, WCAG AA, APK |       |       |
-| Additional features | One sub-epic per selected feature                                                  |       |       |
-| Docs and defense    | README, HOWTOCONTRIBUTE, architecture docs, accessibility audit, post-mortem, demo |       |       |
+| Epic                | Covers                                                              | Owner | Issue |
+| ------------------- | ------------------------------------------------------------------- | ----- | ----- |
+| Plan                | Technology selections, features, architecture questions, management |       |       |
+| Tooling and CI      | CI (lint, tests, build), Docker Compose stack, automated deployment |       |       |
+| Server core         | HTTP API and OpenAPI, accounts, local and OIDC login                |       |       |
+| Workflow engine     | Model, validation at save, key paths, execution, failure semantics  |       |       |
+| Services and hooks  | OAuth2 subscriptions, Actions, REActions, hooks, `about.json`       |       |       |
+| Web client          | Login, subscriptions, builder, runs, i18n, WCAG AA                  |       |       |
+| Mobile client       | Server address, login, workflows on/off, runs, i18n, WCAG AA, APK   |       |       |
+| Additional features | One sub-epic per selected feature                                   |       |       |
+| Docs and defense    | README, HOWTOCONTRIBUTE, architecture, audit, post-mortem, demo     |       |       |
 
-## Critical path
+```mermaid
+flowchart LR
+  P[Plan] --> T[Tooling and CI] --> S[Server core] --> E[Workflow engine] --> H[Services and hooks]
+  S -. OpenAPI contract .-> W[Web client] & M[Mobile client]
+  H --> F[Additional features] --> D[Docs and defense]
+  W & M --> D
+```
 
-The chain of dependent tasks that sets the MVP date, once the issues exist.
+## Balance
 
-## Assignment balance
-
-Share of tasks and estimated effort per member, checked at each milestone.
+Checked at each milestone: work spread fairly (subject).
 
 | Member          | Tasks | Estimate |
 | --------------- | ----- | -------- |

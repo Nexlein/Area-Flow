@@ -1,10 +1,10 @@
 # Defense
 
-**Status:** Prepared for the MVP and the Final. Evaluators can ask to verify any claim live and to demo any feature: every claim in the docs must have a way to show it here.
+Evaluators can verify any claim live and ask for any feature: every claim of the docs needs a way to show it here.
 
 ## Presentation
 
-The product and its context, then the architecture decisions, trade-offs, evidence and limits. Visual polish supports the evidence, never replaces it. Link to the slides once they exist.
+The product and its context, then decisions, trade-offs, evidence and limits. Slides: link.
 
 ## Demos
 
@@ -12,15 +12,10 @@ The product and its context, then the architecture decisions, trade-offs, eviden
 | ------------------------------------------------------ | --------- | --------------- | ------------------ |
 | Workflow end to end: trigger, 2 reactions, 1 condition | MVP       |                 |                    |
 | Meaningful workflow with at least 4 reaction nodes     | Final     |                 |                    |
-| Each selected feature: its criteria, live              | Final     |                 |                    |
+| Each selected feature, its criteria live               | Final     |                 |                    |
 
-Keep a fallback recording of every demo that depends on a third-party Service: it may be down or rate limited on the day.
+Record a fallback for every demo that depends on a third-party Service.
 
 ## Individual defense
 
-Each member explains one architecture decision they materially contributed to: need, alternatives, evidence, decision, trade-offs, observed result. Questions raised at Plan: [`plan/architecture-questions.md`](plan/architecture-questions.md).
-
-| Member          | Decision (ADR) | Their contribution (issues, pull requests) |
-| --------------- | -------------- | ------------------------------------------ |
-| Nexlein         |                |                                            |
-| Saitamadupauvre |                |                                            |
+Each member explains one architecture decision they materially contributed to: [`plan/architecture-questions.md`](plan/architecture-questions.md).

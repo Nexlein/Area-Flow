@@ -1,20 +1,11 @@
 # Post-mortem
 
-**Status:** Written at the Final milestone. Keep notes here as the project goes: dates and evidence are easier to give on the day they happen.
+Written at the Final; note things as they happen. Changes and their evidence: [`plan/README.md`](plan/README.md#changes-since-the-plan). Features harder than estimated: [`plan/features-selection.md`](plan/features-selection.md#harder-than-estimated).
 
 ## What succeeded
 
-## What failed
+## What failed, and what each failed experiment taught us
 
-Including failed experiments and what each one taught us.
-
-## What changed, and the evidence that changed our mind
-
-| Date | Change | Evidence | ADR |
-| ---- | ------ | -------- | --- |
-
-## Features harder than estimated
-
-Which ones, what made them harder, when we told the local manager.
+## Which evidence changed our mind
 
 ## What we would do differently

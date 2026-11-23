@@ -5,7 +5,13 @@ Source: [`area-additional_features.pdf`](area-additional_features.pdf) (v6.4.0).
 - A feature is delivered only when every criterion below can be observed.
 - A criterion met by a document needs claims we can demonstrate live; a document nobody in the group can defend is not a deliverable.
 - Each SEC feature also needs an evidence note: attack scenario, reproduction, observation, protection and where it lives, protected result, limits ([`../security/`](../security/README.md)).
-- Dependencies: AI-EVAL requires AI-NODE (both count). The other features stand alone. A deterministic (no model) implementation shared by AI-NODE, AI-GUARD, AI-MULTIMODAL or AI-PROMPT counts once.
+- Dependencies: only AI-EVAL needs another feature (AI-NODE; both count). A deterministic (no model) implementation shared by AI features counts once.
+
+```mermaid
+flowchart LR
+  EVAL[AI-EVAL] -->|requires| NODE[AI-NODE]
+  NODE & GUARD[AI-GUARD] & MULTI[AI-MULTIMODAL] & PROMPT[AI-PROMPT] -.-> DET[(shared deterministic<br/>implementation: counts once)]
+```
 
 "Need" restates the customer's quote in our words; the bullets are the definition of done.
 

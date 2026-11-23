@@ -1,27 +1,38 @@
 # Authentication and delegated access
 
-**Status:** To design. The subject asks us to document identity linking and the lifecycle of delegated credentials.
+The subject asks us to document identity linking and the lifecycle of delegated credentials. OIDC = login (who the user is); OAuth 2.0 = subscriptions (what we may do in a Service).
 
-OIDC answers who the user is (login). OAuth 2.0 answers what the product may do in a Service on the user's behalf (subscriptions). One provider can take part in both, but the flows stay separate.
+Subscribing to a Service, the flow every hook relies on:
 
-## Local accounts
+```mermaid
+sequenceDiagram
+  actor U as User
+  participant C as Web or Android client
+  participant S as Server
+  participant P as Service (OAuth2)
+  U->>C: Subscribe to the Service
+  C->>S: Start subscription
+  S-->>C: Redirect to the Service consent page
+  U->>P: Grants the scopes
+  P-->>S: Callback with an authorization code
+  S->>P: Exchange the code for tokens
+  S->>S: Store the delegated credentials
+  Note over S,P: Hooks later call the Service with these credentials, no client open
+```
 
-- Registration and confirmation: how an account is confirmed, what an unconfirmed account can do.
-- Password storage: algorithm and parameters.
-- Sessions or tokens issued to the clients: format, lifetime, storage on web and on Android, revocation.
+## Decisions
 
-## OIDC login
+| Question                                                                     | Answer |
+| ---------------------------------------------------------------------------- | ------ |
+| Account confirmation; what an unconfirmed account can do                     |        |
+| Password storage: algorithm and parameters                                   |        |
+| Session or token given to the clients: format, lifetime, storage, revocation |        |
+| OIDC providers                                                               |        |
+| Redirects and callbacks on web and Android (state, PKCE)                     |        |
+| Linking an external identity: first login, email already used, unlinking     |        |
+| Scopes requested per Service, and why each                                   |        |
+| Where delegated credentials live, how they are protected                     |        |
+| Refresh, expiry, revocation; hooks when a token stops working                |        |
+| Account deletion: what happens to the credentials                            |        |
 
-- Providers supported.
-- Flow on web and on Android: redirect targets, state, PKCE.
-- Linking an external identity to a local user: first login, same email as an existing account, unlinking.
-
-## OAuth2 subscriptions
-
-- Per Service: scopes requested and why each is needed.
-- Where delegated credentials are stored and how they are protected.
-- Lifecycle: refresh, expiry, revocation by the user or the Service, what the hooks do when a token stops working, what happens on account deletion.
-
-## Never
-
-- A third-party token is never sent to a client and never written to a log.
+A third-party token is never sent to a client and never logged.

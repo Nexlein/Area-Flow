@@ -1,37 +1,29 @@
 # Additional features selection
 
-**Status:** Draft · Chosen at milestone 1, revisable once at milestone 2, then frozen and graded at milestone 3.
+**Status:** Draft. Chosen at Plan, revisable once at MVP, then frozen. Catalogue: [`../subject/FEATURES.md`](../subject/FEATURES.md) · rules: [subject](../subject/SUBJECT.md#additional-features) · tracking: [`../features/README.md`](../features/README.md).
 
-Catalogue and acceptance criteria: [`../subject/FEATURES.md`](../subject/FEATURES.md). Where each criterion is observed: [`../features/README.md`](../features/README.md).
-
-## Rules
-
-- D ≥ 2 × M: with M = 2, **D ≥ 4**.
-- Choose against our weaknesses rather than for comfort, across several domains when possible.
-- A feature counts only when all its criteria are observable. Aim for some margin over 4 in case one is not finished.
-- AI-EVAL requires AI-NODE. A deterministic implementation shared by AI features counts once.
-- Each SEC feature needs an evidence note ([`../security/`](../security/README.md)).
-- Spread the features fairly between members.
+Our rules: **D ≥ 4** (M = 2) with some margin, in case one is not finished · features spread fairly between members.
 
 ## Selection
 
-| Id  | Difficulty | Owner | Learning rationale: which weakness it targets | Real need it serves in our product | Depends on |
-| --- | ---------- | ----- | --------------------------------------------- | ---------------------------------- | ---------- |
-|     |            |       |                                               |                                    |            |
+| Id  | Difficulty | Owner | Weakness it targets (learning rationale) | Real need in our product | Depends on |
+| --- | ---------- | ----- | ---------------------------------------- | ------------------------ | ---------- |
+|     |            |       |                                          |                          |            |
 
-**Total D:** 0 / 4.
+**Total D:** 0 / 4
 
-## Considered and not selected
+## Considered, not selected
 
-- **Id:** why not, in one line.
+| Id  | Why not |
+| --- | ------- |
 
 ## Harder than estimated
 
-A feature much harder than estimated: tell the local manager as soon as possible, while the selection can still change, and say it again in the post-mortem.
+Tell the local manager while the selection can still change.
 
-| Date | Feature | What made it harder | Told the local manager on |
-| ---- | ------- | ------------------- | ------------------------- |
+| Date | Feature | What made it harder | Manager told on |
+| ---- | ------- | ------------------- | --------------- |
 
-## Revision at milestone 2
+## Revision at MVP
 
-The last allowed change. Date, change, evidence, cost; then the selection is frozen.
+The last allowed change: date, change, evidence, cost.

@@ -1,51 +1,27 @@
 # Technology selection: back-end
 
-**Status:** Draft · **Owner:** name · **Decision:** ADR NNNN (to write)
+**Status:** Draft · **Owner:** name · **Decision:** ADR NNNN
 
-Scope: the application server. Language, HTTP framework, OpenAPI tooling, and whatever runs the hooks (scheduler, job queue).
+**Scope:** the application server: language, HTTP framework, OpenAPI tooling, what runs the hooks.
 
-## What the subject asks of the server
-
-- All business logic and rules; clients only present and interact.
-- An OpenAPI description of the HTTP API, served with a browsable interface, covering every endpoint the clients call and their errors; a test fails when it drifts from the implementation.
-- Local accounts (with confirmation) and OIDC login; OAuth2 delegated access to Services, with credentials stored for unattended hooks.
-- Hooks that detect Actions with no client open, never re-trigger the same occurrence, and start the workflow.
-- A workflow engine: validation at save (structure, key paths), deterministic substitution with no code evaluation.
-- The `about.json` catalogue, built from the code, not hard-coded twice.
-- Built and run by Docker Compose; separate codebase from the clients.
-- Selected features that weigh on the server: [`features-selection.md`](features-selection.md).
+**Drives the choice** ([subject](../subject/SUBJECT.md)): served and tested OpenAPI contract · hooks running with no client · OIDC login and OAuth2 delegated access · Docker Compose.
 
 ## Criteria
 
-| Criterion                                                                       | Weight | Why it matters here |
-| ------------------------------------------------------------------------------- | ------ | ------------------- |
-| Security: auth libraries, input validation, advisories history, secure defaults |        |                     |
-| OpenAPI: generation or contract-first, served UI, contract testing              |        |                     |
-| Background work: scheduling and running hooks, timeouts                         |        |                     |
-| OAuth2 / OIDC client libraries, SDKs of the Services we target                  |        |                     |
-| Testing: unit and functional tests, mocks of third-party APIs                   |        |                     |
-| Team knowledge and learning goal                                                |        |                     |
-| Container image size and startup time                                           |        |                     |
-| Maturity, documentation, long-term support                                      |        |                     |
+| Criterion                                                        | Weight |
+| ---------------------------------------------------------------- | ------ |
+| Security: auth libraries, input validation, advisories, defaults |        |
+| OpenAPI: generation or contract-first, served UI, contract tests |        |
+| Background work: scheduling hooks, timeouts                      |        |
+| OAuth2 / OIDC libraries, SDKs of our target Services             |        |
+| Testing: unit, functional, mocked third parties                  |        |
+| Team knowledge and learning goal                                 |        |
+| Image size and startup time                                      |        |
 
 ## Candidates
 
-| Candidate | Score | Strengths | Weaknesses |
-| --------- | ----- | --------- | ---------- |
-|           |       |           |            |
+| Candidate | Score | Strengths | Weaknesses | Why not |
+| --------- | ----- | --------- | ---------- | ------- |
+|           |       |           |            |         |
 
-## Comparison
-
-How each candidate was evaluated against each criterion: reading (with sources), PoC, measurement.
-
-## Evidence (exploratory code)
-
-- PoC: what was built, where (branch or folder), what it showed, with numbers.
-
-## Decision
-
-Concise, justified choice. Record it in an ADR from [`../adr/0000-template.md`](../adr/0000-template.md).
-
-## Rejected
-
-- **Candidate:** why not for this project.
+**Compared by:** sources read, PoC, measurements, each linked. **PoC:** link, what it showed, with numbers.

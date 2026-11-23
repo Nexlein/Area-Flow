@@ -8,28 +8,24 @@
 | ----------------- | ----------------------------------------------- | -------------------- |
 |                   |                                                 |                      |
 
-**Chosen:** method, and why, in two or three lines.
+**Chosen:** method and why, in two or three lines.
 
-## Rituals
-
-When we sync, plan, review and look back, and how long each takes.
+| Ritual | When | Length |
+| ------ | ---- | ------ |
 
 ## Tools
 
-Already set up in the repository:
-
-| Need                     | Tool                                                                    |
-| ------------------------ | ----------------------------------------------------------------------- |
-| Task tracking            | GitHub Issues ("Task" template), milestones                             |
-| Code review              | GitHub pull requests (template with checklist)                          |
-| Automation               | GitHub Actions (CI, Epitech mirror), Dependabot, Renovate (`mise.toml`) |
-| Documentation, decisions | Markdown in `docs/`, ADRs in `docs/adr/`                                |
-| Local quality gates      | Husky hooks: secret scan, Prettier, commit format                       |
-
-To choose: board view (GitHub Projects or other), communication, design mock-ups.
+| Need                     | Tool                                                                           | Status    |
+| ------------------------ | ------------------------------------------------------------------------------ | --------- |
+| Task tracking            | GitHub Issues ("Task" template), milestones Plan / MVP / Final                 | Set up    |
+| Board view               |                                                                                | To choose |
+| Code review              | GitHub pull requests: template, CI required, 1 approval                        | Set up    |
+| Automation               | GitHub Actions (CI, Epitech mirror), Dependabot, Renovate (`mise.toml`)        | Set up    |
+| Local quality gates      | Husky hooks: secret scan, Prettier, typecheck and tests on push, commit format | Set up    |
+| Documentation, decisions | Markdown in `docs/`, ADRs in `docs/adr/`                                       | Set up    |
+| Communication            |                                                                                | To choose |
+| Mock-ups                 |                                                                                | To choose |
 
 ## Working agreement
 
-- Every task is an issue; every change is a pull request that closes its issue.
-- Definition of done: the issue's "Done when" is observable, checks pass, docs and ADRs are updated.
-- Git flow and conventions: [`../../HOWTOCONTRIBUTE.md`](../../HOWTOCONTRIBUTE.md).
+Every task is an issue; every change is a pull request that closes it. Done = the issue's "Done when" is observable, checks pass, docs and ADRs updated. Git flow: [`../../HOWTOCONTRIBUTE.md`](../../HOWTOCONTRIBUTE.md).

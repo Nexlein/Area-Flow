@@ -1,30 +1,31 @@
 # Persistence model and data structures
 
-**Status:** To design, once [`../plan/tech-persistence.md`](../plan/tech-persistence.md) concludes.
+Draft drawn from the subject; fields and final shape come with the persistence choice ([`../plan/tech-persistence.md`](../plan/tech-persistence.md)).
 
-## Entities
+```mermaid
+erDiagram
+  USER ||--o{ EXTERNAL_IDENTITY : "logs in with (OIDC)"
+  USER ||--o{ SUBSCRIPTION : "subscribes to a Service"
+  USER ||--o{ WORKFLOW : owns
+  WORKFLOW ||--|{ NODE : "trigger, reactions, condition"
+  WORKFLOW ||--o{ RUN : executes
+  WORKFLOW ||--o| HOOK_STATE : "seen occurrences"
+  RUN ||--|{ NODE_RESULT : "one per node run"
+```
 
-Entity diagram (Mermaid) once decided. Expected entities, from the subject:
+| Entity            | Note                                                                    |
+| ----------------- | ----------------------------------------------------------------------- |
+| USER              | Password storage: algorithm, parameters                                 |
+| EXTERNAL_IDENTITY | Linking rules: [`auth.md`](auth.md)                                     |
+| SUBSCRIPTION      | Delegated credentials, scopes, expiry; protection: [`auth.md`](auth.md) |
+| NODE              | No structural maximum on reactions                                      |
+| HOOK_STATE        | Deduplication: [`hooks.md`](hooks.md)                                   |
+| RUN               | Retention below                                                         |
 
-| Entity               | Holds                                                      | Notes                                           |
-| -------------------- | ---------------------------------------------------------- | ----------------------------------------------- |
-| User                 | Account, confirmation state, local credentials             | Password storage: algorithm and parameters      |
-| External identity    | OIDC provider and subject, link to a user                  | Linking rules: [`auth.md`](auth.md)             |
-| Service subscription | User, Service, delegated credentials, scopes, expiry       | Token protection: [`auth.md`](auth.md)          |
-| Workflow             | Owner, enabled flag, trigger, nodes, condition, branches   | Shape: [`workflow-model.md`](workflow-model.md) |
-| Node                 | Kind, type, configuration, key path mappings, position     | No structural maximum on reactions              |
-| Hook state           | Last seen occurrences or cursor per trigger                | Deduplication: [`hooks.md`](hooks.md)           |
-| Run                  | Workflow, trigger event, timing, outcome, per-node results | Retention                                       |
-
-## Important data structures
-
-The structures the defense will ask about: how a workflow graph is stored, how key paths are resolved, how an event is identified.
+- **Data structures** asked at the defense: how a workflow graph is stored, how key paths resolve, how an event is identified.
+- **Migrations:** how the schema is versioned and applied on a fresh clone.
 
 ## Retention
 
 | Data | Kept for | Why | Enforced by |
 | ---- | -------- | --- | ----------- |
-
-## Migrations
-
-How the schema is versioned and applied on a fresh clone.
