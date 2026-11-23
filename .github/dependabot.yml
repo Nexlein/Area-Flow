@@ -1,8 +1,11 @@
+# Version updates go to dev, the integration branch. Security updates always target main (the default branch):
+# after merging one, merge main back into dev. This file is read from main: changes count once on main.
 version: 2
 updates:
   # Root tooling (Husky, lint-staged, Prettier, TypeScript). Add one entry per server/web/mobile package with the stack.
   - package-ecosystem: npm
     directory: /
+    target-branch: dev
     schedule:
       interval: weekly
       day: monday
@@ -23,6 +26,7 @@ updates:
   # GitHub Actions workflows (pinned by SHA)
   - package-ecosystem: github-actions
     directory: /
+    target-branch: dev
     schedule:
       interval: weekly
       day: monday
