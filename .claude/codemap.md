@@ -60,7 +60,8 @@ Per file: line count and purpose (first sentence of the leading comment, else th
 ## docs/adr
 
 - `0000-template.md` (35): ADR 0000: Template
-- `README.md` (18): Architecture Decision Records
+- `0002-frontend-solid-capacitor.md` (55): ADR 0002: Front-end: Solid and Capacitor
+- `README.md` (19): Architecture Decision Records
 
 ## docs/architecture
 
