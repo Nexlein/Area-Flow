@@ -36,7 +36,10 @@ jobs:
     steps:
       - name: Mirror key missing
         if: env.HAS_KEY != 'true'
-        run: echo "::warning::SSH_PRIVATE_KEY is not set in the epitech-mirror environment, main is not mirrored (HOWTOCONTRIBUTE.md, Epitech mirror)."
+        # Red, not a warning: a silent skip would let the graded repository miss a release.
+        run: |
+          echo "::error::SSH_PRIVATE_KEY is not set in the epitech-mirror environment, main is not mirrored (HOWTOCONTRIBUTE.md, Epitech mirror)."
+          exit 1
 
       - name: Checkout Repository
         if: env.HAS_KEY == 'true'
