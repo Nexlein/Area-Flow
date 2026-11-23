@@ -23,7 +23,7 @@ Per file: line count and purpose (first comment sentence of code, first heading 
 ## .github
 
 - `dependabot.yml` (37): Version updates go to dev, the integration branch.
-- `pull_request_template.md` (21): What
+- `pull_request_template.md` (19): What
 - `renovate.json5` (15): Renovate (Mend app) keeps the tool versions of mise.toml up to date, one pull request per new release.
 
 ## .github/ISSUE_TEMPLATE
@@ -32,7 +32,7 @@ Per file: line count and purpose (first comment sentence of code, first heading 
 
 ## .github/workflows
 
-- `ci.yml` (65): Repo-wide checks on every contribution: secret scan over the full history, formatting, tooling tests, fresh code map.
+- `ci.yml` (72): Repo-wide checks on every contribution: secret scan over the full history, formatting, tooling tests, fresh code map.
 - `mirror.yml` (74): Pushes main to the Epitech repository once CI passed on it: Epitech grades that repository.
 
 ## .husky

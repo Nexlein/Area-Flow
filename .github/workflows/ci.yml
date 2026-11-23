@@ -9,7 +9,9 @@ on:
     # (up to date with dev before merging), so a push run on dev would repeat the pull_request run.
     branches: [main]
   pull_request:
-    types: [opened, synchronize, reopened, edited] # edited: the title check reruns when the title changes
+    # edited: the title check reruns when the title changes. Once long stack jobs exist, move that check to its own
+    # workflow on edited and keep this one on opened, synchronize, reopened.
+    types: [opened, synchronize, reopened, edited]
   workflow_dispatch: # manual run (Actions tab or `gh workflow run CI --ref <branch>`)
 
 permissions:
@@ -37,6 +39,11 @@ jobs:
         env:
           TITLE: ${{ github.event.pull_request.title }}
         run: |
+          case "$TITLE" in
+            "fixup! "* | "squash! "* | "amend! "*)
+              echo "::error::A pull request title cannot be a fixup!, squash! or amend! commit."
+              exit 1 ;;
+          esac
           printf '%s\n' "$TITLE" > "$RUNNER_TEMP/pr-title"
           sh .husky/commit-msg "$RUNNER_TEMP/pr-title"
 

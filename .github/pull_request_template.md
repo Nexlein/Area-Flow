@@ -1,7 +1,5 @@
 Closes #
 
-<!-- The PR title becomes the commit message: Conventional Commits, checked by CI. "Closes #N" travels in that commit and closes the issue when the release reaches main. -->
-
 ## What
 
 <!-- What changes, and why. One line per file or concern. -->
