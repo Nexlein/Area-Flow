@@ -1,5 +1,5 @@
 // Runs Prettier on the files git tracks only, so untracked personal notes never block a check or get rewritten.
-// Usage: node scripts/format.mjs --check | --write (npm run format:check, npm run format). Works the same on Windows.
+// Usage: node scripts/format.ts --check | --write (npm run format:check, npm run format). Works the same on Windows.
 
 import { execFileSync } from 'node:child_process';
 import { existsSync, readFileSync, writeFileSync } from 'node:fs';

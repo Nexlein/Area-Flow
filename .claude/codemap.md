@@ -10,7 +10,7 @@ Per file: line count and purpose (first comment sentence of code, first heading 
 - `CLAUDE.md` (53): Area-Flow — AREA (Epitech Tek3)
 - `HOWTOCONTRIBUTE.md` (85): How to contribute
 - `README.md` (72): Area-Flow
-- Also: `.editorconfig`, `.lintstagedrc`, `.prettierignore`, `.prettierrc`, `mise.toml`, `package.json`
+- Also: `.editorconfig`, `.lintstagedrc`, `.prettierignore`, `.prettierrc`, `mise.toml`, `package.json`, `tsconfig.json`
 
 ## .claude
 
@@ -18,7 +18,7 @@ Per file: line count and purpose (first comment sentence of code, first heading 
 
 ## .claude/hooks
 
-- `format-on-edit.sh` (19): Claude Code PostToolUse hook: formats each file Claude edits with the repo's Prettier.
+- `format-on-edit.ts` (42): Claude Code PostToolUse hook: formats each file Claude edits with the repo's Prettier.
 
 ## .github
 
@@ -99,6 +99,6 @@ Per file: line count and purpose (first comment sentence of code, first heading 
 
 ## scripts
 
-- `codemap.mjs` (140): Generates .claude/codemap.md: every tracked file grouped by folder, with its line count and purpose.
-- `codemap.test.mjs` (80): Tests for scripts/codemap.mjs: purpose extraction per language and the rendered layout.
-- `format.mjs` (32): Runs Prettier on the files git tracks only, so untracked personal notes never block a check or get rewritten.
+- `codemap.test.ts` (80): Tests for scripts/codemap.ts: purpose extraction per language and the rendered layout.
+- `codemap.ts` (145): Generates .claude/codemap.md: every tracked file grouped by folder, with its line count and purpose.
+- `format.ts` (32): Runs Prettier on the files git tracks only, so untracked personal notes never block a check or get rewritten.
