@@ -7,7 +7,16 @@ Per file: line count and purpose (first comment sentence of code, first heading 
 
 - `.gitattributes` (14): LF everywhere, also on Windows checkouts: hooks and scripts break with CRLF.
 - `.gitignore` (90): Files git never tracks: secrets, dependencies, build output, local settings.
+- `CLAUDE.md` (53): Area-Flow — AREA (Epitech Tek3)
 - Also: `.editorconfig`, `.lintstagedrc`, `.prettierignore`, `.prettierrc`, `mise.toml`, `package.json`
+
+## .claude
+
+- Also: `settings.json`
+
+## .claude/hooks
+
+- `format-on-edit.sh` (19): Claude Code PostToolUse hook: formats each file Claude edits with the repo's Prettier.
 
 ## .husky
 
