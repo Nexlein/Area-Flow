@@ -9,7 +9,7 @@ Per file: line count and purpose (first comment sentence of code, first heading 
 - `.gitignore` (90): Files git never tracks: secrets, dependencies, build output, local settings.
 - `CLAUDE.md` (35): Area-Flow
 - `HOWTOCONTRIBUTE.md` (81): How to contribute
-- `README.md` (74): Area-Flow
+- `README.md` (76): Area-Flow
 - Also: `.editorconfig`, `.lintstagedrc`, `.prettierignore`, `.prettierrc`, `mise.toml`, `package.json`, `tsconfig.json`
 
 ## .claude

@@ -3,6 +3,8 @@
 [![CI](https://github.com/Nexlein/Area-Flow/actions/workflows/ci.yml/badge.svg)](https://github.com/Nexlein/Area-Flow/actions/workflows/ci.yml)
 [![Epitech Mirror](https://github.com/Nexlein/Area-Flow/actions/workflows/mirror.yml/badge.svg)](https://github.com/Nexlein/Area-Flow/actions/workflows/mirror.yml)
 
+> Development, pull requests and CI live on [Nexlein/Area-Flow](https://github.com/Nexlein/Area-Flow) (badges above). The Epitech repository is a mirror of its `main` branch, updated after each release; GitHub Actions cannot run there, so its workflow runs show as skipped.
+
 Epitech Tek3 AREA project: an automation platform inspired by IFTTT and Zapier. Users connect their accounts on third-party Services; an Action detected in one Service triggers REActions in others.
 
 **Status:** Milestone 1 (Plan), stack being chosen: [`docs/plan/`](docs/plan/README.md).

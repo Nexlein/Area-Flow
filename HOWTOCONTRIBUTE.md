@@ -63,7 +63,7 @@ Code, comments, commits and docs: English. Every source file opens with a commen
 
 ## 5. Epitech mirror (maintainer)
 
-After CI passes on a push to `main`, [`mirror.yml`](.github/workflows/mirror.yml) pushes `main` to `EpitechPGE3-2026/G-YEP-500-MPL-5-1-area-1`. Students are not admin there, so no deploy key: it uses an SSH key of the owner's GitHub account (title "GitHub Action Mirror"), private half in the secret `SSH_PRIVATE_KEY` of the **`epitech-mirror` environment**. That environment only deploys from `main`: a workflow pushed on any other branch cannot read the key, and `main` needs an approved pull request.
+After CI passes on a push to `main`, [`mirror.yml`](.github/workflows/mirror.yml) pushes `main` to `EpitechPGE3-2026/G-YEP-500-MPL-5-1-area-1`. Students are not admin there, so no deploy key: it uses an SSH key of the owner's GitHub account (title "GitHub Action Mirror"), private half in the secret `SSH_PRIVATE_KEY` of the **`epitech-mirror` environment**. That environment only deploys from `main`: a workflow pushed on any other branch cannot read the key, and `main` needs an approved pull request. The mirror copies the workflows too, but Actions cannot start in the Epitech repository (no minutes): every job checks `github.repository` and is skipped there. Dependabot also reads the copied config there, and finds no `dev` branch to target.
 
 > **Warning:** that key can push to every repository of the owner's account. Never print it, never store it as a repository secret; revoke it in GitHub settings if a copy is lost.
 
