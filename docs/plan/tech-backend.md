@@ -8,14 +8,14 @@
 
 ## What we compared
 
-- **TypeScript only** (repository rule), **no full-stack framework** (subject), and we judge what each candidate actually produced on the same brief, not only what its documentation promises.
+- **TypeScript only** (repository rule), **full-stack frameworks strongly discouraged** (subject), and we judge what each candidate actually produced on the same brief, not only what its documentation promises.
 - Three candidates chosen for contrast: **NestJS** (the framework does it), **Fastify** (we assemble it), **Effect** (typed effects, scheduling built in). Considered, not tested: Hono, Elysia, Express with `tsoa`.
 
 ## Tests made
 
 Each candidate was tested the same way, in four categories.
 
-1. **Requirements fit, six probes.** Each candidate was built in 5 minutes from an identical brief: a `/ping` server; a served OpenAPI description with a test that fails when code and description disagree; a background hook that deduplicates, survives errors and times out; a save-time check rejecting undeclared `{{ key }}` references without evaluating them; a JWT checked against a JWKS (including `alg: none` and HS256 attacks); a route calling a mocked third party that answers 502 on failure. We reran every test and broke one rule per probe to check a test failed.
+1. **Requirements fit, six probes.** Each probe was drafted with a coding assistant from an identical brief ([`spikes/prompts.md`](spikes/prompts.md)), 5 minutes at most per probe, then checked and fixed by hand: a `/ping` server; a served OpenAPI description with a test that fails when code and description disagree; a background hook that deduplicates, survives errors and times out; a save-time check rejecting undeclared `{{ key }}` references without evaluating them; a JWT checked against a JWKS (including `alg: none` and HS256 attacks); a route calling a mocked third party that answers 502 on failure. We reran every test and broke one rule per probe to check a test failed.
 2. **Speed.** The compiled code under `autocannon` (50 connections, 10 s) on `/ping` and on the save-time check, plus cold start and idle memory. Median of 3 runs in rotating order, zero errors.
 3. **Weight.** Production dependency size and package count.
 4. **Security.** Advisory history of each framework's own packages (OSV database, cross-checked on GitLab, NVD and Red Hat), known vulnerabilities in the installed versions (OSV and `npm audit`), and what each JWT guard does when its configuration is missing.
@@ -41,7 +41,7 @@ What stood out:
 - **Effect:** four APIs used in its first draft do not exist in version 4 (the names look like version 3 ones, not verified); two of its three advisories list only a version 3 fix, so whether version 4 is affected is unknown; its "connection refused" test passes through the timeout and cannot tell a refusal from a hang.
 - **Not tested:** the OIDC login and OAuth2 delegation flows, persistence, a realistic load, and the team's own experience. Two advisories (Fastify `CVE-2026-76169`, Effect `CVE-2026-121707`) are counted from OSV but could not be confirmed elsewhere.
 
-Spike code is in local repositories, not pushed. Full logs and raw runs were removed from the tree to keep the documentation short; they are in the history at commit `f6ea59d`, under `docs/plan/spikes/`.
+Spike code is in local repositories, not pushed. Full logs and raw runs: [`spikes/runs.md`](spikes/runs.md); the identical briefs: [`spikes/prompts.md`](spikes/prompts.md); advisory history and heaviness, with sources: [`spikes/security-and-weight.md`](spikes/security-and-weight.md).
 
 ## Weighted matrix
 
@@ -67,8 +67,8 @@ Why: **Security** NestJS has the fewest advisories but fails open and has the wi
 
 ## Decision
 
-**Final choice: Fastify (TypeScript)**, proposed by the owner, pending the team's acceptance of [ADR 0001](../adr/0001-backend-fastify.md).
+**Proposed choice: Fastify (TypeScript)**, by the owner, pending the team's acceptance of [ADR 0001](../adr/0001-backend-fastify.md).
 
 - **The two criteria that decided it:** speed and weight (it leads every runtime measure) and ease of getting it right (fewest fixes, no decorators, one wrong API used).
 - **Trade-off we accept:** the most security advisories, nine of them validation bypasses, and no built-in scheduler. To survive it: pin a recent version (at least 5.12.6) and let Dependabot track it, keep an application-level check behind the schema (as the save-time probe did), and write the hook scheduler ourselves with deduplication stored in the database, not in memory.
-- **Runner-up: Effect.** It scored higher under the proposed weights (59 against 54), which favour built-in background work and security defaults, and the matrix did not separate the two clearly (Effect won 45% of random weightings, Fastify 44%). So this choice rests on the owner's priorities (speed, weight, readable generated code), not on a measured win, which the team can challenge when it accepts the ADR.
+- **Runner-up: Effect.** It scored higher under the proposed weights (59 against 54), which favour built-in background work and security defaults, and the matrix did not separate the two clearly (Effect won 45% of random weightings, Fastify 44%). So this choice rests on the owner's priorities (speed, weight, readable code), not on a measured win, which the team can challenge when it accepts the ADR.

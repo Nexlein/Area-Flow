@@ -9,7 +9,7 @@ The server holds all business logic and every client depends on its contract. Ch
 ## Context
 
 - The subject requires a served and tested OpenAPI description, hooks that run with no client and never repeat an event, OIDC login, OAuth2 delegated access, and Docker Compose ([subject](../subject/SUBJECT.md)).
-- Repository rules: TypeScript only, no full-stack framework. We compare what each candidate produced on the same brief, not only what its documentation promises.
+- Rules: TypeScript only (repository), full-stack frameworks strongly discouraged (subject). We compare what each candidate produced on the same brief, not only what its documentation promises.
 - Three candidates were tested the same way: six probes, speed, weight and security ([`../plan/tech-backend.md`](../plan/tech-backend.md)).
 
 ## Alternatives
@@ -47,7 +47,7 @@ All three candidates passed the six probes. Median of three runs on the compiled
 | Production dependencies       | 29 MB, 78 packages | 94 MB, 15 packages | 58 MB, 104 packages |
 | Manual fixes, wrong APIs used | 8, 1               | 10, 4              | 13, 0               |
 
-The weighted matrix, its weights, and how fragile the ranking is are in [`../plan/tech-backend.md`](../plan/tech-backend.md#weighted-matrix). The raw probe logs are in the history of this repository at commit `f6ea59d`, under `docs/plan/spikes/`.
+The weighted matrix, its weights, and how fragile the ranking is are in [`../plan/tech-backend.md`](../plan/tech-backend.md#weighted-matrix). The raw probe logs are in [`../plan/spikes/runs.md`](../plan/spikes/runs.md), the briefs in [`../plan/spikes/prompts.md`](../plan/spikes/prompts.md).
 
 ## History
 

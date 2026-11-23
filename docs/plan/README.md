@@ -14,7 +14,7 @@ Milestone 1 deliverables ([subject](../subject/SUBJECT.md#1-plan)), then the pla
 | Task breakdown                              | [`task-breakdown.md`](task-breakdown.md), GitHub issues  |               | To do                    |
 | Management method and tools                 | [`management.md`](management.md)                         |               | To do                    |
 
-The three `tech-*.md` share one shape: scope, criteria, candidates, PoC, decision (then an ADR).
+The three `tech-*.md` follow the shape of [`tech-backend.md`](tech-backend.md): what we compared, tests made, weighted matrix, decision (then an ADR).
 
 Evaluators check:
 
