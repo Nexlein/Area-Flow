@@ -54,11 +54,11 @@ An OpenAPI description with a browsable interface, served by the server (URL TBD
 | Service | Auth | Actions | REActions |
 | ------- | ---- | ------- | --------- |
 
-| Count (on the less complete client) | Now | Minimum (M = 2) |
+| Count (on the less complete client) | Now | Minimum (M = 4) |
 | ----------------------------------- | --- | --------------- |
-| Services S                          | 0   | 3               |
-| … of which via OAuth2               | 0   | 2               |
-| Actions + REActions                 | 0   | 6               |
+| Services S                          | 0   | 5               |
+| … of which via OAuth2               | 0   | 3               |
+| Actions + REActions                 | 0   | 10              |
 
 Feature difficulty D: [`docs/plan/features-selection.md`](docs/plan/features-selection.md).
 
@@ -71,4 +71,4 @@ Feature difficulty D: [`docs/plan/features-selection.md`](docs/plan/features-sel
 | `.github/`, `.husky/`, `scripts/`          | CI and mirror, git hooks, repo tooling (TypeScript)            |
 | `.claude/`, `CLAUDE.md`                    | Agent settings, formatting hook, generated code map            |
 
-Team: Nexlein, Saitamadupauvre.
+Team: Nexlein, Saitamadupauvre, TeddyBertrand, Quinceyyyy.

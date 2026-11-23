@@ -1,6 +1,6 @@
 # Area-Flow
 
-Epitech Tek3 AREA (G-YEP-500): an IFTTT-like automation platform. Server (all business logic), web client (builds workflows), Android client (monitors them). Team: Nexlein, Saitamadupauvre (M = 2).
+Epitech Tek3 AREA (G-YEP-500): an IFTTT-like automation platform. Server (all business logic), web client (builds workflows), Android client (monitors them). Team: Nexlein, Saitamadupauvre, TeddyBertrand, Quinceyyyy (M = 4).
 
 ## Current state
 
