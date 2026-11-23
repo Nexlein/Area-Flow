@@ -24,6 +24,7 @@ Milestone 1 (Plan). **Stack not chosen**: no server, web or mobile code, and no 
 - Third-party tokens never reach a client, a log or the repository. Never read `.env` files.
 - Every Service, Action and REAction serves a real use case, never a count.
 - TypeScript only, no JavaScript files. Every source file starts with a comment whose first sentence is its purpose.
+- Branch from `dev`, pull requests into `dev`; `main` only takes release PRs from `dev`.
 - Never `--no-verify`, never force-push, never push without being asked. Ask before adding a dependency.
 - Never edit `.claude/codemap.md` by hand: `npm run codemap` (it reads the git index).
 

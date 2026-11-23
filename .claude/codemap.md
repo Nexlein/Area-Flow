@@ -7,8 +7,8 @@ Per file: line count and purpose (first comment sentence of code, first heading 
 
 - `.gitattributes` (14): LF everywhere, also on Windows checkouts: hooks and scripts break with CRLF.
 - `.gitignore` (90): Files git never tracks: secrets, dependencies, build output, local settings.
-- `CLAUDE.md` (34): Area-Flow
-- `HOWTOCONTRIBUTE.md` (71): How to contribute
+- `CLAUDE.md` (35): Area-Flow
+- `HOWTOCONTRIBUTE.md` (79): How to contribute
 - `README.md` (74): Area-Flow
 - Also: `.editorconfig`, `.lintstagedrc`, `.prettierignore`, `.prettierrc`, `mise.toml`, `package.json`, `tsconfig.json`
 
@@ -22,9 +22,9 @@ Per file: line count and purpose (first comment sentence of code, first heading 
 
 ## .github
 
+- `dependabot.yml` (37): Version updates go to dev, the integration branch.
 - `pull_request_template.md` (19): What
-- `renovate.json5` (14): Renovate (Mend app) keeps the tool versions of mise.toml up to date, one pull request per new release.
-- Also: `dependabot.yml`
+- `renovate.json5` (15): Renovate (Mend app) keeps the tool versions of mise.toml up to date, one pull request per new release.
 
 ## .github/ISSUE_TEMPLATE
 
@@ -33,7 +33,7 @@ Per file: line count and purpose (first comment sentence of code, first heading 
 ## .github/workflows
 
 - `ci.yml` (52): Repo-wide checks on every contribution: secret scan over the full history, formatting, tooling tests, fresh code map.
-- `mirror.yml` (69): Pushes main to the Epitech repository once CI passed on it: Epitech grades that repository.
+- `mirror.yml` (74): Pushes main to the Epitech repository once CI passed on it: Epitech grades that repository.
 
 ## .husky
 

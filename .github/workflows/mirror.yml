@@ -1,6 +1,7 @@
 # Pushes main to the Epitech repository once CI passed on it: Epitech grades that repository.
-# Auth: the private half of an SSH key on the owner's GitHub account, in the SSH_PRIVATE_KEY secret
-# (students are not admin of the Epitech repository, so no deploy key). Setup: HOWTOCONTRIBUTE.md, "Epitech mirror".
+# Auth: the private half of an SSH key on the owner's GitHub account (students are not admin of the Epitech
+# repository, so no deploy key), in the SSH_PRIVATE_KEY secret of the epitech-mirror environment. That environment
+# only deploys from main, so a workflow pushed on any other branch cannot read the key. Setup: HOWTOCONTRIBUTE.md.
 name: Epitech Mirror
 
 on:
@@ -28,13 +29,17 @@ jobs:
       github.event.workflow_run.head_repository.full_name == github.repository
     runs-on: ubuntu-latest
     timeout-minutes: 5
+    environment: epitech-mirror # holds SSH_PRIVATE_KEY, deployments from main only
     env:
       HAS_KEY: ${{ secrets.SSH_PRIVATE_KEY != '' }}
 
     steps:
       - name: Mirror key missing
         if: env.HAS_KEY != 'true'
-        run: echo "::warning::SSH_PRIVATE_KEY is not set, main is not mirrored (HOWTOCONTRIBUTE.md, Epitech mirror)."
+        # Red, not a warning: a silent skip would let the graded repository miss a release.
+        run: |
+          echo "::error::SSH_PRIVATE_KEY is not set in the epitech-mirror environment, main is not mirrored (HOWTOCONTRIBUTE.md, Epitech mirror)."
+          exit 1
 
       - name: Checkout Repository
         if: env.HAS_KEY == 'true'
