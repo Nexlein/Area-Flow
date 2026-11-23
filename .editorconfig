@@ -8,6 +8,10 @@ trim_trailing_whitespace = true
 indent_style = space
 indent_size = 2
 
+[*.{bat,cmd}]
+# Same as .gitattributes: cmd.exe can misread LF batch files.
+end_of_line = crlf
+
 [*.md]
 # Two trailing spaces are a line break in Markdown.
 trim_trailing_whitespace = false
