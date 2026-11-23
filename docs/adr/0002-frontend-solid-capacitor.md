@@ -24,18 +24,18 @@ Angular with Ionic and Vue with Quasar were considered and not tested. Flutter a
 
 ## Decision
 
-Solid 1.9.x (a Vite single-page app, not SolidStart) for the web client, and Capacitor 8.x for the Android client, built inside Docker with JDK 21 and Android SDK 36, which Capacitor 8 requires. The spike built Capacitor 6.2.3 on JDK 17 and SDK 34; the Android probe is rerun with Capacitor 8 before this ADR is accepted, and if it fails, Capacitor 6.2.x (never below 6.2.2) on JDK 17 and SDK 34 stays, as tested. The Android app has its own entry point with the workflow list and the server address setting, and never the builder. Exact versions are pinned when the clients are created.
+Solid 1.9.x (a Vite single-page app, not SolidStart) for the web client, and Capacitor 8.x, never below 8.5.1, for the Android client, built inside Docker with JDK 21, which Capacitor 8 requires, and Android SDK 36, its default. The spike built Capacitor 6.2.3 on JDK 17 and SDK 34; the Android probe is rerun with Capacitor 8 before this ADR is accepted, and if it fails, Capacitor 6.2.x (never below 6.2.2) on JDK 17 and SDK 34 stays, as tested. The Android app has its own entry point with the workflow list and the server address setting, and never the builder. Exact versions are pinned when the clients are created.
 
 ## Consequences
 
-- **Cost: Solid one major behind.** Solid 2.0.3 is current, but `vite-plugin-solid` supports `solid-js` 1 only. We accept it until the plugin supports version 2, and let Dependabot track the 1.9 line.
-- **Cost: a Docker image to raise.** Capacitor 8 needs JDK 21 and Android SDK 36, where the spike's image had JDK 17 and SDK 34. We raise it now, while no client exists, rather than start on Capacitor 6, two majors behind and dependent on backported fixes.
+- **Cost: Solid one major behind.** Solid 2.0.0 shipped on 2026-11-17 with a new Vite plugin (`@solidjs/vite-plugin` 3); the spikes tested 1.9 with the old one (`vite-plugin-solid`, version 1 only). We stay on 1.9 because 2.0 is days old and untested here, let Dependabot track the 1.9 line, and evaluate 2.x before the MVP by rerunning the web probes.
+- **Cost: a Docker image to raise.** Capacitor 8 needs JDK 21 and defaults to Android SDK 36, where the spike's image had JDK 17 and SDK 34; its command-line tool needs Node 22 or later (the repository uses 26). We raise the image for the Android probe rerun, while no client exists, rather than start on Capacitor 6, two majors behind and dependent on backported fixes. Capacitor 9 is in release candidate (2026-11-12), so 8 will soon be one major behind too.
 - **Cost: a smaller ecosystem than React.** Fewer ready-made components and examples, so the team writes more of its own, as the spikes did for translations.
 - **Cost: the mobile app is a WebView.** Native feel, TalkBack and scrolling a long list were not tested. We run a TalkBack check and a 200-workflow scroll test before the MVP, and keep the mobile screens small.
-- **Cost: TypeScript 7 friction.** The Capacitor 6 command-line tool cannot load a TypeScript configuration file under TypeScript 7, so the spike used `capacitor.config.json` (JSON is not JavaScript, so the TypeScript-only rule holds); the OpenAPI generator needs a TypeScript 5.9 run.
+- **Cost: TypeScript 7 friction.** The Capacitor 6 command-line tool cannot load a TypeScript configuration file under TypeScript 7, so the spike used `capacitor.config.json` (JSON is not JavaScript, so the TypeScript-only rule holds); the Capacitor 8 rerun checks whether its tool loads the TypeScript file. The OpenAPI generator needs a TypeScript 5.9 run.
 - **Cost: login written by hand in the spike.** The real client needs a reviewed OIDC and PKCE implementation, with the token kept in memory only.
 - **Limit: not tested.** Installing on a device, rendering in the WebView, the real network call from the app, release-build permissions, and phone layouts (the spike pages are unstyled).
-- **Fact:** the critical Capacitor Android advisory of October 2026 is fixed in 6.2.2; OSV lists no known advisory for 6.2.3 or 8.6.2. ([OSV](https://osv.dev/vulnerability/CVE-2026-103922))
+- **Fact:** the critical Capacitor Android advisory of October 2026 affects, among others, 6.2.1, 7.x before 7.6.9, 8.x before 8.4.3, and 8.5.0; it is fixed in 6.2.2, 7.6.9, 8.4.3 and 8.5.1, and OSV lists no known advisory for 6.2.3 or 8.6.2. ([OSV](https://osv.dev/vulnerability/CVE-2026-103922))
 - **Fact:** Solid's only advisory, an XSS in JSX fragments, is fixed in 1.9.4. ([OSV](https://osv.dev/vulnerability/CVE-2025-27109))
 
 ## Evidence
@@ -49,7 +49,7 @@ All three candidates passed the seven probes. Web figures come from the producti
 | Runtime packages, mobile     | 3                | 3                 | 478                      |
 | Manual fixes over the probes | 9                | 12                | 7                        |
 
-The weighted matrix, its weights and how fragile the ranking is are in [`../plan/tech-frontend.md`](../plan/tech-frontend.md#weighted-matrix). Raw probe logs are not kept in this repository.
+The weighted matrix, its weights and how fragile the ranking is are in [`../plan/tech-frontend.md`](../plan/tech-frontend.md#weighted-matrix). Raw probe logs are not in this repository yet; they go under `docs/plan/spikes/` before this ADR is accepted.
 
 ## History
 

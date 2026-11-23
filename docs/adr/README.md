@@ -14,6 +14,6 @@ One short file per significant choice: why it deserved a record, context, altern
 
 ## Index
 
-| ADR                                      | Topic     | Status   | Decision                        | Questions it answers                                                      |
-| ---------------------------------------- | --------- | -------- | ------------------------------- | ------------------------------------------------------------------------- |
-| [0002](0002-frontend-solid-capacitor.md) | Front-end | Proposed | Solid 1.9.x and Capacitor 6.2.x | Why this UI framework and mobile approach, and what do we accept with it? |
+| ADR                                      | Topic     | Status   | Decision                                       | Questions it answers                                                      |
+| ---------------------------------------- | --------- | -------- | ---------------------------------------------- | ------------------------------------------------------------------------- |
+| [0002](0002-frontend-solid-capacitor.md) | Front-end | Proposed | Solid 1.9.x and Capacitor 8.x (6.2.x fallback) | Why this UI framework and mobile approach, and what do we accept with it? |
