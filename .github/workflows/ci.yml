@@ -5,7 +5,9 @@ name: CI
 
 on:
   push:
-    branches: [main, dev]
+    # main only: its run triggers the Epitech mirror. dev changes only through pull requests, already checked
+    # (up to date with dev before merging), so a push run on dev would repeat the pull_request run.
+    branches: [main]
   pull_request:
   workflow_dispatch: # manual run (Actions tab or `gh workflow run CI --ref <branch>`)
 
