@@ -94,9 +94,9 @@ Per file: line count and purpose (first sentence of the leading comment, else th
 ## docs/subject
 
 - `FEATURES.md` (316): Additional features catalogue (condensed)
-- `README.md` (11): AREA subject
+- `README.md` (12): AREA subject
 - `SUBJECT.md` (184): AREA — Subject (condensed)
-- Also: `area-additional_features.pdf`, `area-project.pdf`, `area-security_evidence.pdf`
+- Also: `area-additional_features.pdf`, `area-bootstrap.pdf`, `area-project.pdf`, `area-security_evidence.pdf`
 
 ## scripts
 
