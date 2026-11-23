@@ -106,11 +106,11 @@ Hooks detect Actions and start the matching workflow with no client open, and ne
 
 M = members, S = Services available to both clients, A = Actions, R = REActions (all Services), D = total difficulty of the selected features.
 
-| Condition                               | With M = 2                   |
+| Condition                               | With M = 4                   |
 | --------------------------------------- | ---------------------------- |
-| S ≥ 1 + M, at least half of them OAuth2 | S ≥ 3, at least 2 via OAuth2 |
-| A + R ≥ 2 × M + 2                       | A + R ≥ 6                    |
-| D ≥ 2 × M                               | D ≥ 4                        |
+| S ≥ 1 + M, at least half of them OAuth2 | S ≥ 5, at least 3 via OAuth2 |
+| A + R ≥ 2 × M + 2                       | A + R ≥ 10                   |
+| D ≥ 2 × M                               | D ≥ 8                        |
 
 Counted on the less complete client. Components picked only to reach a count, with no concrete use, are not valued. Unfinished features count for nothing. Spread the work fairly: concentrating it on a few members puts them and the project at risk.
 

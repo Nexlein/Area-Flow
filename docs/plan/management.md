@@ -4,9 +4,9 @@
 
 ## Method
 
-| Option considered | Fits a two-person team over a few weeks because | Does not fit because |
-| ----------------- | ----------------------------------------------- | -------------------- |
-|                   |                                                 |                      |
+| Option considered | Fits a four-person team over a few weeks because | Does not fit because |
+| ----------------- | ------------------------------------------------ | -------------------- |
+|                   |                                                  |                      |
 
 **Chosen:** method and why, in two or three lines.
 
