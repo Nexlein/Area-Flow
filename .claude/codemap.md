@@ -48,7 +48,7 @@ Per file: line count and purpose (first comment sentence of code, first heading 
 
 ## docs
 
-- `README.md` (27): Documentation
+- `README.md` (28): Documentation
 - `defense.md` (21): Defense
 - `postmortem.md` (11): Post-mortem
 
@@ -92,8 +92,9 @@ Per file: line count and purpose (first comment sentence of code, first heading 
 
 ## docs/subject
 
+- `BOOTSTRAP.md` (107): AREA bootstrap (condensed)
 - `FEATURES.md` (316): Additional features catalogue (condensed)
-- `README.md` (11): AREA subject
+- `README.md` (12): AREA subject
 - `SUBJECT.md` (184): AREA — Subject (condensed)
 - Also: `area-additional_features.pdf`, `area-project.pdf`, `area-security_evidence.pdf`
 
