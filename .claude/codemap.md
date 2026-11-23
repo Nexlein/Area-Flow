@@ -7,7 +7,7 @@ Per file: line count and purpose (first comment sentence of code, first heading 
 
 - `.gitattributes` (14): LF everywhere, also on Windows checkouts: hooks and scripts break with CRLF.
 - `.gitignore` (90): Files git never tracks: secrets, dependencies, build output, local settings.
-- `CLAUDE.md` (53): Area-Flow — AREA (Epitech Tek3)
+- `CLAUDE.md` (34): Area-Flow
 - `HOWTOCONTRIBUTE.md` (85): How to contribute
 - `README.md` (72): Area-Flow
 - Also: `.editorconfig`, `.lintstagedrc`, `.prettierignore`, `.prettierrc`, `mise.toml`, `package.json`, `tsconfig.json`
