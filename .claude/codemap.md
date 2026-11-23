@@ -8,7 +8,7 @@ Per file: line count and purpose (first comment sentence of code, first heading 
 - `.gitattributes` (14): LF everywhere, also on Windows checkouts: hooks and scripts break with CRLF.
 - `.gitignore` (90): Files git never tracks: secrets, dependencies, build output, local settings.
 - `CLAUDE.md` (35): Area-Flow
-- `HOWTOCONTRIBUTE.md` (79): How to contribute
+- `HOWTOCONTRIBUTE.md` (81): How to contribute
 - `README.md` (74): Area-Flow
 - Also: `.editorconfig`, `.lintstagedrc`, `.prettierignore`, `.prettierrc`, `mise.toml`, `package.json`, `tsconfig.json`
 
@@ -32,7 +32,7 @@ Per file: line count and purpose (first comment sentence of code, first heading 
 
 ## .github/workflows
 
-- `ci.yml` (54): Repo-wide checks on every contribution: secret scan over the full history, formatting, tooling tests, fresh code map.
+- `ci.yml` (72): Repo-wide checks on every contribution: secret scan over the full history, formatting, tooling tests, fresh code map.
 - `mirror.yml` (74): Pushes main to the Epitech repository once CI passed on it: Epitech grades that repository.
 
 ## .husky
