@@ -8,7 +8,7 @@
 
 ## What we compared
 
-- **TypeScript only** (repository rule), so Kotlin and Flutter are out; **no full-stack framework** (subject), so Next.js, SvelteKit and SolidStart are out. Each candidate is a single-page app.
+- **TypeScript only** (repository rule), so Kotlin and Flutter are out; **full-stack frameworks strongly discouraged** (subject), so Next.js, SvelteKit and SolidStart are left out. Each candidate is a single-page app.
 - The builder is web only; the Android client lists workflows, enables and disables them and shows what they did.
 - Three candidates, written web / mobile: **React / React Native with Expo** (native UI), **Svelte / Capacitor** and **Solid / Capacitor** (the web build in a WebView). Considered, not tested: Angular with Ionic, Vue with Quasar.
 
@@ -42,41 +42,43 @@ Then four measurements: bundle size and a cold load in Chromium (median of 11), 
 
 What stood out:
 
-- **The newest versions did not work with our tooling.** Solid 2.0.3 is the default install but its Vite plugin supports version 1 only (pinned to 1.9.20). Capacitor 8.6.2 needs JDK 21 and a newer Android SDK than our image (pinned to 6.2.3, which contains the fix for a critical advisory of October 2026). TypeScript 7 broke the OpenAPI generator and Svelte's type checker (Svelte went back to 5.9.3) and Expo uses 5.9 too.
+- **The newest versions did not work with our tooling.** Solid 2.0.3 is the default install but its Vite plugin supports version 1 only (pinned to 1.9.20). Capacitor 8.6.2 needs JDK 21 and Android SDK 36 (its Gradle defaults), where the spike's Docker image had JDK 17 and SDK 34, so the spike pinned 6.2.3, which contains the fix for a critical advisory of October 2026. The image is ours: see the decision. TypeScript 7 broke the OpenAPI generator and Svelte's type checker (Svelte went back to 5.9.3) and Expo uses 5.9 too.
 - **Translations:** React added `i18next` (18 kB); Svelte and Solid wrote 25 to 40 lines whose catalogs are typed, so a missing key also fails the compiler.
 - **Builder:** all three chose an ordered list because the order is the execution order; no canvas library was tested. None tests a node referencing itself.
 - **Login:** all three wrote OIDC and PKCE by hand; refresh, logout and provider errors were not tested.
 - **Not tested:** installing on a device or emulator, rendering in the WebView or React Native, the real network call from the app, release-build permissions, native accessibility (TalkBack), and phone layouts: the pages are unstyled, so no overflow was found but nothing was designed for touch (default controls are under 24 px). Responsive layout is CSS work that does not depend on the framework.
 
-Spike code is in local repositories, not pushed. Raw logs are not kept in this repository.
+Spike code is in local repositories, not pushed. Raw logs are not in this repository yet; they go under `docs/plan/spikes/` with the back-end ones before the ADR is accepted.
 
 ## Weighted matrix
 
-Weights: **3** = the subject requires it, **2** = shapes cost or risk over the project. Scores 1 to 5 (5 is best), the number in brackets is score times weight. "Team knowledge and learning goal" has no evidence yet, so it is not scored: total weight 19, maximum 95.
+Weights: **3** = the subject requires it, **2** = shapes cost or risk over the project. Scores 1 to 5 (5 is best), the number in brackets is score times weight: total weight 23, maximum 115.
 
-**Scored from the tests above; the weights are the owner's proposal.** The team can challenge any weight or score when it accepts the ADR; the matrix is not redone per member.
+**Scored from the tests above; the weights are the owner's proposal**, and the learning-curve row was added in review, as in the back-end matrix. Before the ADR is accepted, each member scores the matrix alone, as the [bootstrap](../subject/BOOTSTRAP.md#weighted-decision-matrix) asks; any criterion where two members differ by more than 2 points is discussed and recorded here.
 
 | Criterion                                                       | Weight | React + Expo | Svelte + Capacitor | Solid + Capacitor |
 | --------------------------------------------------------------- | ------ | ------------ | ------------------ | ----------------- |
 | Security: advisories, XSS defaults, token storage, dependencies | 3      | 3 (9)        | 2 (6)              | 3 (9)             |
-| Accessibility and two languages                                 | 2      | 4 (8)        | 4 (8)              | 4 (8)             |
+| Accessibility and two languages                                 | 3      | 4 (12)       | 4 (12)             | 4 (12)            |
 | Builder                                                         | 3      | 3 (9)        | 4 (12)             | 3 (9)             |
 | Android APK built in Docker                                     | 3      | 2 (6)        | 4 (12)             | 4 (12)            |
 | Code shared web and mobile, client from OpenAPI                 | 2      | 2 (4)        | 4 (8)              | 4 (8)             |
 | Testing                                                         | 2      | 4 (8)        | 4 (8)              | 4 (8)             |
 | Speed and weight                                                | 2      | 2 (4)        | 4 (8)              | 5 (10)            |
 | Ease of getting it right: fixes, versions, tooling              | 2      | 4 (8)        | 2 (4)              | 3 (6)             |
-| **Total, out of 95**                                            |        | **56**       | **66**             | **70**            |
-| **Weighted average, 1 to 5**                                    |        | **2.95**     | **3.47**           | **3.68**          |
+| Learning curve and oral defense                                 | 3      | 3 (9)        | 4 (12)             | 3 (9)             |
+| **Total, out of 115**                                           |        | **69**       | **82**             | **83**            |
+| **Weighted average, 1 to 5**                                    |        | **3.00**     | **3.57**           | **3.61**          |
 
-Why: **Security** React has few recent advisories but 478 mobile packages; Svelte has 14 advisories, 12 of them recent and mostly XSS; Solid has one, and a smaller audited base. **Builder** only Svelte has editable condition branches; Solid adds drag and drop. **Android** the two Capacitor builds are 12 times smaller and 3.5 times faster than React Native's, with one permission. **Code shared** Capacitor reuses the web build; React Native only shares logic and runs on another TypeScript. **Speed and weight** Solid is lightest on every measure. **Ease of getting it right** React needed the fewest fixes, Svelte the most (a TypeScript downgrade and a type checker that did not start).
+Why: **Security** React has few recent advisories but 478 mobile packages; Svelte has 14 advisories, 12 of them recent and mostly XSS; Solid has one, and a smaller audited base. **Builder** only Svelte has editable condition branches; Solid adds drag and drop. **Android** the two Capacitor builds are 12 times smaller and 3.5 times faster than React Native's, with one permission. **Code shared** Capacitor reuses the web build; React Native only shares logic and runs on another TypeScript. **Speed and weight** Solid is lightest on every measure. **Ease of getting it right** React needed the fewest fixes, Svelte the most (a TypeScript downgrade and a type checker that did not start). **Accessibility and two languages** weight 3 because the subject requires both for both clients ([subject](../subject/SUBJECT.md#technical-requirements)). **Learning curve and oral defense** weight 3, as in the back-end matrix, because every member explains an architecture decision they contributed to. The team's prior knowledge is not recorded yet, so the scores rest on how much there is to learn and explain: React with Expo is two UI toolkits (React DOM and React Native) plus Expo's build chain; Svelte templates stay close to HTML with one toolkit; Solid's JSX looks like React but its reactivity does not behave like it (a component runs once, and destructuring props silently stops updates), with fewer examples to learn from.
 
-**How fragile it is.** Across 20,000 random weightings (each criterion 1 to 3), Solid won 99%, and neither Svelte nor React won outright. But the margin over Svelte is small: giving Svelte a 3 in security makes it 69 against 70. The security scores are the most contestable. Native mobile quality (native UI, TalkBack, notifications) is not in the matrix because it was not tested; with a generous untested criterion for it, React Native would tie Solid at 76 each.
+**How fragile it is.** Across every integer weighting from 1 to 3 (19,683 of them), Solid wins 79%, Svelte 9%, the rest tie; React never wins. The ranking between Solid and Svelte rests on security: giving Svelte a 3 there makes it 85 against 83. Its 2 is kept because its 12 recent advisories are mostly XSS, in a client that renders user-named nodes. Native mobile quality (native UI, TalkBack, notifications) is not in the matrix because it was not tested; adding it at weight 3 with React Native 5 and the two WebView apps 2 gives React 84, Svelte 88, Solid 89.
 
 ## Decision
 
-**Final choice: Solid (TypeScript, Vite single-page app) with Capacitor for Android**, proposed by the owner, pending the team's acceptance of [ADR 0002](../adr/0002-frontend-solid-capacitor.md).
+**Proposed choice: Solid (TypeScript, Vite single-page app) with Capacitor for Android**, by the owner, pending the team's acceptance of [ADR 0002](../adr/0002-frontend-solid-capacitor.md).
 
-- **The two criteria that decided it:** the Android build in Docker with the web code reused, and speed and weight (12 kB of JavaScript, a 3.8 MB APK, a 90-second build, three mobile packages).
-- **Trade-off we accept:** a smaller ecosystem, pinned versions (Solid 1.9, Capacitor 6), and a mobile app that is a WebView, whose native feel is untested. To survive it: keep the mobile screens small (list, toggle, history), run a TalkBack check and a 200-workflow scroll test before the MVP, and raise the Docker image to JDK 21 to move Capacitor forward when needed.
-- **Runner-up: Svelte with Capacitor** (66 against 70): a better builder, but more security advisories and the most fixes. **React with Expo** (56) is the choice if native mobile quality matters more than weight; that was not tested.
+- **The criteria that decided it:** against React, the Android build in Docker with the web code reused (a 3.8 MB APK built in 90 seconds, three mobile packages); against Svelte, security (Svelte's recent XSS advisories) and weight (12 kB of JavaScript).
+- **Trade-off we accept:** a smaller ecosystem, Solid pinned to 1.9 (its Vite plugin does not support version 2), and a mobile app that is a WebView, whose native feel is untested. To survive it: keep the mobile screens small (list, toggle, history), run a TalkBack check and a 200-workflow scroll test before the MVP.
+- **Capacitor version:** start on Capacitor 8, the current major, with a Docker image on JDK 21 and Android SDK 36, rather than on 6, two majors behind, to fit the spike's image. The spike only built Capacitor 6, so the Android probe (F6) is rerun with Capacitor 8 before the ADR is accepted; if it fails, Capacitor 6.2.x on JDK 17 and SDK 34 stays, as tested.
+- **Runner-up: Svelte with Capacitor** (82 against 83): a better builder and an easier template syntax, but the most security advisories and the most fixes. **React with Expo** (69) is the choice if native mobile quality matters more than weight; that was not tested.

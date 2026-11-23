@@ -60,7 +60,7 @@ Per file: line count and purpose (first sentence of the leading comment, else th
 ## docs/adr
 
 - `0000-template.md` (35): ADR 0000: Template
-- `0002-frontend-solid-capacitor.md` (55): ADR 0002: Front-end: Solid and Capacitor
+- `0002-frontend-solid-capacitor.md` (57): ADR 0002: Front-end: Solid and Capacitor
 - `README.md` (19): Architecture Decision Records
 
 ## docs/architecture
@@ -84,7 +84,7 @@ Per file: line count and purpose (first sentence of the leading comment, else th
 - `management.md` (31): Project management: method and tools
 - `task-breakdown.md` (57): Task breakdown
 - `tech-backend.md` (27): Technology selection: back-end
-- `tech-frontend.md` (82): Technology selection: front-end
+- `tech-frontend.md` (84): Technology selection: front-end
 - `tech-persistence.md` (28): Technology selection: persistence
 
 ## docs/security
