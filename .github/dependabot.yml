@@ -1,0 +1,26 @@
+version: 2
+updates:
+  # Root tooling (Husky, lint-staged, Prettier). Add one entry per server/web/mobile package once the stack exists.
+  - package-ecosystem: npm
+    directory: /
+    schedule:
+      interval: weekly
+      day: monday
+    open-pull-requests-limit: 5
+    commit-message:
+      prefix: chore(deps)
+    groups:
+      npm-minor-patch:
+        update-types: [minor, patch]
+
+  # GitHub Actions workflows (pinned by SHA)
+  - package-ecosystem: github-actions
+    directory: /
+    schedule:
+      interval: weekly
+      day: monday
+    commit-message:
+      prefix: ci(deps)
+    groups:
+      actions:
+        patterns: ['*']

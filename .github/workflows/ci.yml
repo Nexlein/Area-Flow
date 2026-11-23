@@ -1,0 +1,52 @@
+# Repo-wide checks on every contribution: secret scan over the full history, formatting, tooling tests, fresh code map.
+# Lint, tests and build of the server, web and mobile clients are added as jobs once the stack is chosen (docs/plan/).
+# Third-party actions are pinned by commit SHA; Dependabot bumps them.
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch: # manual run (Actions tab or `gh workflow run CI --ref <branch>`)
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  repo:
+    name: Secrets, format, tooling tests, code map
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          fetch-depth: 0 # full history for the secret scan
+          persist-credentials: false # no step pushes: keeps the token away from npm install scripts
+
+      # Installs every tool pinned in mise.toml (Node, gitleaks, actionlint, shellcheck): same versions as local.
+      - uses: jdx/mise-action@d5574b52816a478f9d4e6529a3f6ff17a8a36785 # v5.2.8
+
+      # The gitleaks binary, not gitleaks-action: the action requires a license key on organization repos.
+      - name: Secret scan (gitleaks)
+        run: gitleaks git --redact --no-banner --verbose
+
+      - name: Workflow lint (actionlint)
+        run: actionlint
+
+      - uses: actions/cache@55cc8345863c7cc4c66a329aec7e433d2d1c52a9 # v6.1.0
+        with:
+          path: ~/.npm
+          key: npm-${{ runner.os }}-${{ hashFiles('package-lock.json') }}
+
+      - run: npm ci
+
+      - run: npm run check
+
+      - name: Code map is up to date
+        run: |
+          npm run -s codemap
+          git diff --exit-code .claude/codemap.md || { echo "::error::.claude/codemap.md is stale: run npm run codemap and commit it."; exit 1; }

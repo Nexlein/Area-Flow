@@ -18,6 +18,21 @@ Per file: line count and purpose (first comment sentence of code, first heading 
 
 - `format-on-edit.sh` (19): Claude Code PostToolUse hook: formats each file Claude edits with the repo's Prettier.
 
+## .github
+
+- `pull_request_template.md` (19): What
+- `renovate.json5` (14): Renovate (Mend app) keeps the tool versions of mise.toml up to date, one pull request per new release.
+- Also: `dependabot.yml`
+
+## .github/ISSUE_TEMPLATE
+
+- `task.md` (26): Goal
+
+## .github/workflows
+
+- `ci.yml` (52): Repo-wide checks on every contribution: secret scan over the full history, formatting, tooling tests, fresh code map.
+- `mirror.yml` (67): Pushes main to the Epitech repository once CI passed on it: Epitech grades that repository.
+
 ## .husky
 
 - `commit-msg` (11): Enforces Conventional Commits on the first line: type(scope)!: subject.

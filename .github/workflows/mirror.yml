@@ -1,0 +1,67 @@
+# Pushes main to the Epitech repository once CI passed on it: Epitech grades that repository.
+# Setup (once): a deploy key with write access on the Epitech repository, its private half in the
+# SSH_PRIVATE_KEY secret of this repository (HOWTOCONTRIBUTE.md, "Epitech mirror").
+name: Epitech Mirror
+
+on:
+  workflow_run:
+    workflows: ['CI']
+    types: [completed]
+    branches: ['main']
+
+concurrency:
+  group: mirror-${{ github.ref }}
+  cancel-in-progress: true
+
+# The push to the Epitech repository uses the SSH deploy key, not the GitHub token: read is enough.
+permissions:
+  contents: read
+
+jobs:
+  mirror_to_epitech:
+    # Only a push to main of this repository. A pull request from a fork whose branch is also named main
+    # triggers workflow_run with head_branch "main" too: its code must never reach the Epitech repository.
+    if: >-
+      github.repository == 'Nexlein/Area-Flow' &&
+      github.event.workflow_run.conclusion == 'success' &&
+      github.event.workflow_run.event == 'push' &&
+      github.event.workflow_run.head_repository.full_name == github.repository
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    env:
+      HAS_KEY: ${{ secrets.SSH_PRIVATE_KEY != '' }}
+
+    steps:
+      - name: Deploy key missing
+        if: env.HAS_KEY != 'true'
+        run: echo "::warning::SSH_PRIVATE_KEY is not set, main is not mirrored (HOWTOCONTRIBUTE.md, Epitech mirror)."
+
+      - name: Checkout Repository
+        if: env.HAS_KEY == 'true'
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          ref: ${{ github.event.workflow_run.head_sha }}
+          fetch-depth: 0
+          persist-credentials: false
+
+      - name: Setup SSH Key
+        if: env.HAS_KEY == 'true'
+        uses: webfactory/ssh-agent@e83874834305fe9a4a2997156cb26c5de65a8555 # v0.10.0
+        with:
+          ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
+
+      - name: Push to Epitech Mirror
+        if: env.HAS_KEY == 'true'
+        env:
+          EPITECH_REPO_URL: 'git@github.com:EpitechPGE3-2026/G-YEP-500-MPL-5-1-area-1.git'
+          HEAD_SHA: ${{ github.event.workflow_run.head_sha }}
+        run: |
+          # A re-run of an older CI run must not rewind the Epitech repository: only the current tip of main is pushed.
+          if [ "$(git rev-parse origin/main)" != "$HEAD_SHA" ]; then
+            echo "::notice::main moved past $HEAD_SHA: the run of the newer commit mirrors it."
+            exit 0
+          fi
+          ssh-keyscan github.com >> ~/.ssh/known_hosts
+          git remote add epitech "$EPITECH_REPO_URL"
+          # No --force: a push that is not a fast-forward fails visibly instead of overwriting the Epitech history.
+          git push epitech HEAD:refs/heads/main
