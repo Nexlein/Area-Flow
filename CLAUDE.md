@@ -14,7 +14,7 @@ Milestone 1 (Plan). **Stack not chosen**: no server, web or mobile code, and no 
 | touch a requirement    | `docs/subject/SUBJECT.md`; a feature: its section of `docs/subject/FEATURES.md`. The PDFs win. |
 | look for a deliverable | `docs/README.md`                                                                               |
 | re-open a choice       | `docs/adr/`: accepted ADRs are settled unless the user asks                                    |
-| branch, commit, doc    | `HOWTOCONTRIBUTE.md`                                                                           |
+| branch, commit, PR     | `HOWTOCONTRIBUTE.md`                                                                           |
 
 ## Rules
 
@@ -26,7 +26,12 @@ Milestone 1 (Plan). **Stack not chosen**: no server, web or mobile code, and no 
 - TypeScript only, no JavaScript files. Every source file starts with a comment whose first sentence is its purpose.
 - Branch from `dev`, pull requests into `dev`; `main` only takes release PRs from `dev`.
 - Never `--no-verify`, never force-push, never push without being asked. Ask before adding a dependency.
+- Never add a `Co-Authored-By` trailer or any generated-by attribution line to a commit message or a pull request description.
+- ADR choices are the team's: propose options with trade-offs, never mark an ADR `Accepted` yourself.
 - Never edit `.claude/codemap.md` by hand: `npm run codemap` (it reads the git index).
+- Every member defends the project orally, so what you write must be explainable by the user who asked for it.
+
+Personal preferences for your own agent (style, level of detail) go in `CLAUDE.local.md`, which is gitignored and not shared.
 
 ## Commands
 
