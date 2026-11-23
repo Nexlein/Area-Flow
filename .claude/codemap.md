@@ -8,6 +8,8 @@ Per file: line count and purpose (first comment sentence of code, first heading 
 - `.gitattributes` (14): LF everywhere, also on Windows checkouts: hooks and scripts break with CRLF.
 - `.gitignore` (90): Files git never tracks: secrets, dependencies, build output, local settings.
 - `CLAUDE.md` (53): Area-Flow — AREA (Epitech Tek3)
+- `HOWTOCONTRIBUTE.md` (85): How to contribute
+- `README.md` (72): Area-Flow
 - Also: `.editorconfig`, `.lintstagedrc`, `.prettierignore`, `.prettierrc`, `mise.toml`, `package.json`
 
 ## .claude
@@ -43,6 +45,50 @@ Per file: line count and purpose (first comment sentence of code, first heading 
 ## .vscode
 
 - Also: `extensions.json`, `settings.json`
+
+## docs
+
+- `README.md` (55): Documentation
+- `defense.md` (26): Defense
+- `postmortem.md` (20): Post-mortem
+
+## docs/accessibility
+
+- `audit.md` (32): Accessibility audit
+
+## docs/adr
+
+- `0000-template.md` (40): ADR 0000: Template
+- `README.md` (26): Architecture Decision Records
+
+## docs/architecture
+
+- `README.md` (31): Architecture
+- `auth.md` (27): Authentication and delegated access
+- `hooks.md` (29): Hooks
+- `persistence-model.md` (30): Persistence model and data structures
+- `service-discovery.md` (19): Service discovery (`about.json`)
+- `workflow-model.md` (40): Workflow model and failure semantics
+
+## docs/features
+
+- `README.md` (22): Selected features: where each criterion is observed
+
+## docs/plan
+
+- `README.md` (31): Plan
+- `architecture-questions.md` (17): Architecture questions
+- `features-selection.md` (37): Additional features selection
+- `management.md` (35): Project management: method and tools
+- `task-breakdown.md` (42): Task breakdown
+- `tech-backend.md` (51): Technology selection: back-end
+- `tech-frontend.md` (52): Technology selection: front-end
+- `tech-persistence.md` (49): Technology selection: persistence
+
+## docs/security
+
+- `0000-template.md` (38): SEC-XXX: Template
+- `README.md` (8): Security evidence
 
 ## docs/subject
 
