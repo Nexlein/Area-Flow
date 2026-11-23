@@ -8,7 +8,7 @@ Per file: line count and purpose (first comment sentence of code, first heading 
 - `.gitattributes` (14): LF everywhere, also on Windows checkouts: hooks and scripts break with CRLF.
 - `.gitignore` (90): Files git never tracks: secrets, dependencies, build output, local settings.
 - `CLAUDE.md` (35): Area-Flow
-- `HOWTOCONTRIBUTE.md` (79): How to contribute
+- `HOWTOCONTRIBUTE.md` (81): How to contribute
 - `README.md` (74): Area-Flow
 - Also: `.editorconfig`, `.lintstagedrc`, `.prettierignore`, `.prettierrc`, `mise.toml`, `package.json`, `tsconfig.json`
 
@@ -23,7 +23,7 @@ Per file: line count and purpose (first comment sentence of code, first heading 
 ## .github
 
 - `dependabot.yml` (37): Version updates go to dev, the integration branch.
-- `pull_request_template.md` (19): What
+- `pull_request_template.md` (21): What
 - `renovate.json5` (15): Renovate (Mend app) keeps the tool versions of mise.toml up to date, one pull request per new release.
 
 ## .github/ISSUE_TEMPLATE

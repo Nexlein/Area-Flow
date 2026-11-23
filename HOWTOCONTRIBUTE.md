@@ -26,8 +26,10 @@ flowchart LR
 | `main` | Release PRs from `dev`; Dependabot security updates  | Same, except the branch need not be up to date (a release PR is already tested on `dev`)                                  |
 
 - Release before every milestone deadline: open a PR `dev` → `main`, merge it with a merge commit. Only `main` reaches the Epitech repository.
-- After anything lands on `main` without coming from `dev` (a Dependabot security update, whose PR title must first be renamed `fix(deps): ...`), merge `main` back into `dev`.
-- Merge method: release (`dev` → `main`) and back-merge (`main` → `dev`) PRs always use a merge commit, never squash, or the two branches diverge. Feature PRs: squash if one commit, merge commit otherwise.
+- After anything lands on `main` without coming from `dev` (a Dependabot security update), merge `main` back into `dev`.
+- Merge method: release (`dev` → `main`) and back-merge (`main` → `dev`) PRs always use a merge commit, never squash, or the two branches diverge. Feature PRs: squash if one commit, merge commit otherwise. Rebase merging is disabled.
+- The PR title becomes the commit message (squash or merge), so it follows Conventional Commits too: CI checks it with the `commit-msg` rule (rename Dependabot security PRs, e.g. `fix(deps): ...`). Releases: `chore(release): ...`.
+- `Closes #N` in the PR description is copied into that commit: the issue closes when the change reaches `main` with the next release.
 - The repository admin may bypass the approval, only by merging a pull request.
 - Commits: [Conventional Commits](https://www.conventionalcommits.org), `type(scope): subject` with `type` in `feat fix docs style refactor perf test build ci chore revert` (the `commit-msg` hook checks it). Never `--no-verify`.
 - Never push to the Epitech repository by hand: the mirror only fast-forwards and would stop.
