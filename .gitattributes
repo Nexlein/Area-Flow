@@ -1,0 +1,14 @@
+# LF everywhere, also on Windows checkouts: hooks and scripts break with CRLF.
+* text=auto eol=lf
+# Except Windows batch files (e.g. Android's gradlew.bat): cmd.exe can misread them with LF endings.
+*.bat text eol=crlf
+*.cmd text eol=crlf
+
+*.pdf binary
+*.png binary
+*.jpg binary
+*.jpeg binary
+*.webp binary
+*.ico binary
+*.jar binary
+*.keystore binary

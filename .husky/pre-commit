@@ -1,0 +1,8 @@
+#!/bin/sh
+# Blocks secrets and .env files, formats staged files with Prettier, keeps .claude/codemap.md in sync.
+# Versioned hook, enabled by `npm install` via the "prepare" script (Husky).
+set -e
+sh .husky/no-secrets.sh
+npx lint-staged
+npm run -s codemap
+git add .claude/codemap.md

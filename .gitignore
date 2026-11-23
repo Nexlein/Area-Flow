@@ -1,0 +1,90 @@
+# Files git never tracks: secrets, dependencies, build output, local settings.
+
+# Secrets & credentials (never commit them: SYS-SECRETS, SEC-CRYPTO)
+.env
+.env.*
+!.env.example
+*.secret
+*.key
+*.pem
+*.p12
+*.keystore
+*.jks
+credentials.json
+client_secret*.json
+service-account*.json
+token.json
+google-services.json
+GoogleService-Info.plist
+key.properties
+keystore.properties
+.envrc
+mise.local.toml
+# SSH keys, the Epitech mirror deploy key included (HOWTOCONTRIBUTE.md)
+id_rsa*
+id_ed25519*
+area-mirror*
+
+# Local databases: they hold users and OAuth tokens
+*.db
+*.sqlite
+*.sqlite3
+
+# Dependencies
+node_modules/
+.pnpm-store/
+vendor/
+
+# Build output & caches
+dist/
+build/
+out/
+.next/
+.nuxt/
+.svelte-kit/
+.turbo/
+.cache/
+*.tsbuildinfo
+target/
+*.class
+
+# Android & mobile
+.gradle/
+local.properties
+captures/
+.externalNativeBuild/
+.cxx/
+*.apk
+*.aab
+.dart_tool/
+.expo/
+ios/Pods/
+
+# Python
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+
+# Tests & reports
+coverage/
+test-results/
+playwright-report/
+*.log
+
+# OS & editors (shared VS Code settings stay versioned)
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/*
+!.vscode/extensions.json
+!.vscode/settings.json
+*.swp
+*~
+
+# Claude Code: personal settings and worktrees
+.claude/settings.local.json
+.claude/worktrees/

@@ -1,0 +1,4 @@
+#!/bin/sh
+# Local stand-in for CI: the same `npm run check` the GitHub workflow runs, before code leaves this machine.
+set -e
+npm run -s check
