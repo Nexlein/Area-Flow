@@ -8,10 +8,11 @@ Per file: line count and purpose (first sentence of the leading comment, else th
 - `.gitattributes` (14): LF everywhere, also on Windows checkouts: hooks and scripts break with CRLF.
 - `.gitignore` (91): Files git never tracks: secrets, dependencies, build output, local settings.
 - `.gitleaks.toml` (11): Gitleaks rules for the pre-commit hook and CI: the default rules, plus what they miss for this project.
+- `.prettierignore` (5): Files Prettier must not rewrite (Prettier also reads .gitignore; files it has no parser for are skipped anyway).
 - `CLAUDE.md` (40): Area-Flow
 - `HOWTOCONTRIBUTE.md` (109): How to contribute
 - `README.md` (76): Area-Flow
-- Also: `.editorconfig`, `.lintstagedrc`, `.prettierignore`, `.prettierrc`, `mise.toml`, `package.json`, `tsconfig.json`
+- Also: `.editorconfig`, `.lintstagedrc`, `.prettierrc`, `mise.toml`, `package.json`, `tsconfig.json`
 
 ## .claude
 
