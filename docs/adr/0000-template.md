@@ -12,10 +12,10 @@ The need and the constraints: subject section, selected features, measured facts
 
 ## Alternatives
 
-| Option     | For this project | What the product would look like with it |
-| ---------- | ---------------- | ---------------------------------------- |
-| A (chosen) |                  |                                          |
-| B          | Why not here     |                                          |
+| Option       | For this project | What the product would look like with it |
+| ------------ | ---------------- | ---------------------------------------- |
+| A (proposed) |                  |                                          |
+| B            | Why not here     |                                          |
 
 ## Decision
 
