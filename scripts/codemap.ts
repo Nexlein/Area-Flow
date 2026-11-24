@@ -19,28 +19,29 @@ const BINARY =
   /\.(pdf|zip|gz|png|jpe?g|gif|webp|ico|svg|woff2?|ttf|otf|mp3|mp4|wav|webm|apk|aab|jar|keystore|jks)$/i;
 const MAX = 140;
 
-// Lines that may precede a file's purpose comment: shebang, directives, encodings, doctype.
+// Lines that may precede a file's purpose comment: shebang, directives, encodings, doctype, a YAML document start,
+// and tool pragmas written as comments (eslint, prettier-ignore, markdownlint...), which are not a purpose.
 const PREAMBLE =
-  /^(#!|['"]use (strict|client|server)['"];?$|# -\*-|<\?php|<!doctype|# ?(syntax|escape|check)=|\/\/ ?@ts-|\/\/\/ ?<reference)/i;
+  /^(#!|['"]use (strict|client|server)['"];?$|# -\*-|<\?php|<!doctype|# ?(syntax|escape|check)=|\/\/ ?@ts-|\/\/\/ ?<reference|---$|(\/\/|\/\*+|#|<!--)\s*(eslint|prettier-ignore|markdownlint|biome-ignore|istanbul|c8 ignore))/i;
 // Leading comment markers of the languages we may use; JSON and friends have none.
 const COMMENT = /^(\/\/\/?|\/\*+|\*\/?|#|--|<!--)\s?/;
 
 /** The text cut to MAX characters, ending with an ellipsis when cut. */
 const clip = (s: string): string => (s.length > MAX ? `${s.slice(0, MAX - 3).trimEnd()}...` : s);
-/** The text up to its first sentence end, or all of it when it has none. */
-const firstSentence = (s: string): string => s.match(/^.*?[.!?](?=\s|$)/)?.[0] ?? s;
+/** The text up to its first sentence end, or all of it when it has none; "e.g." and "i.e." do not end a sentence. */
+const firstSentence = (s: string): string =>
+  s.match(/^.*?(?<!\b(?:e\.g|i\.e|cf|vs))[.!?](?=\s|$)/)?.[0] ?? s;
 
 /** Purpose of a file from its text: first sentence of the leading comment, else a Markdown file's first heading; '' if none. */
 export function purpose(path: string, text: string): string {
   const lines = text.split(/\r?\n/).map((l) => l.trim());
-  const opensWithComment = lines.find((l) => l !== '')?.startsWith('<!--') ?? false;
-  if (/\.mdx?$/i.test(path) && !opensWithComment) {
-    const heading = lines.find((l) => /^#{1,6}\s/.test(l));
-    return heading ? clip(heading.replace(/^#+\s*/, '')) : '';
-  }
   let i = 0;
   while (i < lines.length && (lines[i] === '' || PREAMBLE.test(lines[i] ?? ''))) i++;
   const first = lines[i] ?? '';
+  if (/\.mdx?$/i.test(path) && !first.startsWith('<!--')) {
+    const heading = lines.find((l) => /^#{1,6}\s/.test(l));
+    return heading ? clip(heading.replace(/^#+\s*/, '')) : '';
+  }
   const docstring = first.match(/^(?:"""|''')(.*)/);
   if (docstring)
     return clip(firstSentence((docstring[1] ?? '').replace(/("""|''').*$/, '').trim()));
@@ -94,7 +95,10 @@ export function parseIndex(out: string): { path: string; sha: string }[] {
     .split('\0')
     .filter(Boolean)
     .flatMap((line) => {
-      const [meta = '', path = ''] = line.split('\t');
+      // Only the first tab separates the metadata from the path: a path may contain tabs.
+      const tab = line.indexOf('\t');
+      const meta = line.slice(0, tab);
+      const path = line.slice(tab + 1);
       const [mode, sha = ''] = meta.split(' ');
       return mode === '160000' ? [] : [{ path, sha }];
     });

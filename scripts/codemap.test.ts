@@ -36,6 +36,28 @@ test('shebang and directives are skipped before the comment', () => {
   );
 });
 
+test('tool pragmas and a YAML document start are not a purpose', () => {
+  assert.equal(
+    purpose('src/a.ts', '/* eslint-disable */\n// Generated API client.\n'),
+    'Generated API client.',
+  );
+  assert.equal(
+    purpose('docs/a.md', '<!-- prettier-ignore-start -->\n# Real title\n'),
+    'Real title',
+  );
+  assert.equal(
+    purpose('compose.yaml', '---\n# Local stack for development.\nservices: {}\n'),
+    'Local stack for development.',
+  );
+});
+
+test('"e.g." and "i.e." do not end the first sentence', () => {
+  assert.equal(
+    purpose('src/a.ts', '// Runs the engine, e.g. on save. Then more.\n'),
+    'Runs the engine, e.g. on save.',
+  );
+});
+
 test('block comments and Python docstrings', () => {
   assert.equal(
     purpose('A.java', '/**\n * Polls the mailbox.\n */\nclass A {}'),
@@ -69,14 +91,16 @@ test('render groups by folder, root first, files without purpose on one line', (
   );
 });
 
-test('parseIndex reads NUL-separated entries, keeps non-ASCII paths, drops submodules', () => {
+test('parseIndex reads NUL-separated entries, keeps non-ASCII and tab paths, drops submodules', () => {
   const out =
     '100644 aaa 0\tdocs/réunion/notes.md\0' +
     '160000 bbb 0\tvendor/sub\0' +
-    '100644 ccc 0\tREADME.md\0';
+    '100644 ccc 0\tREADME.md\0' +
+    '100644 ddd 0\tdocs/a\tb.md\0';
   assert.deepEqual(parseIndex(out), [
     { path: 'docs/réunion/notes.md', sha: 'aaa' },
     { path: 'README.md', sha: 'ccc' },
+    { path: 'docs/a\tb.md', sha: 'ddd' },
   ]);
 });
 
