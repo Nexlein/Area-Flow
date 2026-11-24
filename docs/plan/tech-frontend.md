@@ -58,7 +58,7 @@ Spike code is in local repositories, not pushed. Raw logs are not in this reposi
 
 Weights: **3** = the subject requires it, **2** = shapes cost or risk over the project. Scores 1 to 5 (5 is best), the number in brackets is score times weight: total weight 23, maximum 115.
 
-**Scored from the tests above; the weights are the owner's proposal**, and the learning-curve row was added in review, as in [`tech-backend.md`](tech-backend.md). Before the ADR is accepted, each member scores the matrix alone, as the [bootstrap](../subject/BOOTSTRAP.md#weighted-decision-matrix) asks; any criterion where two members differ by more than 2 points is discussed and recorded here.
+**Scored from the tests above; the weights are the owner's proposal**, and the learning-curve row was added in review, as in [`tech-backend.md`](tech-backend.md). Before the ADR is accepted, each member scores the matrix alone, as the [bootstrap](../subject/BOOTSTRAP.md#weighted-decision-matrix) asks; any criterion where two members differ by more than 2 points is discussed and recorded in [`scores.md`](scores.md) (Gaps).
 
 | Criterion                                                       | Weight | React + Expo | Svelte + Capacitor | Solid + Capacitor | Why                                                                                                                                 |
 | --------------------------------------------------------------- | ------ | ------------ | ------------------ | ----------------- | ----------------------------------------------------------------------------------------------------------------------------------- |

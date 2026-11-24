@@ -79,7 +79,7 @@ Spike code is in local repositories, not pushed. Full logs and raw runs: [`spike
 
 Weights: **3** = the subject requires it, **2** = shapes cost or risk over the project, **1** = a tiebreaker. Scores 1 to 5 (5 is best), the number in brackets is score times weight: total weight 20, maximum 100.
 
-**Scored from the tests above; the weights are the owner's proposal**, and the learning-curve row was added in review. Before the ADR is accepted, each member scores the matrix alone, as the [bootstrap](../subject/BOOTSTRAP.md#weighted-decision-matrix) asks. Any criterion where two members differ by more than 2 points is discussed and recorded here.
+**Scored from the tests above; the weights are the owner's proposal**, and the learning-curve row was added in review. Before the ADR is accepted, each member scores the matrix alone, as the [bootstrap](../subject/BOOTSTRAP.md#weighted-decision-matrix) asks. Any criterion where two members differ by more than 2 points is discussed and recorded in [`scores.md`](scores.md) (Gaps).
 
 | Criterion                                                | Weight | NestJS   | Fastify  | Effect   | Why                                                                                                                                                                        |
 | -------------------------------------------------------- | ------ | -------- | -------- | -------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
@@ -99,6 +99,8 @@ Learning curve and oral defense, weight 3:
 - The subject has every member explain an architecture decision they contributed to ([subject](../subject/SUBJECT.md#documentation)). The learning curve is how we read that requirement (a review choice the team can change).
 - The bootstrap asks for technologies nobody has shipped with, so the scores rest on the learning curve seen in the spikes. Each member records their experience below before the ADR is accepted; a row that changes a score goes into the History of ADR 0001.
 
+Each cell: none, tried, or shipped.
+
 | Member          | NestJS | Fastify | Effect |
 | --------------- | ------ | ------- | ------ |
 | Nexlein         |        |         |        |
@@ -108,7 +110,7 @@ Learning curve and oral defense, weight 3:
 
 - Effect's version 4 is two months old (4.0.0 on 2026-10-01) and most examples still target version 3. That is where its four non-existent APIs came from.
 
-**How fragile it is.** Across every integer weighting from 1 to 3 (6,561 of them), NestJS never wins. Fastify wins 77%, Effect 17%, the rest tie. Effect wins when security and built-in background work count most and the learning curve least. Without the learning-curve row the two were level (44% each), and under the proposed weights Effect leads, 59 against 54: the row added in review decides the ranking. The most contestable scores are security (Effect 4, Fastify 2) and the learning-curve row itself..
+**How fragile it is.** Across every integer weighting from 1 to 3 (6,561 of them), NestJS never wins. Fastify wins 77%, Effect 16%, the rest tie. Effect wins when security and built-in background work count most and the learning curve least. Without the learning-curve row the two are level (44% each), and under the proposed weights Effect leads, 59 against 54. The row added in review decides the ranking. The most contestable scores are security (Effect 4, Fastify 2) and the learning-curve row itself.
 
 ## Decision
 
@@ -116,5 +118,5 @@ Learning curve and oral defense, weight 3:
 
 - **The two criteria that decided it:** the learning curve and oral defense (plain code every member can explain, where Effect asks the team to learn a new model on a two-month-old major version) and speed and weight (it leads every runtime measure).
 - **Trade-off we accept:** the most security advisories, nine of them validation bypasses, and no built-in scheduler. To survive it: pin a recent version (at least 5.12.6) and let Dependabot track it, keep an application-level check behind the schema (as the save-time probe did), and write the hook scheduler ourselves with deduplication stored in the database, not in memory.
-- **Team disagreement:** none recorded yet; gaps found when each member scores the matrix go here.
-- **Runner-up: Effect**, one point behind (65 against 66). It leads on built-in background work and security defaults; Fastify leads on the learning curve, speed and weight. The margin is thin under these weights but holds across most weightings (Fastify 77%, Effect 17%), so the team should weigh the learning-curve row carefully when it accepts the ADR.
+- **Team disagreement:** none recorded yet; the gaps found when each member scores the matrix go to [`scores.md`](scores.md) (Gaps), their outcome here.
+- **Runner-up: Effect**, one point behind (65 against 66). It leads on built-in background work and security defaults; Fastify leads on the learning curve, speed and weight. The margin is thin under these weights but holds across most weightings (Fastify 77%, Effect 16%), so the team should weigh the learning-curve row carefully when it accepts the ADR.

@@ -80,7 +80,7 @@ Weights: **3** = the subject requires it, **2** = shapes cost or risk over the p
 
 The learning-curve weight is how we read the subject's oral defense, as in [`tech-backend.md`](tech-backend.md): a review choice the team can change. SQLite's table rebuild: [ALTER TABLE](https://www.sqlite.org/lang_altertable.html).
 
-Before the ADR is accepted, each member scores this matrix and the access-layer one alone ([bootstrap](../subject/BOOTSTRAP.md#weighted-decision-matrix)); a gap of more than 2 points is discussed and recorded here.
+Before the ADR is accepted, each member scores this matrix and the access-layer one alone ([bootstrap](../subject/BOOTSTRAP.md#weighted-decision-matrix)); a gap of more than 2 points is discussed and recorded in [`scores.md`](scores.md) (Gaps).
 
 **How fragile it is.** PostgreSQL wins all 6,561 integer weightings from 1 to 3, by 1 point over SQLite at worst. Without the learning-curve row, the team's own habit, it still leads, 73 against 64. Only scores can change the ranking: if we stay on one server, SQLite gets 5 on several instances, and with 5 on security too PostgreSQL still leads, 88 to 85; with 5 on integrity as well, they tie.
 
@@ -132,4 +132,4 @@ Proposed: **Prisma 7**, against `pg`'s 1-point lead.
 - **Security baseline:** the minor version pinned, Dependabot proposing the next; no database port outside Compose; an application role that is not a superuser.
 - **Access layer:** Prisma 7.10.x, pinned, since npm's `latest` tag already points to 8.0. Its costs: route schemas type every field that reaches a filter, and data-access functions check types too; CHECK constraints written into the generated migrations; `Int` ids, because `BigInt` does not serialize to JSON; its CLI in the image that applies migrations.
 - **Runners-up:** SQLite (76 against 88), nothing to run and the fastest tests, the better choice if the product stays on one host; MongoDB (53) is lowest on seven of the eight criteria. For the access layer, plain `pg`, the matrix leader (63 against 62): lighter and safe by construction, but every result type written by hand.
-- **Team disagreement:** none recorded yet; gaps found when each member scores the two matrices go here.
+- **Team disagreement:** none recorded yet; the gaps found when each member scores the two matrices go to [`scores.md`](scores.md) (Gaps), their outcome here.
