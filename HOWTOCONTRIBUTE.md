@@ -25,15 +25,15 @@ flowchart LR
 | `dev`  | Feature PRs, Dependabot and Renovate version updates | PR only · CI green · branch up to date · 1 approval of the last push · conversations resolved · no force-push or deletion       |
 | `main` | Release PRs from `dev`; Dependabot security updates  | Same, except the branch need not be up to date (a release PR is already tested on `dev`); CI rejects a PR from any other branch |
 
-- Release before every milestone deadline: open a PR `dev` → `main`, merge it with a merge commit. Only `main` reaches the Epitech repository.
-- After anything lands on `main` without coming from `dev` (a Dependabot security update), merge `main` back into `dev`.
-- Merge method: release (`dev` → `main`) and back-merge (`main` → `dev`) PRs always use a merge commit, never squash, or the two branches diverge. Feature PRs: squash if one commit, merge commit otherwise. Rebase merging is disabled.
-- The PR title becomes the commit message (squash or merge), so it follows Conventional Commits too: CI checks it with the `commit-msg` rule (rename Dependabot security PRs, e.g. `fix(deps): ...`). Releases: `chore(release): ...`.
-- `Closes #N` in the PR description is copied into that commit: the issue closes when the change reaches `main` with the next release.
-- The repository admin may bypass the approval, only by merging a pull request.
-- Commits: [Conventional Commits](https://www.conventionalcommits.org), `type(scope): subject` with `type` in `feat fix docs style refactor perf test build ci chore revert` (the `commit-msg` hook checks it). Never `--no-verify`.
-- Never push to the Epitech repository by hand: the mirror only fast-forwards and would stop.
-- `.claude/codemap.md` conflicts, or is stale after GitHub's "Update branch" (no hook runs there): `npm run codemap`, then commit.
+- **Release:** before every milestone deadline, a PR `dev` → `main`, merged with a merge commit. Only `main` reaches the Epitech repository.
+- **Back-merge:** after anything lands on `main` without coming from `dev` (a Dependabot security update), merge `main` back into `dev`.
+- **Merge method:** release and back-merge PRs always use a merge commit, never squash, or the branches diverge. Feature PRs: squash if one commit, merge commit otherwise. Rebase merging is disabled.
+- **PR title:** becomes the commit message (squash or merge), so it follows Conventional Commits too, checked by CI with the `commit-msg` rule. Rename Dependabot security PRs, e.g. `fix(deps): ...`. Releases: `chore(release): ...`.
+- **`Closes #N`:** written in the PR description, it is copied into that commit; the issue closes when the change reaches `main` with the next release.
+- **Admin:** the repository admin may bypass the approval, only by merging a pull request.
+- **Commits:** [Conventional Commits](https://www.conventionalcommits.org), `type(scope): subject`, `type` in `feat fix docs style refactor perf test build ci chore revert` (the `commit-msg` hook checks it). Never `--no-verify`.
+- **Epitech repository:** never push by hand: the mirror only fast-forwards and would stop.
+- **`.claude/codemap.md`:** if it conflicts, or is stale after GitHub's "Update branch" (no hook runs there), run `npm run codemap`, then commit.
 
 ## 3. Automation
 
@@ -66,11 +66,36 @@ Code, comments, commits and docs: English. Every source file opens with a commen
 
 ## 5. Epitech mirror (maintainer)
 
-After CI passes on a push to `main`, [`mirror.yml`](.github/workflows/mirror.yml) pushes `main` to `EpitechPGE3-2026/G-YEP-500-MPL-5-1-area-1`. Students are not admin there, so no deploy key: it uses an SSH key of the owner's GitHub account (title "GitHub Action Mirror"), private half in the secret `SSH_PRIVATE_KEY` of the **`epitech-mirror` environment**. That environment only deploys from `main`: a workflow pushed on any other branch cannot read the key, and `main` needs an approved pull request. The mirror copies the workflows too, but Actions cannot start in the Epitech repository (no minutes): every job excludes the `EpitechPGE3-2026` organization and is skipped there. Dependabot also reads the copied config there, and finds no `dev` branch to target.
+- After CI passes on a push to `main`, [`mirror.yml`](.github/workflows/mirror.yml) pushes `main` to `EpitechPGE3-2026/G-YEP-500-MPL-5-1-area-1`.
+- Students are not admin there, so no deploy key: it uses an SSH key of the owner's GitHub account (title "GitHub Action Mirror"), private half in the secret `SSH_PRIVATE_KEY` of the **`epitech-mirror` environment**.
+- That environment only deploys from `main`: a workflow pushed on any other branch cannot read the key, and `main` needs an approved pull request.
+- The mirror copies the workflows too, but Actions cannot start in the Epitech repository (no minutes): every job excludes the `EpitechPGE3-2026` organization and is skipped there.
+- Dependabot also reads the copied config there, and finds no `dev` branch to target.
 
 > **Warning:** that key can push to every repository of the owner's account. Never print it, never store it as a repository secret; revoke it in GitHub settings if a copy is lost.
 
-To replace the key: `ssh-keygen -t ed25519 -f mirror -N ""`, add `mirror.pub` to the account's SSH keys, `gh secret set SSH_PRIVATE_KEY --env epitech-mirror --repo Nexlein/Area-Flow < mirror`, delete both files, revoke the old key, then re-run the last CI run of `main` (`gh run rerun <id>`; a manual run does not mirror).
+To replace the key:
+
+1. Generate a key pair:
+
+   ```bash
+   ssh-keygen -t ed25519 -f mirror -N ""
+   ```
+
+2. Add `mirror.pub` to the account's SSH keys.
+3. Store the private half in the environment secret:
+
+   ```bash
+   gh secret set SSH_PRIVATE_KEY --env epitech-mirror --repo Nexlein/Area-Flow < mirror
+   ```
+
+4. Delete both files (`mirror`, `mirror.pub`).
+5. Revoke the old key.
+6. Re-run the last CI run of `main` (a manual run does not mirror):
+
+   ```bash
+   gh run rerun <id>
+   ```
 
 ## 6. Extending the product
 

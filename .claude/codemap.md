@@ -9,7 +9,7 @@ Per file: line count and purpose (first sentence of the leading comment, else th
 - `.gitignore` (91): Files git never tracks: secrets, dependencies, build output, local settings.
 - `.gitleaks.toml` (11): Gitleaks rules for the pre-commit hook and CI: the default rules, plus what they miss for this project.
 - `CLAUDE.md` (40): Area-Flow
-- `HOWTOCONTRIBUTE.md` (84): How to contribute
+- `HOWTOCONTRIBUTE.md` (109): How to contribute
 - `README.md` (76): Area-Flow
 - Also: `.editorconfig`, `.lintstagedrc`, `.prettierignore`, `.prettierrc`, `mise.toml`, `package.json`, `tsconfig.json`
 
