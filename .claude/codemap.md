@@ -36,6 +36,7 @@ Per file: line count and purpose (first sentence of the leading comment, else th
 
 - `ci.yml` (127): Repo-wide checks on every contribution: secret scan over the full history, formatting, tooling tests, fresh code map.
 - `mirror.yml` (73): Pushes main to the Epitech repository once CI passed on it: Epitech grades that repository.
+- `project-board.yml` (57): Moves the cards of the GitHub Project board (Status, Priority) on issue, branch, pull request and push events.
 
 ## .husky
 
@@ -122,3 +123,5 @@ Per file: line count and purpose (first sentence of the leading comment, else th
 - `codemap.ts` (164): Generates .claude/codemap.md: every tracked file grouped by folder, with its line count and purpose.
 - `format.ts` (38): Runs Prettier on the files git tracks only, so untracked personal notes never block a check or get rewritten.
 - `hooks.test.ts` (213): Tests for the git hooks: the secret scan blocks .env files and private keys, commit-msg enforces Conventional Commits.
+- `project-board.test.ts` (262): Tests for the project board script: card moves per event, closing only on main, and the GitHub API callers.
+- `project-board.ts` (574): Moves the cards of the GitHub Project board when issues, branches and pull requests change, and closes issues released to main.

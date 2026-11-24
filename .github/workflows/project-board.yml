@@ -1,3 +1,7 @@
+# Moves the cards of the GitHub Project board (Status, Priority) on issue, branch, pull request and push events.
+# Runs scripts/project-board.ts from the default branch only, never code from a pull request, so pull_request_target
+# is safe here: the event only gives the script a title and a description to read.
+# Tokens: PROJECT_TOKEN (classic, scopes `project` and `public_repo` only) for the board; GITHUB_TOKEN for the issues.
 name: Project board
 
 on:
@@ -9,32 +13,45 @@ on:
   pull_request_target:
     types: [opened, reopened, edited, ready_for_review, converted_to_draft, closed]
 
+# No concurrency group: GitHub cancels the pending run of a group when a new one queues, which would drop events.
+# Card moves only go forward and setting a value twice changes nothing, so overlapping runs are safe.
+
 permissions:
   contents: read
-
-concurrency:
-  group: project-board
-  cancel-in-progress: false
+  issues: write # close issues once released to main
 
 env:
-  PROJECT_OWNER: "Nexlein"
-  PROJECT_NUMBER: "12"
-  DEV_BRANCH: "dev"
-  MAIN_BRANCH: "main"
-  DEFAULT_PRIORITY: "P1"
+  PROJECT_OWNER: Nexlein
+  PROJECT_NUMBER: '12'
+  DEV_BRANCH: dev
+  MAIN_BRANCH: main
+  DEFAULT_PRIORITY: P1
 
 jobs:
   sync:
-    if: github.event_name != 'create' || github.event.ref_type == 'branch'
+    # Skipped in the Epitech mirror (no Actions minutes there), and for tags.
+    if: github.repository_owner != 'EpitechPGE3-2026' && (github.event_name != 'create' || github.event.ref_type == 'branch')
     runs-on: ubuntu-latest
+    timeout-minutes: 5
     steps:
-      - uses: actions/checkout@v7
+      # The default branch's script, never the pushed or proposed one: the tokens only run reviewed code.
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           ref: ${{ github.event.repository.default_branch }}
-          sparse-checkout: .github/scripts
-      - uses: actions/github-script@v9
+          persist-credentials: false
+
+      # Node only, the version pinned in mise.toml, as for the other repo scripts.
+      - uses: jdx/mise-action@90f833d396d0cc3674b631d2d225e306476c303a # v5.2.10
         with:
-          github-token: ${{ secrets.PROJECT_TOKEN }}
-          script: |
-            const run = require('./.github/scripts/project-board.js');
-            await run({ github, context, core });
+          install_args: node
+
+      - name: Sync the board
+        env:
+          PROJECT_TOKEN: ${{ secrets.PROJECT_TOKEN }}
+          GITHUB_TOKEN: ${{ github.token }}
+        run: |
+          if [ ! -f scripts/project-board.ts ]; then
+            echo "::notice::scripts/project-board.ts is not on the default branch yet: the board syncs after the next release."
+            exit 0
+          fi
+          node scripts/project-board.ts
