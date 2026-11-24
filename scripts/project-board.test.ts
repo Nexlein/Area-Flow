@@ -169,6 +169,7 @@ test('closing keywords give issue numbers; plain mentions do not', () => {
   );
   assert.deepEqual([...issueNumbersFromText('see #36, part of #37')], []);
   assert.deepEqual([...issueNumbersFromText(null)], []);
+  assert.deepEqual([...issueNumbersFromText('Closes #99999999999 and #3, fixes #4')], [4]);
 });
 
 test('an opened issue goes to Backlog with the default priority; assignment moves it to Ready and back', async () => {
@@ -183,6 +184,14 @@ test('an opened issue goes to Backlog with the default priority; assignment move
   assert.equal(w.status(7), STATUS.ready, 'still assigned to someone');
   await handle(deps, 'issues', issuePayload('unassigned', []));
   assert.equal(w.status(7), STATUS.backlog);
+});
+
+test('a late "opened" run does not pull a card that was assigned meanwhile back to Backlog', async () => {
+  const w = world([issue(7)]);
+  const deps = await w.deps();
+  await handle(deps, 'issues', issuePayload('assigned', [{ login: 'a' }]));
+  await handle(deps, 'issues', issuePayload('opened', []));
+  assert.equal(w.status(7), STATUS.ready);
 });
 
 test('a reopened issue starts over from Backlog or Ready', async () => {

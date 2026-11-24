@@ -18,6 +18,8 @@ const RANK: readonly string[] = Object.values(STATUS);
 const CLOSING_KEYWORDS =
   /\b(?:close|closes|closed|fix|fixes|fixed|resolve|resolves|resolved)\s*:?\s+#(\d+)/gi;
 
+const MAX_ISSUE_NUMBER = 2_147_483_647;
+
 /** At most this many issues per pull request or push: a longer list is not a real change, and costs API quota. */
 export const MAX_ISSUES = 10;
 
@@ -138,7 +140,11 @@ function toIssue(node: IssueNode): Issue {
 /** Issue numbers after a closing keyword ("Closes #12", "fixes: #3"), in any text. */
 export function issueNumbersFromText(text: string | null | undefined): Set<number> {
   const numbers = new Set<number>();
-  for (const match of (text ?? '').matchAll(CLOSING_KEYWORDS)) numbers.add(Number(match[1]));
+  for (const match of (text ?? '').matchAll(CLOSING_KEYWORDS)) {
+    const number = Number(match[1]);
+    // GitHub issue numbers are 32-bit: a larger one is rejected as invalid, not as not found, and would stop the run.
+    if (number <= MAX_ISSUE_NUMBER) numbers.add(number);
+  }
   return numbers;
 }
 
@@ -390,6 +396,9 @@ async function onIssue(deps: Deps, payload: Payload): Promise<void> {
   const item = await board.item(issue);
   switch (payload['action']) {
     case 'opened':
+      // advance, not setStatus: an assignment made right after opening may already have moved the card to Ready.
+      await board.advance(item, assigned ? STATUS.ready : STATUS.backlog);
+      break;
     case 'reopened':
       // A reopened issue starts over: its earlier status no longer holds.
       await board.setStatus(item, assigned ? STATUS.ready : STATUS.backlog);
