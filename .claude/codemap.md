@@ -59,10 +59,10 @@ Per file: line count and purpose (first sentence of the leading comment, else th
 
 ## docs/adr
 
-- `0000-template.md` (35): ADR 0000: Template
-- `0001-backend-fastify.md` (56): ADR 0001: Back-end framework: Fastify
-- `0002-frontend-solid-capacitor.md` (58): ADR 0002: Front-end: Solid and Capacitor
-- `0003-persistence-postgresql.md` (61): ADR 0003: Persistence: PostgreSQL with Prisma
+- `0000-template.md` (38): ADR 0000: Template
+- `0001-backend-fastify.md` (59): ADR 0001: Back-end framework: Fastify
+- `0002-frontend-solid-capacitor.md` (61): ADR 0002: Front-end: Solid and Capacitor
+- `0003-persistence-postgresql.md` (63): ADR 0003: Persistence: PostgreSQL with Prisma
 - `README.md` (21): Architecture Decision Records
 
 ## docs/architecture
