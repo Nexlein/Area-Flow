@@ -11,7 +11,7 @@ Every workflow, run, delegated token and seen event lives in the database, and t
 - The subject requires that hooks never repeat an event, that delegated tokens are stored safely, a persistence model we can defend, and the whole product in Docker Compose ([subject](../subject/SUBJECT.md)); [SEC-CRYPTO](../subject/FEATURES.md#sec-crypto) and [SYS-BACKUP](../subject/FEATURES.md#sys-backup) lean on it.
 - The model is relational: users, identities, subscriptions, workflows, nodes, runs, node results, hook state ([model](../architecture/persistence-model.md)).
 - The server is proposed as Fastify in TypeScript ([ADR 0001](0001-backend-fastify.md)), which plans deduplication keys in the database and validates every request body with a route schema.
-- Three databases were tested on one brief, with their official drivers and no ORM ([`../plan/tech-persistence.md`](../plan/tech-persistence.md)). The access layer on top is [ADR 0004](0004-access-layer-prisma.md).
+- Three databases were tested on one brief, with their official or most used drivers and no ORM ([`../plan/tech-persistence.md`](../plan/tech-persistence.md)). The access layer on top is [ADR 0004](0004-access-layer-prisma.md).
 
 ## Alternatives
 

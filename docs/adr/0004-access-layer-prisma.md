@@ -10,7 +10,7 @@ Every query, every migration and every result type of the server goes through th
 
 - The database is proposed as PostgreSQL 18 ([ADR 0003](0003-persistence-postgresql.md)); the server as Fastify in TypeScript, with a route schema on every request body ([ADR 0001](0001-backend-fastify.md)).
 - The repository is TypeScript only, in strict mode: query results should have types the compiler checks.
-- Three libraries were tested on PostgreSQL 18.7 against the plain `pg` driver, with the same probes ([`../plan/tech-persistence.md`](../plan/tech-persistence.md#access-layer)).
+- Three libraries were tested on PostgreSQL 18.7 against the plain `pg` driver, with probes P0 to P5 ([`../plan/tech-persistence.md`](../plan/tech-persistence.md#access-layer)).
 
 ## Alternatives
 

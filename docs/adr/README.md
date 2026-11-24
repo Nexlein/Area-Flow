@@ -10,7 +10,7 @@ One short file per significant choice: why it deserved a record, context, altern
 
 - Lines marked **Fact:** link their source; the rest is our reasoning.
 - Alternatives are rejected **for this project**, never declared bad in general.
-- Records so far: the stack (0001 to 0004, [`../plan/`](../plan/README.md)). Next: the open questions of [`../architecture/`](../architecture/README.md), starting with the workflow engine.
+- Records so far: the stack (0001 to 0004, [`../plan/`](../plan/README.md)). Next: the open questions of [`../architecture/`](../architecture/README.md).
 
 ## Index
 
