@@ -1,4 +1,4 @@
-// Moves the cards of the GitHub Project board when issues, branches and pull requests change, and closes issues released to main.
+// Moves the cards of the GitHub Project board when issues and pull requests change, and closes issues released to main.
 // Run by .github/workflows/project-board.yml with Node, no build: PROJECT_TOKEN for the board, GITHUB_TOKEN for the repository.
 
 import { readFileSync } from 'node:fs';
@@ -12,18 +12,28 @@ export const STATUS = {
   onMain: 'On main',
 } as const;
 
-/** Statuses in board order: a card only ever moves forward along it, except on explicit steps back. */
+/** Statuses in board order: automatic moves go forward along it, except the explicit steps back. */
 const RANK: readonly string[] = Object.values(STATUS);
 
 const CLOSING_KEYWORDS =
   /\b(?:close|closes|closed|fix|fixes|fixed|resolve|resolves|resolved)\s*:?\s+#(\d+)/gi;
 
-const MAX_ISSUE_PAGES = 5;
+/** At most this many issues per pull request or push: a longer list is not a real change, and costs API quota. */
+export const MAX_ISSUES = 10;
 
 /** Sends one GraphQL query with one token and returns its `data`. */
 export type GraphQL = <T>(query: string, variables: Record<string, unknown>) => Promise<T>;
 /** Sends one REST request with one token. */
 export type Rest = (method: string, path: string, body?: unknown) => Promise<void>;
+
+/** A GraphQL error from GitHub, with the error types it reported (e.g. NOT_FOUND). */
+export class GraphQLError extends Error {
+  readonly types: readonly string[];
+  constructor(message: string, types: readonly string[]) {
+    super(message);
+    this.types = types;
+  }
+}
 
 export interface Config {
   owner: string;
@@ -110,16 +120,6 @@ export const QUERY_ITEMS = `
     }
   }`;
 
-export const QUERY_LINKED_BRANCHES = `
-  query($owner: String!, $repo: String!, $after: String) {
-    repository(owner: $owner, name: $repo) {
-      issues(first: 100, after: $after, states: OPEN, orderBy: { field: UPDATED_AT, direction: DESC }) {
-        pageInfo { hasNextPage endCursor }
-        nodes { ${ISSUE_FIELDS} linkedBranches(first: 20) { nodes { ref { name } } } }
-      }
-    }
-  }`;
-
 export const QUERY_ISSUE = `
   query($owner: String!, $repo: String!, $number: Int!) {
     repository(owner: $owner, name: $repo) { issue(number: $number) { ${ISSUE_FIELDS} } }
@@ -174,10 +174,11 @@ export class Board {
       number: this.#cfg.number,
     });
     const project = data.repositoryOwner?.projectV2;
-    if (!project)
+    if (!project) {
       throw new Error(
         `project #${this.#cfg.number} of ${this.#cfg.owner} not found: check PROJECT_TOKEN's "project" scope`,
       );
+    }
     this.#projectId = project.id;
     const fields = new Map(
       project.fields.nodes.flatMap((f) => (f.id && f.name && f.options ? [[f.name, f]] : [])),
@@ -197,7 +198,7 @@ export class Board {
     this.#priority = field('Priority');
   }
 
-  /** The card of an issue, added to the board if it is not there yet. */
+  /** The card of an issue, with its current values, added to the board if it is not there yet. */
   async item(issue: Issue): Promise<Item> {
     type Data = {
       addProjectV2ItemById: {
@@ -217,6 +218,11 @@ export class Board {
     };
   }
 
+  /** Re-reads a card's status right before a move, so a run that overlaps another acts on fresh values. */
+  async #refresh(item: Item): Promise<void> {
+    item.status = (await this.item(item.issue)).status;
+  }
+
   async setStatus(item: Item, status: string): Promise<void> {
     if (item.status === status) return;
     await this.#set(item.id, this.#status, status);
@@ -226,7 +232,14 @@ export class Board {
 
   /** Moves a card forward to `status`, never back. */
   async advance(item: Item, status: string): Promise<void> {
+    await this.#refresh(item);
     if (RANK.indexOf(item.status ?? '') < RANK.indexOf(status)) await this.setStatus(item, status);
+  }
+
+  /** Moves a card from `from` to `to` only if it is still at `from`. */
+  async stepBack(item: Item, from: string, to: string): Promise<void> {
+    await this.#refresh(item);
+    if (item.status === from) await this.setStatus(item, to);
   }
 
   /** Gives a card the default priority when it has none. */
@@ -263,15 +276,15 @@ export class Board {
         after,
       });
       for (const node of data.node.items.nodes) {
-        const content = node.content;
+        const c = node.content;
         if (
           node.status?.name === status &&
-          content?.id &&
-          content.number !== undefined &&
-          content.state &&
-          content.repository
+          c?.id &&
+          c.number !== undefined &&
+          c.state &&
+          c.repository
         ) {
-          found.push({ id: node.id, issue: toIssue(content as IssueNode), status, priority: null });
+          found.push({ id: node.id, issue: toIssue(c as IssueNode), status, priority: null });
         }
       }
       after = data.node.items.pageInfo.hasNextPage ? data.node.items.pageInfo.endCursor : null;
@@ -303,54 +316,21 @@ export class Repo {
     this.#log = log;
   }
 
-  get #parts(): { owner: string; repo: string } {
-    const [owner = '', repo = ''] = this.fullName.split('/');
-    return { owner, repo };
-  }
-
-  /** The issue with this number, or null when the number is a pull request or does not exist. */
+  /** The issue with this number, or null when the number is a pull request or does not exist; other errors stop the run. */
   async issue(number: number): Promise<Issue | null> {
+    const [owner = '', repo = ''] = this.fullName.split('/');
     try {
       const data = await this.#graphql<{ repository: { issue: IssueNode | null } }>(QUERY_ISSUE, {
-        ...this.#parts,
+        owner,
+        repo,
         number,
       });
       return data.repository.issue ? toIssue(data.repository.issue) : null;
     } catch (error) {
-      this.#log(
-        `#${number}: not an issue of ${this.fullName}, skipped (${error instanceof Error ? error.message : error})`,
-      );
+      if (!(error instanceof GraphQLError && error.types.includes('NOT_FOUND'))) throw error;
+      this.#log(`#${number}: not an issue of ${this.fullName}, skipped`);
       return null;
     }
-  }
-
-  /** Open issues with a linked branch of this name (created from the issue's Development panel). */
-  async issuesLinkedTo(branch: string): Promise<Issue[]> {
-    type Data = {
-      repository: {
-        issues: {
-          pageInfo: { hasNextPage: boolean; endCursor: string | null };
-          nodes: (IssueNode & { linkedBranches: { nodes: { ref: { name: string } | null }[] } })[];
-        };
-      };
-    };
-    const found: Issue[] = [];
-    let after: string | null = null;
-    for (let page = 0; page < MAX_ISSUE_PAGES; page++) {
-      const data: Data = await this.#graphql<Data>(QUERY_LINKED_BRANCHES, {
-        ...this.#parts,
-        after,
-      });
-      for (const node of data.repository.issues.nodes) {
-        if (node.linkedBranches.nodes.some((b) => b.ref?.name === branch))
-          found.push(toIssue(node));
-      }
-      after = data.repository.issues.pageInfo.hasNextPage
-        ? data.repository.issues.pageInfo.endCursor
-        : null;
-      if (!after) break;
-    }
-    return found;
   }
 
   /** Closes an issue of this repository as completed; issues of other repositories are left alone. */
@@ -382,9 +362,13 @@ async function land({ board, repo }: Deps, issues: Issue[], status: string): Pro
   }
 }
 
-async function issuesOf(repo: Repo, numbers: Iterable<number>): Promise<Issue[]> {
+/** The issues behind these numbers, at most MAX_ISSUES of them. */
+async function issuesOf({ repo, log }: Deps, numbers: Iterable<number>): Promise<Issue[]> {
+  const all = [...numbers];
+  if (all.length > MAX_ISSUES)
+    log(`${all.length} issue numbers, only the first ${MAX_ISSUES} are used`);
   const issues: Issue[] = [];
-  for (const number of numbers) {
+  for (const number of all.slice(0, MAX_ISSUES)) {
     const issue = await repo.issue(number);
     if (issue) issues.push(issue);
   }
@@ -407,42 +391,33 @@ async function onIssue(deps: Deps, payload: Payload): Promise<void> {
   switch (payload['action']) {
     case 'opened':
     case 'reopened':
+      // A reopened issue starts over: its earlier status no longer holds.
       await board.setStatus(item, assigned ? STATUS.ready : STATUS.backlog);
       break;
     case 'assigned':
       await board.advance(item, STATUS.ready);
       break;
     case 'unassigned':
-      if (!assigned && item.status === STATUS.ready) await board.setStatus(item, STATUS.backlog);
+      if (!assigned) await board.stepBack(item, STATUS.ready, STATUS.backlog);
       break;
   }
   await board.ensurePriority(item);
 }
 
-async function onBranch(deps: Deps, branch: string): Promise<void> {
-  const { cfg, repo, board, log } = deps;
-  if (branch === cfg.devBranch || branch === cfg.mainBranch) return;
-  const issues = await repo.issuesLinkedTo(branch);
-  if (issues.length === 0) log(`branch ${branch}: no linked issue`);
-  for (const issue of issues) {
-    const item = await board.item(issue);
-    await board.advance(item, STATUS.inProgress);
-    await board.ensurePriority(item);
-  }
-}
-
 async function onPush(deps: Deps, payload: Payload): Promise<void> {
+  const { cfg, log } = deps;
   const ref: string = payload['ref'] ?? '';
-  if (!ref.startsWith('refs/heads/')) return;
-  const branch = ref.slice('refs/heads/'.length);
-  const { cfg, repo } = deps;
-  if (branch !== cfg.devBranch && branch !== cfg.mainBranch) return onBranch(deps, branch);
+  const branch = ref.startsWith('refs/heads/') ? ref.slice('refs/heads/'.length) : '';
+  if (payload['deleted'] || (branch !== cfg.devBranch && branch !== cfg.mainBranch)) {
+    log(`push to ${ref || '(no ref)'} ignored`);
+    return;
+  }
   const numbers = new Set<number>();
   for (const commit of payload['commits'] ?? [])
     for (const n of issueNumbersFromText(commit.message)) numbers.add(n);
   await land(
     deps,
-    await issuesOf(repo, numbers),
+    await issuesOf(deps, numbers),
     branch === cfg.mainBranch ? STATUS.onMain : STATUS.onDev,
   );
 }
@@ -450,12 +425,10 @@ async function onPush(deps: Deps, payload: Payload): Promise<void> {
 async function onPullRequest(deps: Deps, payload: Payload): Promise<void> {
   const { board, repo, cfg, log } = deps;
   const pr = payload['pull_request'];
-  const issues = await issuesOf(repo, issueNumbersFromText(`${pr.title}\n${pr.body ?? ''}`));
-  const stepBack = async (): Promise<void> => {
-    for (const issue of issues) {
-      const item = await board.item(issue);
-      if (item.status === STATUS.inReview) await board.setStatus(item, STATUS.inProgress);
-    }
+  const issues = await issuesOf(deps, issueNumbersFromText(`${pr.title}\n${pr.body ?? ''}`));
+  const backToProgress = async (): Promise<void> => {
+    for (const issue of issues)
+      await board.stepBack(await board.item(issue), STATUS.inReview, STATUS.inProgress);
   };
   switch (payload['action']) {
     case 'opened':
@@ -469,9 +442,9 @@ async function onPullRequest(deps: Deps, payload: Payload): Promise<void> {
       }
       return;
     case 'converted_to_draft':
-      return stepBack();
+      return backToProgress();
     case 'closed':
-      if (!pr.merged) return stepBack();
+      if (!pr.merged) return backToProgress();
       if (pr.base.ref === cfg.devBranch) return land(deps, issues, STATUS.onDev);
       if (pr.base.ref !== cfg.mainBranch) return;
       // A release (dev into main) promotes every card waiting on dev, not only the ones its description names.
@@ -481,7 +454,7 @@ async function onPullRequest(deps: Deps, payload: Payload): Promise<void> {
         );
         log(`${cfg.devBranch} -> ${cfg.mainBranch} merged: promoting ${waiting.length} card(s)`);
         for (const item of waiting) {
-          await board.setStatus(item, STATUS.onMain);
+          await board.advance(item, STATUS.onMain);
           await repo.close(item.issue);
         }
       }
@@ -494,9 +467,6 @@ export async function handle(deps: Deps, eventName: string, payload: Payload): P
   switch (eventName) {
     case 'issues':
       return onIssue(deps, payload);
-    case 'create':
-      if (payload['ref_type'] === 'branch') return onBranch(deps, payload['ref']);
-      return;
     case 'push':
       return onPush(deps, payload);
     case 'pull_request':
@@ -507,22 +477,22 @@ export async function handle(deps: Deps, eventName: string, payload: Payload): P
   }
 }
 
+const HEADERS = { 'content-type': 'application/json', 'user-agent': 'area-flow-project-board' };
+
 /** A GraphQL caller for GitHub's API with one token. */
 export function graphqlWith(token: string, fetchImpl: typeof fetch = fetch): GraphQL {
   return async <T>(query: string, variables: Record<string, unknown>): Promise<T> => {
     const res = await fetchImpl('https://api.github.com/graphql', {
       method: 'POST',
-      headers: {
-        authorization: `Bearer ${token}`,
-        'content-type': 'application/json',
-        'user-agent': 'area-flow-project-board',
-      },
+      headers: { ...HEADERS, authorization: `Bearer ${token}` },
       body: JSON.stringify({ query, variables }),
     });
-    const body = (await res.json()) as { data?: T; errors?: { message: string }[] };
+    const body = (await res.json()) as { data?: T; errors?: { message: string; type?: string }[] };
     if (!res.ok || body.errors?.length || body.data === undefined) {
-      throw new Error(
-        `GitHub GraphQL ${res.status}: ${body.errors?.map((e) => e.message).join('; ') ?? 'no data'}`,
+      const errors = body.errors ?? [];
+      throw new GraphQLError(
+        `GitHub GraphQL ${res.status}: ${errors.map((e) => e.message).join('; ') || 'no data'}`,
+        errors.flatMap((e) => (e.type ? [e.type] : [])),
       );
     }
     return body.data;
@@ -535,10 +505,9 @@ export function restWith(token: string, fetchImpl: typeof fetch = fetch): Rest {
     const res = await fetchImpl(`https://api.github.com${path}`, {
       method,
       headers: {
+        ...HEADERS,
         authorization: `Bearer ${token}`,
         accept: 'application/vnd.github+json',
-        'content-type': 'application/json',
-        'user-agent': 'area-flow-project-board',
       },
       body: body === undefined ? undefined : JSON.stringify(body),
     });

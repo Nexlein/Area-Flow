@@ -1,20 +1,20 @@
-# Moves the cards of the GitHub Project board (Status, Priority) on issue, branch, pull request and push events.
-# Runs scripts/project-board.ts from the default branch only, never code from a pull request, so pull_request_target
-# is safe here: the event only gives the script a title and a description to read.
-# Tokens: PROJECT_TOKEN (classic, scopes `project` and `public_repo` only) for the board; GITHUB_TOKEN for the issues.
+# Moves the cards of the GitHub Project board (Status, Priority) on issue, pull request and dev/main push events.
+# The board token lives in the `project-board` environment, which only deploys from main and dev: a workflow pushed on
+# any other branch cannot read it. Every event used here runs on main or dev, and the job checks out the default
+# branch's script, never a pull request's: pull_request_target only hands the script a title and a description to read.
+# Tokens: PROJECT_TOKEN (classic, scope `project` only) for the board; GITHUB_TOKEN for reading and closing issues.
 name: Project board
 
 on:
   issues:
     types: [opened, reopened, assigned, unassigned]
-  create:
   push:
-    branches: ['**']
+    branches: [dev, main]
   pull_request_target:
     types: [opened, reopened, edited, ready_for_review, converted_to_draft, closed]
 
 # No concurrency group: GitHub cancels the pending run of a group when a new one queues, which would drop events.
-# Card moves only go forward and setting a value twice changes nothing, so overlapping runs are safe.
+# Each move re-reads the card just before writing, so overlapping runs rarely conflict; a near-simultaneous pair still can.
 
 permissions:
   contents: read
@@ -29,12 +29,16 @@ env:
 
 jobs:
   sync:
-    # Skipped in the Epitech mirror (no Actions minutes there), and for tags.
-    if: github.repository_owner != 'EpitechPGE3-2026' && (github.event_name != 'create' || github.event.ref_type == 'branch')
+    # Skipped in the Epitech mirror (no Actions minutes there), for Dependabot (it gets no secrets), and for pull
+    # requests from forks, so outsiders cannot move the team's cards.
+    if: >-
+      github.repository_owner != 'EpitechPGE3-2026' &&
+      github.actor != 'dependabot[bot]' &&
+      (github.event_name != 'pull_request_target' || github.event.pull_request.head.repo.full_name == github.repository)
     runs-on: ubuntu-latest
     timeout-minutes: 5
+    environment: project-board # holds PROJECT_TOKEN, deployments from main and dev only
     steps:
-      # The default branch's script, never the pushed or proposed one: the tokens only run reviewed code.
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           ref: ${{ github.event.repository.default_branch }}
