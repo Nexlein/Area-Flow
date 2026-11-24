@@ -56,8 +56,13 @@ function gitEnv(path: string[]): NodeJS.ProcessEnv {
 }
 
 /** Runs git in `cwd`; returns its exit status and output. */
-function git(cwd: string, args: string[], path = PATH_DIRS): SpawnSyncReturns<string> {
-  return spawnSync('git', args, { cwd, env: gitEnv(path), encoding: 'utf8' });
+function git(
+  cwd: string,
+  args: string[],
+  path = PATH_DIRS,
+  extra: NodeJS.ProcessEnv = {},
+): SpawnSyncReturns<string> {
+  return spawnSync('git', args, { cwd, env: { ...gitEnv(path), ...extra }, encoding: 'utf8' });
 }
 
 let repos = 0;
@@ -83,7 +88,11 @@ function freshRepo(hook: Hook): string {
 function commit(
   files: Record<string, string>,
   message: string,
-  { hook = 'pre-commit', path = PATH_DIRS }: { hook?: Hook; path?: string[] } = {},
+  {
+    hook = 'pre-commit',
+    path = PATH_DIRS,
+    env = {},
+  }: { hook?: Hook; path?: string[]; env?: NodeJS.ProcessEnv } = {},
 ): SpawnSyncReturns<string> {
   const dir = freshRepo(hook);
   for (const [name, body] of Object.entries(files)) {
@@ -91,7 +100,7 @@ function commit(
     writeFileSync(join(dir, name), body);
     assert.equal(git(dir, ['add', '--', name]).status, 0);
   }
-  return git(dir, ['commit', '-q', '--allow-empty', '-m', message], path);
+  return git(dir, ['commit', '-q', '--allow-empty', '-m', message], path, env);
 }
 
 test('secret scan blocks .env files in any folder', () => {
@@ -106,6 +115,14 @@ test('secret scan blocks .envrc and a path git would quote', () => {
     assert.notEqual(result.status, 0, name);
     assert.match(result.stderr, /must not be committed/, name);
   }
+});
+
+test('secret scan still blocks .env under git --literal-pathspecs', () => {
+  const result = commit({ '.env': 'TOKEN=1\n' }, 'chore: add env', {
+    env: { GIT_LITERAL_PATHSPECS: '1' },
+  });
+  assert.notEqual(result.status, 0);
+  assert.match(result.stderr, /\.env must not be committed/);
 });
 
 test('secret scan blocks .env.example renamed to .env', () => {

@@ -2,6 +2,8 @@
 # Blocks commits that stage .env files or secrets. Uses gitleaks when installed (mise: gitleaks),
 # otherwise falls back to a short regex list so the hook still protects a machine without it.
 status=0
+# The glob pathspecs below must keep their meaning even when git exports GIT_LITERAL_PATHSPECS (git --literal-pathspecs, Magit).
+unset GIT_LITERAL_PATHSPECS
 # git matches the names itself, so quoted, spaced or non-ASCII paths cannot slip through; .env.example is allowed.
 envs=$(git -c core.quotePath=false diff --cached --name-only --diff-filter=ACMR -- \
   ':(glob)**/.env' ':(glob)**/.env.*' ':(glob)**/.envrc' ':(exclude,glob)**/.env.example')
@@ -19,12 +21,14 @@ else
   q="'"
   secrets='GOCSPX-[A-Za-z0-9_-]{20,}|gh[pousr]_[A-Za-z0-9]{30,}|github_pat_[A-Za-z0-9_]{30,}|xox[abprs]-[A-Za-z0-9-]{10,}|AKIA[0-9A-Z]{16}|(^|[^A-Za-z0-9_-])sk-(ant-|proj-)?[A-Za-z0-9_-]{20,}|-----BEGIN [A-Z ]*PRIVATE KEY-----'
   jwk="(^|[^A-Za-z0-9_])[\"$q]?d[\"$q]?[[:space:]]*:[[:space:]]*[\"$q][A-Za-z0-9_-]{40,}[\"$q]"
-  hits=$(git diff --cached -U0 --no-color --diff-filter=ACMR \
+  # --no-ext-diff --no-textconv: an external diff tool or a textconv driver would hide the real added lines.
+  hits=$(git diff --cached -U0 --no-color --no-ext-diff --no-textconv --diff-filter=ACMR \
     | grep '^+' | grep -v '^+++' \
     | grep -cE "$secrets|$jwk" || true)
   if [ "$hits" -gt 0 ]; then
-    echo "no-secrets: staged changes contain what looks like a secret (values hidden). Unstage it, or use .env:" >&2
-    git -c core.quotePath=false diff --cached --name-only --diff-filter=ACMR -G"$secrets|$jwk" | sed 's/^/  /' >&2
+    echo "no-secrets: staged changes contain what looks like a secret (values hidden). Unstage it, or use .env. In:" >&2
+    git -c core.quotePath=false diff --cached --name-only --no-ext-diff --no-textconv --diff-filter=ACMR -G"$secrets|$jwk" \
+      | sed 's/^/  /' >&2
     status=1
   fi
 fi
