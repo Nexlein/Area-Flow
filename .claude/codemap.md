@@ -85,8 +85,8 @@ Per file: line count and purpose (first sentence of the leading comment, else th
 - `features-selection.md` (29): Additional features selection
 - `management.md` (31): Project management: method and tools
 - `task-breakdown.md` (57): Task breakdown
-- `tech-backend.md` (75): Technology selection: back-end
-- `tech-frontend.md` (85): Technology selection: front-end
+- `tech-backend.md` (100): Technology selection: back-end
+- `tech-frontend.md` (93): Technology selection: front-end
 - `tech-persistence.md` (133): Technology selection: persistence
 
 ## docs/plan/spikes
@@ -95,7 +95,7 @@ Per file: line count and purpose (first sentence of the leading comment, else th
 - `persistence-runs.md` (56): Log of every persistence spike run: what each database and access layer produced, what was checked outside the drafting sessions, and wha...
 - `prompts.md` (55): The identical prompts, cold-read questions and load settings used for every back-end spike, so no framework got more help than another.
 - `runs.md` (228): Log of every spike probe run: what each framework produced, what was verified independently, and what the result does not prove.
-- `security-and-weight.md` (92): Security advisory history and heaviness of the three back-end spike candidates, with the method, sources and what the numbers cannot tell.
+- `security-and-weight.md` (116): Security advisory history and heaviness of the three back-end spike candidates, with the method, sources and what the numbers cannot tell.
 
 ## docs/security
 
