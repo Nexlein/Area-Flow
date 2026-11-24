@@ -7,7 +7,7 @@
 
 Epitech Tek3 AREA project: an automation platform inspired by IFTTT and Zapier. Users connect their accounts on third-party Services; an Action detected in one Service triggers REActions in others.
 
-**Status:** Milestone 1 (Plan), stack being chosen: [`docs/plan/`](docs/plan/README.md).
+**Status:** Milestone 1 (Plan), stack proposed, not accepted yet: ADRs 0001 to 0004 ([`docs/adr/`](docs/adr/README.md)); plan and what is left: [`docs/plan/`](docs/plan/README.md).
 
 ```mermaid
 flowchart LR
