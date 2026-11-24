@@ -103,7 +103,7 @@ Each cell: none, tried, or shipped.
 
 | Member          | NestJS | Fastify | Effect |
 | --------------- | ------ | ------- | ------ |
-| Nexlein         |        |         |        |
+| Nexlein         | none   | none    | none   |
 | Saitamadupauvre |        |         |        |
 | TeddyBertrand   |        |         |        |
 | Quinceyyyy      |        |         |        |
