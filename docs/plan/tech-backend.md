@@ -8,17 +8,32 @@
 
 ## What we compared
 
-- **TypeScript only** (repository rule), **full-stack frameworks strongly discouraged** (subject), and we judge what each candidate actually produced on the same brief, not only what its documentation promises.
-- Three candidates chosen for contrast: **NestJS** (the framework does it), **Fastify** (we assemble it), **Effect** (typed effects, scheduling built in). Considered, not tested: Hono, Elysia, Express with `tsoa`.
+- **TypeScript only** (repository rule). **Full-stack frameworks strongly discouraged** (subject).
+- We judge what each candidate produced on the same brief, not only what its documentation promises.
+- Three candidates chosen for contrast: **NestJS** (the framework does it), **Fastify** (we assemble it), **Effect** (typed effects, scheduling built in).
+- Considered, not tested: Hono, Elysia, Express with `tsoa`.
 
 ## Tests made
 
-Each candidate was tested the same way, in four categories.
+Each candidate went through the same four categories.
 
-1. **Requirements fit, six probes.** Each probe was drafted with a coding assistant from an identical brief ([`spikes/prompts.md`](spikes/prompts.md)), 5 minutes at most per probe, then checked and fixed by hand: a `/ping` server; a served OpenAPI description with a test that fails when code and description disagree; a background hook that deduplicates, survives errors and times out; a save-time check rejecting undeclared `{{ key }}` references without evaluating them; a JWT checked against a JWKS (including `alg: none` and HS256 attacks); a route calling a mocked third party that answers 502 on failure. We reran every test and broke one rule per probe to check a test failed.
-2. **Speed.** The compiled code under `autocannon` (50 connections, 10 s) on `/ping` and on the save-time check, plus cold start and idle memory. Median of 3 runs in rotating order, zero errors.
-3. **Weight.** Production dependency size and package count.
-4. **Security.** Advisory history of each framework's own packages (OSV database, cross-checked on GitLab, NVD and Red Hat), known vulnerabilities in the installed versions (OSV and `npm audit`), and what each JWT guard does when its configuration is missing.
+| Category             | What was done                                                                                                                                                                                                                                  |
+| -------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **Requirements fit** | Six probes, drafted with a coding assistant from an identical brief ([`spikes/prompts.md`](spikes/prompts.md)), 5 minutes at most each, then checked and fixed by hand. Details below the table.                                               |
+| **Speed**            | Compiled code under `autocannon` (50 connections, 10 s) on `/ping` and on the save-time check, plus cold start and idle memory. Median of 3 runs in rotating order, zero errors.                                                               |
+| **Weight**           | Production dependency size and package count.                                                                                                                                                                                                  |
+| **Security**         | Advisory history of each framework's own packages (OSV database, cross-checked on GitLab, NVD and Red Hat). Known vulnerabilities in the installed versions (OSV and `npm audit`). What each JWT guard does when its configuration is missing. |
+
+The six probes:
+
+1. A `/ping` server.
+2. A served OpenAPI description, with a test that fails when code and description disagree.
+3. A background hook that deduplicates, survives errors and times out.
+4. A save-time check rejecting undeclared `{{ key }}` references without evaluating them.
+5. A JWT checked against a JWKS, including `alg: none` and HS256 attacks.
+6. A route calling a mocked third party that answers 502 on failure.
+
+We reran every test and broke one rule per probe to check a test failed.
 
 | Test                                                                 | NestJS 12.6.0                    | Fastify 5.12.8      | Effect 4.1.5       |
 | -------------------------------------------------------------------- | -------------------------------- | ------------------- | ------------------ |
@@ -33,38 +48,47 @@ Each candidate was tested the same way, in four categories.
 | JWT guard when issuer or audience is not configured                  | accepts any validly signed token | rejects every token | refuses to start   |
 | Hook scheduling and timeout                                          | hand-written                     | hand-written        | built in           |
 
-What stood out:
+| Finding                                                                                                                | Detail                                                                                            |
+| ---------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------- |
+| All three hold hook deduplication in memory                                                                            | events would be reprocessed after a restart: a persistence decision, not a framework feature      |
+| NestJS: its official scheduler would not install (peer-dependency conflict)                                            |                                                                                                   |
+| NestJS: the generated JWT guard fails open                                                                             | any validly signed token passes when configuration is missing                                     |
+| Fastify: 9 of its 19 advisories are validation bypasses, all since April 2025                                          | they hit the boundary AREA relies on; fixed quickly, and the installed version contains the fixes |
+| Effect: four APIs used in its first draft do not exist in version 4 (the names look like version 3 ones, not verified) |                                                                                                   |
+| Effect: two of its three advisories list only a version 3 fix                                                          | whether version 4 is affected is unknown                                                          |
+| Effect: its "connection refused" test passes through the timeout                                                       | it cannot tell a refusal from a hang                                                              |
 
-- **All three hold hook deduplication in memory**, so events would be reprocessed after a restart. That is a persistence decision, not a framework feature.
-- **NestJS:** its official scheduler would not install (peer-dependency conflict); the generated JWT guard fails open.
-- **Fastify:** 9 of its 19 advisories are validation bypasses, all since April 2025, in the boundary AREA relies on; they were fixed quickly, and the installed version contains the fixes.
-- **Effect:** four APIs used in its first draft do not exist in version 4 (the names look like version 3 ones, not verified); two of its three advisories list only a version 3 fix, so whether version 4 is affected is unknown; its "connection refused" test passes through the timeout and cannot tell a refusal from a hang.
-- **Not tested:** the OIDC login and OAuth2 delegation flows, persistence, a realistic load, and the team's own experience. Two advisories (Fastify `CVE-2026-76169`, Effect `CVE-2026-121707`) are counted from OSV but could not be confirmed elsewhere.
+- **Not tested:** the OIDC login and OAuth2 delegation flows, persistence, a realistic load, and the team's own experience.
+- **Unconfirmed advisories:** two (Fastify `CVE-2026-76169`, Effect `CVE-2026-121707`) are counted from OSV but could not be confirmed elsewhere.
 
-Spike code is in local repositories, not pushed. Full logs and raw runs: [`spikes/runs.md`](spikes/runs.md); the identical briefs: [`spikes/prompts.md`](spikes/prompts.md); advisory history and heaviness, with sources: [`spikes/security-and-weight.md`](spikes/security-and-weight.md).
+Spike code is in local repositories, not pushed. Full logs and raw runs: [`spikes/runs.md`](spikes/runs.md). The identical briefs: [`spikes/prompts.md`](spikes/prompts.md). Advisory history and heaviness, with sources: [`spikes/security-and-weight.md`](spikes/security-and-weight.md).
 
 ## Weighted matrix
 
 Weights: **3** = the subject requires it, **2** = shapes cost or risk over the project, **1** = a tiebreaker. Scores 1 to 5 (5 is best), the number in brackets is score times weight: total weight 20, maximum 100.
 
-**Scored from the tests above; the weights are the owner's proposal**, and the learning-curve row was added in review. Before the ADR is accepted, each member scores the matrix alone, as the [bootstrap](../subject/BOOTSTRAP.md#weighted-decision-matrix) asks; any criterion where two members differ by more than 2 points is discussed and recorded here.
+**Scored from the tests above; the weights are the owner's proposal**, and the learning-curve row was added in review. Before the ADR is accepted, each member scores the matrix alone, as the [bootstrap](../subject/BOOTSTRAP.md#weighted-decision-matrix) asks. Any criterion where two members differ by more than 2 points is discussed and recorded here.
 
-| Criterion                                                | Weight | NestJS   | Fastify  | Effect   |
-| -------------------------------------------------------- | ------ | -------- | -------- | -------- |
-| Security: advisories, defaults, auth libraries           | 3      | 3 (9)    | 2 (6)    | 4 (12)   |
-| OpenAPI: generation, served UI, contract tests           | 3      | 3 (9)    | 4 (12)   | 4 (12)   |
-| Background work: scheduling hooks, timeouts              | 3      | 2 (6)    | 2 (6)    | 5 (15)   |
-| OAuth2 / OIDC libraries                                  | 2      | 3 (6)    | 3 (6)    | 3 (6)    |
-| Testing: unit, functional, mocked third parties          | 2      | 4 (8)    | 3 (6)    | 3 (6)    |
-| Speed and weight                                         | 2      | 3 (6)    | 5 (10)   | 2 (4)    |
-| Ease of getting it right: fixes, wrong APIs, conventions | 2      | 3 (6)    | 4 (8)    | 2 (4)    |
-| Learning curve and oral defense                          | 3      | 3 (9)    | 4 (12)   | 2 (6)    |
-| **Total, out of 100**                                    |        | **59**   | **66**   | **65**   |
-| **Weighted average, 1 to 5**                             |        | **2.95** | **3.30** | **3.25** |
+| Criterion                                                | Weight | NestJS   | Fastify  | Effect   | Why                                                                                                                                                                        |
+| -------------------------------------------------------- | ------ | -------- | -------- | -------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Security: advisories, defaults, auth libraries           | 3      | 3 (9)    | 2 (6)    | 4 (12)   | NestJS: fewest advisories, but fails open, widest tree. Fastify: by far the most. Effect: refuses to start on missing configuration, smallest tree, but young              |
+| OpenAPI: generation, served UI, contract tests           | 3      | 3 (9)    | 4 (12)   | 4 (12)   | NestJS's DTO classes do not validate, so description and validation can drift; the other two derive both from one definition                                               |
+| Background work: scheduling hooks, timeouts              | 3      | 2 (6)    | 2 (6)    | 5 (15)   | only Effect has it built in                                                                                                                                                |
+| OAuth2 / OIDC libraries                                  | 2      | 3 (6)    | 3 (6)    | 3 (6)    | all three used `jose`; flows not tested, so no difference scored                                                                                                           |
+| Testing: unit, functional, mocked third parties          | 2      | 4 (8)    | 3 (6)    | 3 (6)    | Fastify's tests hang unless configured; Effect's refusal test is blind                                                                                                     |
+| Speed and weight                                         | 2      | 3 (6)    | 5 (10)   | 2 (4)    | Fastify leads every measure                                                                                                                                                |
+| Ease of getting it right: fixes, wrong APIs, conventions | 2      | 3 (6)    | 4 (8)    | 2 (4)    | NestJS needed the most fixes; Effect used the most non-existent APIs                                                                                                       |
+| Learning curve and oral defense                          | 3      | 3 (9)    | 4 (12)   | 2 (6)    | Fastify: plain functions and route schemas. NestJS: decorators and dependency injection hide the wiring (its DI hung silently in probe 2). Effect: a new programming model |
+| **Total, out of 100**                                    |        | **59**   | **66**   | **65**   |                                                                                                                                                                            |
+| **Weighted average, 1 to 5**                             |        | **2.95** | **3.30** | **3.25** |                                                                                                                                                                            |
 
-Why: **Security** NestJS has the fewest advisories but fails open and has the widest dependency tree; Fastify has by far the most advisories; Effect refuses to start on missing configuration and has the smallest tree but is young. **OpenAPI** NestJS's DTO classes do not validate, so description and validation can drift; the other two derive both from one definition. **Background work** only Effect has it built in. **OAuth2 / OIDC** all three used `jose`, and the flows were not tested, so no difference is scored. **Testing** Fastify's tests hang unless configured, Effect's refusal test is blind. **Speed and weight** Fastify leads every measure. **Ease of getting it right** NestJS needed the most fixes, Effect used the most non-existent APIs. **Learning curve and oral defense** weight 3: the subject has every member explain an architecture decision they contributed to ([subject](../subject/SUBJECT.md#documentation)), and the learning curve is how we read that requirement (a review choice the team can change); the team's prior knowledge is not recorded yet (the bootstrap asks for technologies nobody has shipped with), so the score rests on the learning curve seen in the spikes. Fastify is plain functions and route schemas; NestJS adds decorators and dependency injection that hide the wiring (its DI hung silently in probe 2); Effect is a different programming model, its version 4 is two months old (4.0.0 on 2026-10-01) and most examples still target version 3, which is where its four non-existent APIs came from.
+Learning curve and oral defense, weight 3:
 
-**How fragile it is.** Across every integer weighting from 1 to 3 (6,561 of them), NestJS never wins; Fastify wins 77%, Effect 17%, the rest tie. Effect wins when security and built-in background work count most and the learning curve least. Without the learning-curve row the two were level (44% each). The most contestable scores are security (Effect 4, Fastify 2) and the learning-curve row itself.
+- The subject has every member explain an architecture decision they contributed to ([subject](../subject/SUBJECT.md#documentation)). The learning curve is how we read that requirement (a review choice the team can change).
+- The team's prior knowledge is not recorded yet (the bootstrap asks for technologies nobody has shipped with), so the score rests on the learning curve seen in the spikes.
+- Effect's version 4 is two months old (4.0.0 on 2026-10-01) and most examples still target version 3. That is where its four non-existent APIs came from.
+
+**How fragile it is.** Across every integer weighting from 1 to 3 (6,561 of them), NestJS never wins. Fastify wins 77%, Effect 17%, the rest tie. Effect wins when security and built-in background work count most and the learning curve least. Without the learning-curve row the two were level (44% each). The most contestable scores are security (Effect 4, Fastify 2) and the learning-curve row itself.
 
 ## Decision
 
@@ -72,4 +96,5 @@ Why: **Security** NestJS has the fewest advisories but fails open and has the wi
 
 - **The two criteria that decided it:** the learning curve and oral defense (plain code every member can explain, where Effect asks the team to learn a new model on a two-month-old major version) and speed and weight (it leads every runtime measure).
 - **Trade-off we accept:** the most security advisories, nine of them validation bypasses, and no built-in scheduler. To survive it: pin a recent version (at least 5.12.6) and let Dependabot track it, keep an application-level check behind the schema (as the save-time probe did), and write the hook scheduler ourselves with deduplication stored in the database, not in memory.
+- **Team disagreement:** none recorded yet; gaps found when each member scores the matrix go here.
 - **Runner-up: Effect**, one point behind (65 against 66). It leads on built-in background work and security defaults; Fastify leads on the learning curve, speed and weight. The margin is thin under these weights but holds across most weightings (Fastify 77%, Effect 17%), so the team should weigh the learning-curve row carefully when it accepts the ADR.

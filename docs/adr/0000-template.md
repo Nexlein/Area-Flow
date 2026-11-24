@@ -23,7 +23,10 @@ The need and the constraints: subject section, selected features, measured facts
 
 ## Consequences
 
-- What it costs, its limits, why we accept them.
+| Cost or limit                                                        | How we survive it   |
+| -------------------------------------------------------------------- | ------------------- |
+| What it costs or limits. Accepted because … (only if a reason holds) | The measure, or "—" |
+
 - **Fact:** a documented claim. ([Source](https://example.com))
 
 ## Evidence

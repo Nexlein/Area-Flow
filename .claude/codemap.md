@@ -9,7 +9,7 @@ Per file: line count and purpose (first sentence of the leading comment, else th
 - `.gitignore` (91): Files git never tracks: secrets, dependencies, build output, local settings.
 - `.gitleaks.toml` (11): Gitleaks rules for the pre-commit hook and CI: the default rules, plus what they miss for this project.
 - `CLAUDE.md` (40): Area-Flow
-- `HOWTOCONTRIBUTE.md` (84): How to contribute
+- `HOWTOCONTRIBUTE.md` (109): How to contribute
 - `README.md` (76): Area-Flow
 - Also: `.editorconfig`, `.lintstagedrc`, `.prettierignore`, `.prettierrc`, `mise.toml`, `package.json`, `tsconfig.json`
 
@@ -59,10 +59,10 @@ Per file: line count and purpose (first sentence of the leading comment, else th
 
 ## docs/adr
 
-- `0000-template.md` (35): ADR 0000: Template
-- `0001-backend-fastify.md` (56): ADR 0001: Back-end framework: Fastify
-- `0002-frontend-solid-capacitor.md` (58): ADR 0002: Front-end: Solid and Capacitor
-- `0003-persistence-postgresql.md` (61): ADR 0003: Persistence: PostgreSQL with Prisma
+- `0000-template.md` (38): ADR 0000: Template
+- `0001-backend-fastify.md` (59): ADR 0001: Back-end framework: Fastify
+- `0002-frontend-solid-capacitor.md` (61): ADR 0002: Front-end: Solid and Capacitor
+- `0003-persistence-postgresql.md` (63): ADR 0003: Persistence: PostgreSQL with Prisma
 - `README.md` (21): Architecture Decision Records
 
 ## docs/architecture
@@ -85,8 +85,8 @@ Per file: line count and purpose (first sentence of the leading comment, else th
 - `features-selection.md` (29): Additional features selection
 - `management.md` (31): Project management: method and tools
 - `task-breakdown.md` (57): Task breakdown
-- `tech-backend.md` (75): Technology selection: back-end
-- `tech-frontend.md` (85): Technology selection: front-end
+- `tech-backend.md` (100): Technology selection: back-end
+- `tech-frontend.md` (93): Technology selection: front-end
 - `tech-persistence.md` (133): Technology selection: persistence
 
 ## docs/plan/spikes
@@ -95,7 +95,7 @@ Per file: line count and purpose (first sentence of the leading comment, else th
 - `persistence-runs.md` (56): Log of every persistence spike run: what each database and access layer produced, what was checked outside the drafting sessions, and wha...
 - `prompts.md` (55): The identical prompts, cold-read questions and load settings used for every back-end spike, so no framework got more help than another.
 - `runs.md` (228): Log of every spike probe run: what each framework produced, what was verified independently, and what the result does not prove.
-- `security-and-weight.md` (92): Security advisory history and heaviness of the three back-end spike candidates, with the method, sources and what the numbers cannot tell.
+- `security-and-weight.md` (116): Security advisory history and heaviness of the three back-end spike candidates, with the method, sources and what the numbers cannot tell.
 
 ## docs/security
 
@@ -104,10 +104,10 @@ Per file: line count and purpose (first sentence of the leading comment, else th
 
 ## docs/subject
 
-- `BOOTSTRAP.md` (107): Condensed restatement of the AREA bootstrap sandbox (v1.1.1): what each exercise asks and where its output lives in this repository.
-- `FEATURES.md` (316): Additional features catalogue (condensed)
+- `BOOTSTRAP.md` (112): Condensed restatement of the AREA bootstrap sandbox (v1.1.1): what each exercise asks and where its output lives in this repository.
+- `FEATURES.md` (317): Additional features catalogue (condensed)
 - `README.md` (13): AREA subject
-- `SUBJECT.md` (184): AREA — Subject (condensed)
+- `SUBJECT.md` (201): AREA — Subject (condensed)
 - Also: `area-additional_features.pdf`, `area-bootstrap.pdf`, `area-project.pdf`, `area-security_evidence.pdf`
 
 ## scripts
