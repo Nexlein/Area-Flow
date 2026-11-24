@@ -8,7 +8,7 @@
     "node": ">=26"
   },
   "scripts": {
-    "prepare": "git config core.hooksPath .husky",
+    "prepare": "git config core.hooksPath .husky || exit 0",
     "codemap": "node scripts/codemap.ts",
     "format": "node scripts/format.ts --write",
     "format:check": "node scripts/format.ts --check",
