@@ -40,7 +40,7 @@ Per file: line count and purpose (first sentence of the leading comment, else th
 
 - `commit-msg` (11): Enforces Conventional Commits on the first line: type(scope)!: subject.
 - `no-secrets.sh` (29): Blocks commits that stage .env files or secrets.
-- `pre-commit` (8): Blocks secrets and .env files, formats staged files with Prettier, keeps .claude/codemap.md in sync.
+- `pre-commit` (10): Blocks secrets and .env files, formats staged files with Prettier, keeps .claude/codemap.md in sync.
 - `pre-push` (4): Local stand-in for CI: the same `npm run check` the GitHub workflow runs, before code leaves this machine.
 
 ## .vscode
