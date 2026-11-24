@@ -82,4 +82,6 @@ Matrix: [`tech-persistence.md`](tech-persistence.md#access-layer). Order in each
 | Stable major                            | 2      | 5 / 3 / 2 / 3     |                 |               |            |
 | **Weighted total**                      |        | 63 / 62 / 57 / 45 |                 |               |            |
 
+**Weight note (Nexlein):** for a server-side library, "Weight and advisories" reads as a tiebreaker (weight 1) rather than weight 2; at weight 1 the totals become `pg` 58, Prisma 59. Not applied: weights change only when the team compares the scores.
+
 **Gaps** (more than 2 points): none recorded yet.
