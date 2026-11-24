@@ -1,3 +1,5 @@
+<!-- Pull request description: the linked issue, what changed, how it was verified, and the review checklist. -->
+
 Closes #
 
 ## What
@@ -16,4 +18,6 @@ Closes #
 - [ ] Decision recorded or updated in an ADR (`docs/adr/`, from `0000-template.md`, indexed in its README) if a choice was made
 - [ ] Docs updated if behavior changed (`docs/architecture/`, `docs/features/`, `HOWTOCONTRIBUTE.md`)
 - [ ] Client screens touched: both languages present, WCAG AA checked
+- [ ] A SEC feature changed: its evidence note updated (`docs/security/`)
+- [ ] The plan changed: a row in the changes table of `docs/plan/README.md`
 - [ ] No secret, token, `.env` file or personal data committed

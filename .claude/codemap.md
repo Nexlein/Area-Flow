@@ -24,12 +24,12 @@ Per file: line count and purpose (first sentence of the leading comment, else th
 ## .github
 
 - `dependabot.yml` (37): Version updates go to dev, the integration branch.
-- `pull_request_template.md` (19): What
+- `pull_request_template.md` (23): Pull request description: the linked issue, what changed, how it was verified, and the review checklist.
 - `renovate.json5` (15): Renovate (Mend app) keeps the tool versions of mise.toml up to date, one pull request per new release.
 
 ## .github/ISSUE_TEMPLATE
 
-- `task.md` (26): Goal
+- `task.md` (29): Goal
 
 ## .github/workflows
 

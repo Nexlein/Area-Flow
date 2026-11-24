@@ -99,7 +99,7 @@ To replace the key:
 
 ## 6. Extending the product
 
-Written once the engine exists, reproducible as is: with ENG-EXT, a trivial node type is added from it during the defense.
+Written once the engine exists, reproducible as is: if ENG-EXT is selected, a trivial node type is added from it during the defense.
 
 | Add a…             | To write: files, interface, registration, published keys, tests    |
 | ------------------ | ------------------------------------------------------------------ |
