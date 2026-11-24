@@ -8,10 +8,11 @@ Per file: line count and purpose (first sentence of the leading comment, else th
 - `.gitattributes` (14): LF everywhere, also on Windows checkouts: hooks and scripts break with CRLF.
 - `.gitignore` (91): Files git never tracks: secrets, dependencies, build output, local settings.
 - `.gitleaks.toml` (11): Gitleaks rules for the pre-commit hook and CI: the default rules, plus what they miss for this project.
+- `.prettierignore` (5): Files Prettier must not rewrite (Prettier also reads .gitignore; files it has no parser for are skipped anyway).
 - `CLAUDE.md` (40): Area-Flow
-- `HOWTOCONTRIBUTE.md` (109): How to contribute
+- `HOWTOCONTRIBUTE.md` (112): How to contribute
 - `README.md` (76): Area-Flow
-- Also: `.editorconfig`, `.lintstagedrc`, `.prettierignore`, `.prettierrc`, `mise.toml`, `package.json`, `tsconfig.json`
+- Also: `.editorconfig`, `.lintstagedrc`, `.prettierrc`, `mise.toml`, `package.json`, `tsconfig.json`
 
 ## .claude
 
@@ -33,14 +34,14 @@ Per file: line count and purpose (first sentence of the leading comment, else th
 
 ## .github/workflows
 
-- `ci.yml` (98): Repo-wide checks on every contribution: secret scan over the full history, formatting, tooling tests, fresh code map.
-- `mirror.yml` (76): Pushes main to the Epitech repository once CI passed on it: Epitech grades that repository.
+- `ci.yml` (127): Repo-wide checks on every contribution: secret scan over the full history, formatting, tooling tests, fresh code map.
+- `mirror.yml` (73): Pushes main to the Epitech repository once CI passed on it: Epitech grades that repository.
 
 ## .husky
 
 - `commit-msg` (11): Enforces Conventional Commits on the first line: type(scope)!: subject.
-- `no-secrets.sh` (29): Blocks commits that stage .env files or secrets.
-- `pre-commit` (8): Blocks secrets and .env files, formats staged files with Prettier, keeps .claude/codemap.md in sync.
+- `no-secrets.sh` (35): Blocks commits that stage .env files or secrets.
+- `pre-commit` (10): Blocks secrets and .env files, formats staged files with Prettier, keeps .claude/codemap.md in sync.
 - `pre-push` (4): Local stand-in for CI: the same `npm run check` the GitHub workflow runs, before code leaves this machine.
 
 ## .vscode
@@ -112,7 +113,7 @@ Per file: line count and purpose (first sentence of the leading comment, else th
 
 ## scripts
 
-- `codemap.test.ts` (95): Tests for scripts/codemap.ts: purpose extraction per language and the rendered layout.
-- `codemap.ts` (155): Generates .claude/codemap.md: every tracked file grouped by folder, with its line count and purpose.
+- `codemap.test.ts` (137): Tests for scripts/codemap.ts: purpose extraction per language and the rendered layout.
+- `codemap.ts` (164): Generates .claude/codemap.md: every tracked file grouped by folder, with its line count and purpose.
 - `format.ts` (38): Runs Prettier on the files git tracks only, so untracked personal notes never block a check or get rewritten.
-- `hooks.test.ts` (154): Tests for the git hooks: the secret scan blocks .env files and private keys, commit-msg enforces Conventional Commits.
+- `hooks.test.ts` (213): Tests for the git hooks: the secret scan blocks .env files and private keys, commit-msg enforces Conventional Commits.

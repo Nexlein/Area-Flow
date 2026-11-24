@@ -47,12 +47,36 @@ jobs:
           TITLE: ${{ github.event.pull_request.title }}
         run: |
           case "$TITLE" in
-            "fixup! "* | "squash! "* | "amend! "*)
-              echo "::error::A pull request title cannot be a fixup!, squash! or amend! commit."
+            "Merge "* | "fixup! "* | "squash! "* | "amend! "*)
+              echo "::error::A pull request title cannot start like a merge, fixup!, squash! or amend! commit."
               exit 1 ;;
           esac
           printf '%s\n' "$TITLE" > "$RUNNER_TEMP/pr-title"
           sh .husky/commit-msg "$RUNNER_TEMP/pr-title"
+
+      # A pull request merged with a merge commit keeps its own commits: their messages get the same check. Merge commits
+      # and Dependabot's own commits ("Bump ...", from a security update merged into main, then back into dev) are left out.
+      - name: Commit messages follow Conventional Commits
+        if: github.event_name == 'pull_request'
+        env:
+          BASE_SHA: ${{ github.event.pull_request.base.sha }}
+          HEAD_SHA: ${{ github.event.pull_request.head.sha }}
+        run: |
+          # On its own line, so a failing rev-list stops the step instead of checking nothing.
+          shas=$(git rev-list --no-merges "$BASE_SHA..$HEAD_SHA")
+          status=0
+          for sha in $shas; do
+            [ "$(git log -1 --format=%an "$sha")" = "dependabot[bot]" ] && continue
+            subject=$(git log -1 --format=%s "$sha")
+            # The hook lets these through for local work; once in a pull request they must be squashed or renamed.
+            case "$subject" in
+              "Merge "* | "fixup! "* | "squash! "* | "amend! "*)
+                echo "::error::commit $sha: \"$subject\" must be squashed or renamed before merging"; status=1; continue ;;
+            esac
+            printf '%s\n' "$subject" > "$RUNNER_TEMP/commit-msg"
+            sh .husky/commit-msg "$RUNNER_TEMP/commit-msg" || { echo "::error::commit $sha"; status=1; }
+          done
+          exit "$status"
 
       # GitHub proposes main, the default branch, for every new pull request: only release PRs from dev, and Dependabot
       # security updates (they always target main), may go there. Changing the base reruns this (edited event).
@@ -79,9 +103,14 @@ jobs:
       - name: Workflow lint (actionlint)
         run: actionlint
 
-      # actionlint only checks the shell inside workflows; the git hooks are shell scripts too.
+      # actionlint only checks the shell inside workflows; the git hooks are shell scripts too, every tracked one.
       - name: Git hooks lint (shellcheck)
-        run: shellcheck .husky/pre-commit .husky/pre-push .husky/commit-msg .husky/no-secrets.sh
+        run: git ls-files -z .husky | xargs -0 shellcheck
+
+      # git runs .husky/<hook> directly: a hook committed without its executable bit (e.g. from Windows) is silently skipped.
+      - name: Git hooks are executable
+        run: |
+          git ls-files -s .husky | awk '$1 != "100755" { print "::error::" $4 " is not executable: git update-index --chmod=+x " $4; bad = 1 } END { exit bad }'
 
       - uses: actions/cache@55cc8345863c7cc4c66a329aec7e433d2d1c52a9 # v6.1.0
         with:

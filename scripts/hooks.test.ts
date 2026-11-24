@@ -56,8 +56,13 @@ function gitEnv(path: string[]): NodeJS.ProcessEnv {
 }
 
 /** Runs git in `cwd`; returns its exit status and output. */
-function git(cwd: string, args: string[], path = PATH_DIRS): SpawnSyncReturns<string> {
-  return spawnSync('git', args, { cwd, env: gitEnv(path), encoding: 'utf8' });
+function git(
+  cwd: string,
+  args: string[],
+  path = PATH_DIRS,
+  extra: NodeJS.ProcessEnv = {},
+): SpawnSyncReturns<string> {
+  return spawnSync('git', args, { cwd, env: { ...gitEnv(path), ...extra }, encoding: 'utf8' });
 }
 
 let repos = 0;
@@ -83,7 +88,11 @@ function freshRepo(hook: Hook): string {
 function commit(
   files: Record<string, string>,
   message: string,
-  { hook = 'pre-commit', path = PATH_DIRS }: { hook?: Hook; path?: string[] } = {},
+  {
+    hook = 'pre-commit',
+    path = PATH_DIRS,
+    env = {},
+  }: { hook?: Hook; path?: string[]; env?: NodeJS.ProcessEnv } = {},
 ): SpawnSyncReturns<string> {
   const dir = freshRepo(hook);
   for (const [name, body] of Object.entries(files)) {
@@ -91,13 +100,40 @@ function commit(
     writeFileSync(join(dir, name), body);
     assert.equal(git(dir, ['add', '--', name]).status, 0);
   }
-  return git(dir, ['commit', '-q', '--allow-empty', '-m', message], path);
+  return git(dir, ['commit', '-q', '--allow-empty', '-m', message], path, env);
 }
 
 test('secret scan blocks .env files in any folder', () => {
   const result = commit({ 'config/.env.production': 'API_KEY=1\n' }, 'feat: add config');
   assert.notEqual(result.status, 0);
   assert.match(result.stderr, /config\/\.env\.production must not be committed/);
+});
+
+test('secret scan blocks .envrc and a path git would quote', () => {
+  for (const name of ['.envrc', 'a"b/.env']) {
+    const result = commit({ [name]: 'TOKEN=1\n' }, 'chore: add env');
+    assert.notEqual(result.status, 0, name);
+    assert.match(result.stderr, /must not be committed/, name);
+  }
+});
+
+test('secret scan still blocks .env under git --literal-pathspecs', () => {
+  const result = commit({ '.env': 'TOKEN=1\n' }, 'chore: add env', {
+    env: { GIT_LITERAL_PATHSPECS: '1' },
+  });
+  assert.notEqual(result.status, 0);
+  assert.match(result.stderr, /\.env must not be committed/);
+});
+
+test('secret scan blocks .env.example renamed to .env', () => {
+  const dir = freshRepo('pre-commit');
+  writeFileSync(join(dir, '.env.example'), 'API_KEY=\n');
+  assert.equal(git(dir, ['add', '--', '.env.example']).status, 0);
+  assert.equal(git(dir, ['commit', '-q', '-m', 'docs: add the example env']).status, 0);
+  assert.equal(git(dir, ['mv', '.env.example', '.env']).status, 0);
+  const result = git(dir, ['commit', '-q', '-m', 'chore: use it']);
+  assert.notEqual(result.status, 0);
+  assert.match(result.stderr, /\.env must not be committed/);
 });
 
 test('secret scan lets .env.example through', () => {
@@ -123,6 +159,29 @@ test(
     });
     assert.notEqual(result.status, 0);
     assert.match(result.stderr, /fallback regex/);
+  },
+);
+
+test(
+  'fallback regex: a quoted JWK in code is blocked, kebab-case words are not',
+  { skip: !CAN_HIDE_GITLEAKS && 'gitleaks shares its folder with git' },
+  () => {
+    const d = JSON.parse(PRIVATE_JWK).d as string;
+    const blocked = commit(
+      { 'src/key.ts': `export const jwk = { d: '${d}' };\n` },
+      'test: add a key',
+      {
+        path: PATH_WITHOUT_GITLEAKS,
+      },
+    );
+    assert.notEqual(blocked.status, 0);
+    assert.match(blocked.stderr, /src\/key\.ts/);
+    const css =
+      '.task-list-item-checkbox-wrapper {}\n<a href="/ask-for-help-with-your-project-setup">\n';
+    const allowed = commit({ 'web/style.css': css }, 'style: add the list', {
+      path: PATH_WITHOUT_GITLEAKS,
+    });
+    assert.equal(allowed.status, 0, allowed.stderr);
   },
 );
 
