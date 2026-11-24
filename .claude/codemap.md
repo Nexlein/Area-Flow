@@ -39,7 +39,7 @@ Per file: line count and purpose (first sentence of the leading comment, else th
 ## .husky
 
 - `commit-msg` (11): Enforces Conventional Commits on the first line: type(scope)!: subject.
-- `no-secrets.sh` (29): Blocks commits that stage .env files or secrets.
+- `no-secrets.sh` (31): Blocks commits that stage .env files or secrets.
 - `pre-commit` (10): Blocks secrets and .env files, formats staged files with Prettier, keeps .claude/codemap.md in sync.
 - `pre-push` (4): Local stand-in for CI: the same `npm run check` the GitHub workflow runs, before code leaves this machine.
 
@@ -115,4 +115,4 @@ Per file: line count and purpose (first sentence of the leading comment, else th
 - `codemap.test.ts` (95): Tests for scripts/codemap.ts: purpose extraction per language and the rendered layout.
 - `codemap.ts` (155): Generates .claude/codemap.md: every tracked file grouped by folder, with its line count and purpose.
 - `format.ts` (38): Runs Prettier on the files git tracks only, so untracked personal notes never block a check or get rewritten.
-- `hooks.test.ts` (154): Tests for the git hooks: the secret scan blocks .env files and private keys, commit-msg enforces Conventional Commits.
+- `hooks.test.ts` (196): Tests for the git hooks: the secret scan blocks .env files and private keys, commit-msg enforces Conventional Commits.
