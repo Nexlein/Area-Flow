@@ -51,6 +51,24 @@ test('tool pragmas and a YAML document start are not a purpose', () => {
   );
 });
 
+test('a purpose that names a tool is not a pragma, and front matter is skipped', () => {
+  assert.equal(
+    purpose('eslint.config.ts', '// ESLint flat config for the web client.\n'),
+    'ESLint flat config for the web client.',
+  );
+  assert.equal(
+    purpose(
+      '.github/ISSUE_TEMPLATE/task.md',
+      '---\nname: Task\n---\n\n<!-- One task of the breakdown. -->\n\n## Goal\n',
+    ),
+    'One task of the breakdown.',
+  );
+  assert.equal(
+    purpose('src/a.ts', '// E.g. the engine runs here. More.\n'),
+    'E.g. the engine runs here.',
+  );
+});
+
 test('"e.g." and "i.e." do not end the first sentence', () => {
   assert.equal(
     purpose('src/a.ts', '// Runs the engine, e.g. on save. Then more.\n'),
