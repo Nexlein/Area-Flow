@@ -8,7 +8,7 @@
 
 ## What we compared
 
-- **TypeScript only** (repository rule), so Kotlin and Flutter are out; **full-stack frameworks strongly discouraged** (subject), so Next.js, SvelteKit and SolidStart are left out. Each candidate is a single-page app.
+- **TypeScript only** (repository rule, [why](tech-backend.md#language)), so Kotlin and Flutter are out; **full-stack frameworks strongly discouraged** (subject), so Next.js, SvelteKit and SolidStart are left out. Each candidate is a single-page app.
 - The builder is web only; the Android client lists workflows, enables and disables them and shows what they did.
 - Three candidates, written web / mobile: **React / React Native with Expo** (native UI), **Svelte / Capacitor** and **Solid / Capacitor** (the web build in a WebView). Considered, not tested: Angular with Ionic, Vue with Quasar.
 
@@ -16,15 +16,15 @@
 
 Each candidate went through seven probes built from an identical brief, one on top of the other in the same folder, with a 5-minute cap each (10 for Android). Every probe was verified by rerunning its tests, and one rule was broken on purpose to check a test failed.
 
-| Probe                | Checks                                                                                                                              |
-| -------------------- | ----------------------------------------------------------------------------------------------------------------------------------- |
-| F0, built and served | A page whose API address comes from a runtime configuration file, never a literal                                                   |
-| F1, typed client     | Generated from the OpenAPI description; a call with a wrong field type must fail to compile                                         |
-| F2, two languages    | English and French at runtime; a test fails when a key is missing from one catalog                                                  |
-| F3, accessibility    | A login form audited for WCAG 2.1 AA with axe in a real Chromium, idle and error states, plus a keyboard-only login                 |
-| F4, the builder      | Add, remove, reorder nodes with mouse and keyboard; the three save-time reference errors; one condition at most; 200 nodes rendered |
-| F5, security         | OIDC authorization code with PKCE against a local fake provider; token in memory only; a node name with hostile HTML stays inert    |
-| F6, Android          | A debug APK built entirely in Docker (JDK 17, Android SDK 34, no local SDK); a server address setting that persists; no builder     |
+| Probe                | Checks                                                                                                                                                                                                                                    |
+| -------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| F0, built and served | A page whose API address comes from a runtime configuration file, never a literal                                                                                                                                                         |
+| F1, typed client     | Generated from the OpenAPI description; a call with a wrong field type must fail to compile                                                                                                                                               |
+| F2, two languages    | English and French at runtime; a test fails when a key is missing from one catalog                                                                                                                                                        |
+| F3, accessibility    | A login form audited for WCAG 2.1 AA with axe in a real Chromium, idle and error states, plus a keyboard-only login. Our audit target is 2.2 ([audit](../accessibility/audit.md)): its 24 px target size is not met by the unstyled pages |
+| F4, the builder      | Add, remove, reorder nodes with mouse and keyboard; the three save-time reference errors; one condition at most; 200 nodes rendered                                                                                                       |
+| F5, security         | OIDC authorization code with PKCE (a one-time secret that stops a stolen code from being used) against a local fake provider; token in memory only; a node name with hostile HTML stays inert                                             |
+| F6, Android          | A debug APK built entirely in Docker (JDK 17, Android SDK 34, no local SDK); a server address setting that persists; no builder                                                                                                           |
 
 Then four measurements: bundle size and a cold load in Chromium (median of 11), the Android build and its APK, the runtime dependency tree, and the advisory history (OSV database, queried on 2026-11-23).
 
@@ -52,7 +52,7 @@ Then four measurements: bundle size and a cold load in Chromium (median of 11), 
 | All three wrote OIDC and PKCE by hand                                                                                                                                                                | Refresh, logout and provider errors were not tested                                                                                                                                       |
 | Not tested: install on a device or emulator, rendering in the WebView or React Native, the real network call from the app, release-build permissions, native accessibility (TalkBack), phone layouts | The pages are unstyled: no overflow was found, but nothing was designed for touch (default controls are under 24 px). Responsive layout is CSS work that does not depend on the framework |
 
-Spike code is in local repositories, not pushed. Raw logs are not in this repository yet; they go under `docs/plan/spikes/` with the back-end ones before the ADR is accepted.
+Spike code is in local repositories, not pushed. Raw logs are not in this repository yet; they go under `docs/plan/spikes/frontend/` before the ADR is accepted.
 
 ## Weighted matrix
 

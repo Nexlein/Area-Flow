@@ -1,6 +1,6 @@
 # Task breakdown
 
-One GitHub issue per task ([Nexlein/Area-Flow](https://github.com/Nexlein/Area-Flow/issues), "Task" template): goal, "Done when", owner, due date, estimate, dependencies as "blocked by". Each issue has a GitHub milestone (Plan, MVP, Final) and an epic. This file is the overview; the issues hold the detail.
+One GitHub issue per task ([Nexlein/Area-Flow](https://github.com/Nexlein/Area-Flow/issues), "Task" template): goal, "Done when", owner, due date, estimate, dependencies as "blocked by". Each issue gets a GitHub milestone (Plan, MVP, Final) and belongs to one epic of the table below. This file is the overview; the issues hold the detail.
 
 ## Timeline
 

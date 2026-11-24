@@ -1,6 +1,6 @@
 # Technology selection: persistence
 
-**Status:** Draft · **Owner:** Nexlein (the team confirms) · **Decision:** PostgreSQL 18 with Prisma 7, proposed ([ADR 0003](../adr/0003-persistence-postgresql.md))
+**Status:** Draft · **Owner:** Nexlein (the team confirms) · **Decision:** PostgreSQL 18 ([ADR 0003](../adr/0003-persistence-postgresql.md)) with Prisma 7 ([ADR 0004](../adr/0004-access-layer-prisma.md)), proposed
 
 **Scope:** the database, its access layer (ORM, query builder, plain SQL), migrations, any other store (cache, queue).
 
@@ -19,7 +19,7 @@
 
 ## Tests made
 
-Eight probes from one brief ([`spikes/persistence-brief.md`](spikes/persistence-brief.md)), 10-minute cap each, one coding-assistant session per database. Each probe broke one line on purpose to check its test failed (one SQLite order check proved nothing, see the [runs](spikes/persistence-runs.md)).
+Eight probes from one brief ([`spikes/persistence/brief.md`](spikes/persistence/brief.md)), 10-minute cap each, one coding-assistant session per database. Each probe broke one line on purpose to check its test failed (one SQLite order check proved nothing, see the [runs](spikes/persistence/runs.md)).
 
 Then, outside those sessions and one database at a time: every test suite, a strict typecheck, a harder concurrency test, the measurements.
 
@@ -47,7 +47,7 @@ Then, outside those sessions and one database at a time: every test suite, a str
 | CVEs 2025-2026: total, CVSS 7+, CVSS 9+             | 103 (77 server), 69, 0           | about 20, not scored          | 164 (server), 108, 5                 |
 | In CISA's catalogue of exploited flaws              | none                             | none                          | MongoBleed, CVE-2025-14847, pre-auth |
 
-SQLite runs in-process with no network hop: its times are not like for like.
+SQLite runs in-process with no network hop: its times are not like for like. CVSS is the 0-to-10 severity score of a CVE.
 
 | Finding                                                                                                       | So                                                                                             |
 | ------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------- |
@@ -59,7 +59,7 @@ SQLite runs in-process with no network hop: its times are not like for like.
 | SQLite enforces foreign keys only after `PRAGMA foreign_keys = ON`, on every connection                       | a silent trap, set by hand in the probes                                                       |
 | No database spike's `migrate` locks against a second run                                                      | two instances starting together could race (see the access layer)                              |
 
-Not tested: key rotation, tamper detection on PostgreSQL (the SQLite and MongoDB probes flipped a byte), real load, replication, several server instances, MongoDB with nodes embedded in the workflow document.
+Not tested: key rotation, tamper detection on PostgreSQL (the SQLite and MongoDB probes flipped a byte), real load, replication, several server instances, MongoDB with nodes embedded in the workflow document, workflow nodes with condition branches (the probes stored nodes by position only). MongoDB's P6 went past the 10-minute cap and is still counted as a pass ([runs](spikes/persistence/runs.md)).
 
 ## Weighted matrix
 
@@ -85,6 +85,8 @@ Before the ADR is accepted, each member scores this matrix and the access-layer 
 **How fragile it is.** PostgreSQL wins all 6,561 integer weightings from 1 to 3, by 1 point over SQLite at worst. Without the learning-curve row, the team's own habit, it still leads, 73 against 64. Only scores can change the ranking: if we stay on one server, SQLite gets 5 on several instances, and with 5 on security too PostgreSQL still leads, 88 to 85; with 5 on integrity as well, they tie.
 
 ## Access layer
+
+An advisory lock is a lock PostgreSQL holds under a chosen number, so two instances never migrate at once.
 
 P0 to P5 again on PostgreSQL 18.7 (P5 without encryption), with three libraries, against the plain `pg` driver of the database spike. Tests and typecheck rerun outside the drafting sessions; Prisma's injection finding reproduced separately.
 
@@ -122,9 +124,9 @@ Proposed: **Prisma 7**, against `pg`'s 1-point lead.
 
 ## Decision
 
-**Proposed choice: PostgreSQL 18 with Prisma 7**, by the owner, pending the team's acceptance of [ADR 0003](../adr/0003-persistence-postgresql.md).
+**Proposed choice: PostgreSQL 18 with Prisma 7**, by the owner, pending the team's acceptance of [ADR 0003](../adr/0003-persistence-postgresql.md) and [ADR 0004](../adr/0004-access-layer-prisma.md).
 
-- **The two criteria that decided it:** security against MongoDB (164 server flaws in two years, 5 rated 9 or more, MongoBleed exploited before authentication); several server instances against SQLite (one file on one host rules out replicas, such as SYS-K8S if selected).
+- **What decided it:** no single criterion; PostgreSQL leads alone on four of the eight, ties on two, and is never last. The largest gaps: security against MongoDB (164 server flaws in two years, 5 rated 9 or more, MongoBleed exploited before authentication) and several server instances against SQLite (one file on one host rules out replicas, such as SYS-K8S if selected).
 - **Version:** `postgres:18.7-alpine` (304 MB, supported until 2030-11-14) rather than 19.0, released five days before the spike; the tests pass on both.
 - **Trade-off we accept:** a container to run, and 179 ms per fresh test database (SQLite: 1.7 ms). To survive it: create test databases from a migrated template, and measure the gain.
 - **Security baseline:** the minor version pinned, Dependabot proposing the next; no database port outside Compose; an application role that is not a superuser.

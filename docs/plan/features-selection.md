@@ -1,6 +1,6 @@
 # Additional features selection
 
-**Status:** Draft. Chosen at Plan, revisable once at MVP, then frozen. Catalogue: [`../subject/FEATURES.md`](../subject/FEATURES.md) · rules: [subject](../subject/SUBJECT.md#additional-features) · tracking: [`../features/README.md`](../features/README.md).
+**Status:** To do. Chosen at Plan, revisable once at MVP, then frozen. Catalogue: [`../subject/FEATURES.md`](../subject/FEATURES.md) · rules: [subject](../subject/SUBJECT.md#additional-features) · tracking: [`../features/README.md`](../features/README.md).
 
 Our rules: **D ≥ 8** (M = 4) with some margin, in case one is not finished · features spread fairly between members.
 
