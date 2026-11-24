@@ -1,6 +1,6 @@
 # Persistence model and data structures
 
-Draft drawn from the subject; fields and final shape come with the persistence choice ([`../plan/tech-persistence.md`](../plan/tech-persistence.md)).
+Draft drawn from the subject. Proposed store: PostgreSQL with Prisma ([ADR 0003](../adr/0003-persistence-postgresql.md), [ADR 0004](../adr/0004-access-layer-prisma.md)); the fields the spike used: probe 1 of the [persistence brief](../plan/spikes/persistence/brief.md#probes). Final shape at the MVP.
 
 ```mermaid
 erDiagram
@@ -9,7 +9,7 @@ erDiagram
   USER ||--o{ WORKFLOW : owns
   WORKFLOW ||--|{ NODE : "trigger, reactions, condition"
   WORKFLOW ||--o{ RUN : executes
-  WORKFLOW ||--o| HOOK_STATE : "seen occurrences"
+  WORKFLOW ||--o{ HOOK_STATE : "seen occurrences"
   RUN ||--|{ NODE_RESULT : "one per node run"
 ```
 
