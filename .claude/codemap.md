@@ -9,7 +9,7 @@ Per file: line count and purpose (first sentence of the leading comment, else th
 - `.gitignore` (91): Files git never tracks: secrets, dependencies, build output, local settings.
 - `.gitleaks.toml` (11): Gitleaks rules for the pre-commit hook and CI: the default rules, plus what they miss for this project.
 - `.prettierignore` (5): Files Prettier must not rewrite (Prettier also reads .gitignore; files it has no parser for are skipped anyway).
-- `CLAUDE.md` (40): Area-Flow
+- `CLAUDE.md` (56): Area-Flow
 - `HOWTOCONTRIBUTE.md` (112): How to contribute
 - `README.md` (76): Area-Flow
 - Also: `.editorconfig`, `.lintstagedrc`, `.prettierrc`, `mise.toml`, `package.json`, `tsconfig.json`
@@ -25,12 +25,12 @@ Per file: line count and purpose (first sentence of the leading comment, else th
 ## .github
 
 - `dependabot.yml` (37): Version updates go to dev, the integration branch.
-- `pull_request_template.md` (19): What
+- `pull_request_template.md` (23): Pull request description: the linked issue, what changed, how it was verified, and the review checklist.
 - `renovate.json5` (15): Renovate (Mend app) keeps the tool versions of mise.toml up to date, one pull request per new release.
 
 ## .github/ISSUE_TEMPLATE
 
-- `task.md` (26): Goal
+- `task.md` (29): One actionable task of the task breakdown: goal, done criteria, planning and blocking issues.
 
 ## .github/workflows
 
@@ -50,7 +50,7 @@ Per file: line count and purpose (first sentence of the leading comment, else th
 
 ## docs
 
-- `README.md` (28): Documentation
+- `README.md` (29): Documentation
 - `defense.md` (21): Defense
 - `postmortem.md` (11): Post-mortem
 
@@ -61,10 +61,11 @@ Per file: line count and purpose (first sentence of the leading comment, else th
 ## docs/adr
 
 - `0000-template.md` (38): ADR 0000: Template
-- `0001-backend-fastify.md` (59): ADR 0001: Back-end framework: Fastify
-- `0002-frontend-solid-capacitor.md` (61): ADR 0002: Front-end: Solid and Capacitor
-- `0003-persistence-postgresql.md` (63): ADR 0003: Persistence: PostgreSQL with Prisma
-- `README.md` (21): Architecture Decision Records
+- `0001-backend-fastify.md` (60): ADR 0001: Back-end framework: Fastify
+- `0002-frontend-solid-capacitor.md` (63): ADR 0002: Front-end: Solid and Capacitor
+- `0003-persistence-postgresql.md` (58): ADR 0003: Persistence: PostgreSQL
+- `0004-access-layer-prisma.md` (55): ADR 0004: Database access layer: Prisma
+- `README.md` (22): Architecture Decision Records
 
 ## docs/architecture
 
@@ -81,22 +82,26 @@ Per file: line count and purpose (first sentence of the leading comment, else th
 
 ## docs/plan
 
-- `README.md` (31): Plan
+- `README.md` (40): Plan
 - `architecture-questions.md` (10): Architecture questions
 - `features-selection.md` (29): Additional features selection
 - `management.md` (31): Project management: method and tools
+- `scores.md` (83): Each member's own scores of the four technology matrices, filled alone before comparing, and the gaps the team discussed.
 - `task-breakdown.md` (57): Task breakdown
-- `tech-backend.md` (100): Technology selection: back-end
+- `tech-backend.md` (122): Technology selection: back-end
 - `tech-frontend.md` (93): Technology selection: front-end
-- `tech-persistence.md` (133): Technology selection: persistence
+- `tech-persistence.md` (135): Technology selection: persistence
 
-## docs/plan/spikes
+## docs/plan/spikes/backend
 
-- `persistence-brief.md` (63): The identical briefs used for every persistence spike (databases, then access layers), so no candidate got more help than another.
-- `persistence-runs.md` (56): Log of every persistence spike run: what each database and access layer produced, what was checked outside the drafting sessions, and wha...
-- `prompts.md` (55): The identical prompts, cold-read questions and load settings used for every back-end spike, so no framework got more help than another.
-- `runs.md` (228): Log of every spike probe run: what each framework produced, what was verified independently, and what the result does not prove.
+- `brief.md` (57): The identical prompts, cold-read questions and load settings used for every back-end spike, so no framework got more help than another.
+- `runs.md` (228): Log of every back-end spike probe run: what each framework produced, what was verified independently, and what the result does not prove.
 - `security-and-weight.md` (116): Security advisory history and heaviness of the three back-end spike candidates, with the method, sources and what the numbers cannot tell.
+
+## docs/plan/spikes/persistence
+
+- `brief.md` (63): The identical briefs used for every persistence spike (databases, then access layers), so no candidate got more help than another.
+- `runs.md` (56): Log of every persistence spike run: what each database and access layer produced, what was checked outside the drafting sessions, and wha...
 
 ## docs/security
 
@@ -108,7 +113,7 @@ Per file: line count and purpose (first sentence of the leading comment, else th
 - `BOOTSTRAP.md` (112): Condensed restatement of the AREA bootstrap sandbox (v1.1.1): what each exercise asks and where its output lives in this repository.
 - `FEATURES.md` (317): Additional features catalogue (condensed)
 - `README.md` (13): AREA subject
-- `SUBJECT.md` (201): AREA — Subject (condensed)
+- `SUBJECT.md` (214): AREA — Subject (condensed)
 - Also: `area-additional_features.pdf`, `area-bootstrap.pdf`, `area-project.pdf`, `area-security_evidence.pdf`
 
 ## scripts

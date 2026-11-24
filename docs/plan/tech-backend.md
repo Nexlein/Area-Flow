@@ -8,10 +8,20 @@
 
 ## What we compared
 
-- **TypeScript only** (repository rule). **Full-stack frameworks strongly discouraged** (subject).
+- **TypeScript only** (repository rule, [why](#language)). **Full-stack frameworks strongly discouraged** (subject).
 - We judge what each candidate produced on the same brief, not only what its documentation promises.
 - Three candidates chosen for contrast: **NestJS** (the framework does it), **Fastify** (we assemble it), **Effect** (typed effects, scheduling built in).
 - Considered, not tested: Hono, Elysia, Express with `tsoa`.
+
+## Language
+
+TypeScript was set for the whole repository before the spikes; it is not scored in the matrix below. Our reasons:
+
+- One language for the server, the web client and the Android client (Capacitor and React Native both run TypeScript): any member can read any codebase.
+- The clients' types come from the OpenAPI description and the compiler checks them, in strict mode (probe F1 of [`tech-frontend.md`](tech-frontend.md)).
+- The repository tooling is already TypeScript, run by Node without a build step.
+
+Go, Python and Java (server), Kotlin and Flutter (mobile) were left out by that rule, not compared. Comparing languages would be a new ADR.
 
 ## Tests made
 
@@ -19,19 +29,21 @@ Each candidate went through the same four categories.
 
 | Category             | What was done                                                                                                                                                                                                                                  |
 | -------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| **Requirements fit** | Six probes, drafted with a coding assistant from an identical brief ([`spikes/prompts.md`](spikes/prompts.md)), 5 minutes at most each, then checked and fixed by hand. Details below the table.                                               |
+| **Requirements fit** | Six probes, drafted with a coding assistant from an identical brief ([`spikes/backend/brief.md`](spikes/backend/brief.md)), 5 minutes at most each, then checked and fixed by hand. Details below the table.                                   |
 | **Speed**            | Compiled code under `autocannon` (50 connections, 10 s) on `/ping` and on the save-time check, plus cold start and idle memory. Median of 3 runs in rotating order, zero errors.                                                               |
 | **Weight**           | Production dependency size and package count.                                                                                                                                                                                                  |
 | **Security**         | Advisory history of each framework's own packages (OSV database, cross-checked on GitLab, NVD and Red Hat). Known vulnerabilities in the installed versions (OSV and `npm audit`). What each JWT guard does when its configuration is missing. |
 
-The six probes:
+The six probes, numbered as in the [runs](spikes/backend/runs.md) (a JWKS is the set of public keys a provider publishes to verify its tokens):
 
-1. A `/ping` server.
-2. A served OpenAPI description, with a test that fails when code and description disagree.
-3. A background hook that deduplicates, survives errors and times out.
-4. A save-time check rejecting undeclared `{{ key }}` references without evaluating them.
-5. A JWT checked against a JWKS, including `alg: none` and HS256 attacks.
-6. A route calling a mocked third party that answers 502 on failure.
+| Probe | Checks                                                                                  |
+| ----- | --------------------------------------------------------------------------------------- |
+| 0     | A `/ping` server                                                                        |
+| 1     | A served OpenAPI description, with a test that fails when code and description disagree |
+| 2     | A background hook that deduplicates, survives errors and times out                      |
+| 3     | A save-time check rejecting undeclared `{{ key }}` references without evaluating them   |
+| 4     | A JWT checked against a JWKS, including `alg: none` and HS256 attacks                   |
+| 5     | A route calling a mocked third party that answers 502 on failure                        |
 
 We reran every test and broke one rule per probe to check a test failed.
 
@@ -58,16 +70,16 @@ We reran every test and broke one rule per probe to check a test failed.
 | Effect: two of its three advisories list only a version 3 fix                                                          | whether version 4 is affected is unknown                                                          |
 | Effect: its "connection refused" test passes through the timeout                                                       | it cannot tell a refusal from a hang                                                              |
 
-- **Not tested:** the OIDC login and OAuth2 delegation flows, persistence, a realistic load, and the team's own experience.
+- **Not tested:** the OIDC login and OAuth2 delegation flows, persistence (see [`tech-persistence.md`](tech-persistence.md)), a realistic load, and the cold-read questions of the [brief](spikes/backend/brief.md#cold-read-questions).
 - **Unconfirmed advisories:** two (Fastify `CVE-2026-76169`, Effect `CVE-2026-121707`) are counted from OSV but could not be confirmed elsewhere.
 
-Spike code is in local repositories, not pushed. Full logs and raw runs: [`spikes/runs.md`](spikes/runs.md). The identical briefs: [`spikes/prompts.md`](spikes/prompts.md). Advisory history and heaviness, with sources: [`spikes/security-and-weight.md`](spikes/security-and-weight.md).
+Spike code is in local repositories, not pushed. Full logs and raw runs: [`spikes/backend/runs.md`](spikes/backend/runs.md). The identical briefs: [`spikes/backend/brief.md`](spikes/backend/brief.md). Advisory history and heaviness, with sources: [`spikes/backend/security-and-weight.md`](spikes/backend/security-and-weight.md).
 
 ## Weighted matrix
 
 Weights: **3** = the subject requires it, **2** = shapes cost or risk over the project, **1** = a tiebreaker. Scores 1 to 5 (5 is best), the number in brackets is score times weight: total weight 20, maximum 100.
 
-**Scored from the tests above; the weights are the owner's proposal**, and the learning-curve row was added in review. Before the ADR is accepted, each member scores the matrix alone, as the [bootstrap](../subject/BOOTSTRAP.md#weighted-decision-matrix) asks. Any criterion where two members differ by more than 2 points is discussed and recorded here.
+**Scored from the tests above; the weights are the owner's proposal**, and the learning-curve row was added in review. Before the ADR is accepted, each member scores the matrix alone, as the [bootstrap](../subject/BOOTSTRAP.md#weighted-decision-matrix) asks. Any criterion where two members differ by more than 2 points is discussed and recorded in [`scores.md`](scores.md) (Gaps).
 
 | Criterion                                                | Weight | NestJS   | Fastify  | Effect   | Why                                                                                                                                                                        |
 | -------------------------------------------------------- | ------ | -------- | -------- | -------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
@@ -85,10 +97,20 @@ Weights: **3** = the subject requires it, **2** = shapes cost or risk over the p
 Learning curve and oral defense, weight 3:
 
 - The subject has every member explain an architecture decision they contributed to ([subject](../subject/SUBJECT.md#documentation)). The learning curve is how we read that requirement (a review choice the team can change).
-- The team's prior knowledge is not recorded yet (the bootstrap asks for technologies nobody has shipped with), so the score rests on the learning curve seen in the spikes.
+- The bootstrap asks for technologies nobody has shipped with, so the scores rest on the learning curve seen in the spikes. Each member records their experience below before the ADR is accepted; a row that changes a score goes into the History of ADR 0001.
+
+Each cell: none, tried, or shipped.
+
+| Member          | NestJS | Fastify | Effect |
+| --------------- | ------ | ------- | ------ |
+| Nexlein         |        |         |        |
+| Saitamadupauvre |        |         |        |
+| TeddyBertrand   |        |         |        |
+| Quinceyyyy      |        |         |        |
+
 - Effect's version 4 is two months old (4.0.0 on 2026-10-01) and most examples still target version 3. That is where its four non-existent APIs came from.
 
-**How fragile it is.** Across every integer weighting from 1 to 3 (6,561 of them), NestJS never wins. Fastify wins 77%, Effect 17%, the rest tie. Effect wins when security and built-in background work count most and the learning curve least. Without the learning-curve row the two were level (44% each). The most contestable scores are security (Effect 4, Fastify 2) and the learning-curve row itself.
+**How fragile it is.** Across every integer weighting from 1 to 3 (6,561 of them), NestJS never wins. Fastify wins 77%, Effect 16%, the rest tie. Effect wins when security and built-in background work count most and the learning curve least. Without the learning-curve row the two are level (44% each), and under the proposed weights Effect leads, 59 against 54. The row added in review decides the ranking. The most contestable scores are security (Effect 4, Fastify 2) and the learning-curve row itself.
 
 ## Decision
 
@@ -96,5 +118,5 @@ Learning curve and oral defense, weight 3:
 
 - **The two criteria that decided it:** the learning curve and oral defense (plain code every member can explain, where Effect asks the team to learn a new model on a two-month-old major version) and speed and weight (it leads every runtime measure).
 - **Trade-off we accept:** the most security advisories, nine of them validation bypasses, and no built-in scheduler. To survive it: pin a recent version (at least 5.12.6) and let Dependabot track it, keep an application-level check behind the schema (as the save-time probe did), and write the hook scheduler ourselves with deduplication stored in the database, not in memory.
-- **Team disagreement:** none recorded yet; gaps found when each member scores the matrix go here.
-- **Runner-up: Effect**, one point behind (65 against 66). It leads on built-in background work and security defaults; Fastify leads on the learning curve, speed and weight. The margin is thin under these weights but holds across most weightings (Fastify 77%, Effect 17%), so the team should weigh the learning-curve row carefully when it accepts the ADR.
+- **Team disagreement:** none recorded yet; the gaps found when each member scores the matrix go to [`scores.md`](scores.md) (Gaps), their outcome here.
+- **Runner-up: Effect**, one point behind (65 against 66). It leads on built-in background work and security defaults; Fastify leads on the learning curve, speed and weight. The margin is thin under these weights but holds across most weightings (Fastify 77%, Effect 16%), so the team should weigh the learning-curve row carefully when it accepts the ADR.

@@ -2,7 +2,7 @@
 
 # Persistence spike runs
 
-Run on 2026-11-24, one coding-assistant session per candidate, in parallel, from [`persistence-brief.md`](persistence-brief.md), in `~/dev/epitech/tek3/area-persistence-spike/` (outside this repository). "Checked" means rerun outside the drafting sessions, by the scripts of that folder (`measure.sh`, `*/verify/`, `count-advisories.py`; raw outputs in `measure.out`, `measure-pg18.out`, `stress.out`); everything else is the session's own log. Summary and decision: [`../tech-persistence.md`](../tech-persistence.md).
+Run on 2026-11-24, one coding-assistant session per candidate, in parallel, from [`brief.md`](brief.md), in `~/dev/epitech/tek3/area-persistence-spike/` (outside this repository). "Checked" means rerun outside the drafting sessions, by the scripts of that folder (`measure.sh`, `*/verify/`, `count-advisories.py`; raw outputs in `measure.out`, `measure-pg18.out`, `stress.out`); everything else is the session's own log. Summary and decision: [`../../tech-persistence.md`](../../tech-persistence.md).
 
 Versions: Node 26.13.1, npm 11.20.0, Docker 29.8.0. PostgreSQL 19.0 (`postgres:latest`) then 18.7 (`postgres:18-alpine`) with `pg` 8.23.1; SQLite 3.54.1 through `node:sqlite`; MongoDB 9.0.8 with `mongodb` 7.9.1.
 

@@ -2,7 +2,7 @@
 
 # Spike prompts
 
-Used verbatim for each candidate, replacing only `<FRAMEWORK>` with `NestJS`, `Fastify` or `Effect`. Start each probe in a **fresh session** with no chat history, so a probe's result does not depend on an earlier answer. Probe 0 starts in an empty folder; probes 1 to 5 start in the folder holding the code of the probes already passed (the code of a failed probe is removed first). Each probe has a 5-minute wall-clock cap. Do not reword a prompt for one candidate. Summary and decision: [`../tech-backend.md`](../tech-backend.md).
+Used verbatim for each candidate, replacing only `<FRAMEWORK>` with `NestJS`, `Fastify` or `Effect`. Start each probe in a **fresh session** with no chat history, so a probe's result does not depend on an earlier answer. Probe 0 starts in an empty folder; probes 1 to 5 start in the folder holding the code of the probes already passed (the code of a failed probe is removed first). Each probe has a 5-minute wall-clock cap. Do not reword a prompt for one candidate. Summary and decision: [`../../tech-backend.md`](../../tech-backend.md).
 
 ## Shared preamble
 
@@ -35,6 +35,8 @@ Sent at the start of every probe.
 > Add `GET /weather/:city`, which calls an external HTTP API at the URL in `WEATHER_API_URL` and returns a simplified JSON. Write tests where that external call is mocked, with no real network: one success, one 500 from the third party, one timeout. The route must answer 502 on a third-party failure. Include the route in the OpenAPI description.
 
 ## Cold-read questions
+
+**Not run yet.** Until it is, the learning-curve scores of [`tech-backend.md`](../../tech-backend.md#weighted-matrix) rest on the spikes alone; it runs before ADR 0001 is accepted ([plan](../../README.md)).
 
 Asked about the finished code of each candidate, from the code alone, to a member who did not run the spike and to the person who ran it, a day later. Same five questions, answers marked right or wrong, time recorded.
 

@@ -14,13 +14,13 @@ The server holds all business logic and every client depends on its contract. Ch
 
 ## Alternatives
 
-| Option     | For this project                                                                                                                                                                                                                                                                                                  | What the product would look like with it                                                   |
-| ---------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------ |
-| A (chosen) | Fastify: fastest and lightest of the three, fewest manual fixes (8), no decorators, one schema drives validation and OpenAPI                                                                                                                                                                                      | A small plain server; scheduling, deduplication and configuration checks are ours to write |
-| B: Effect  | One point behind under the proposed weights (65 against 66), with scheduling, timeouts and configuration checks built in. Not chosen here: slowest and heaviest (2.3 times Fastify at runtime), four non-existent APIs in its first draft, a steep learning curve that makes oral defense harder, young ecosystem | Strong typed failure handling, but a style the whole team must learn and easy to get wrong |
-| C: NestJS  | Never ahead under any weighting tried. Most manual fixes (13), official scheduler did not install, generated JWT guard failed open on missing configuration, validation hand-written, 104 packages                                                                                                                | A structured, familiar layout; decorators and dependency injection hide the wiring         |
+| Option                | For this project                                                                                                                                                                                                                                                                                                                                                            | What the product would look like with it                                                   |
+| --------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------ |
+| A (proposed): Fastify | Fastify: fastest and lightest of the three, fewest manual fixes (8), no decorators, one schema drives validation and OpenAPI                                                                                                                                                                                                                                                | A small plain server; scheduling, deduplication and configuration checks are ours to write |
+| B: Effect             | One point behind under the proposed weights (65 against 66), and ahead without the learning-curve row (59 against 54), with scheduling, timeouts and configuration checks built in. Not chosen here: slowest and heaviest (2.3 times Fastify at runtime), four non-existent APIs in its first draft, a steep learning curve that makes oral defense harder, young ecosystem | Strong typed failure handling, but a style the whole team must learn and easy to get wrong |
+| C: NestJS             | Never ahead under any weighting tried. Most manual fixes (13), official scheduler did not install, generated JWT guard failed open on missing configuration, validation hand-written, 104 packages                                                                                                                                                                          | A structured, familiar layout; decorators and dependency injection hide the wiring         |
 
-Hono, Elysia and Express with `tsoa` were considered and not tested. Go, Python and Java stacks were left out by the TypeScript-only rule.
+Hono, Elysia and Express with `tsoa` were considered and not tested. Go, Python and Java stacks were left out by the TypeScript-only rule ([why](../plan/tech-backend.md#language)).
 
 ## Decision
 
@@ -51,9 +51,10 @@ All three candidates passed the six probes. Median of three runs on the compiled
 | Production dependencies       | 29 MB, 78 packages | 94 MB, 15 packages | 58 MB, 104 packages |
 | Manual fixes, wrong APIs used | 8, 1               | 10, 4              | 13, 0               |
 
-The weighted matrix, its weights, and how fragile the ranking is are in [`../plan/tech-backend.md`](../plan/tech-backend.md#weighted-matrix). The raw probe logs are in [`../plan/spikes/runs.md`](../plan/spikes/runs.md), the briefs in [`../plan/spikes/prompts.md`](../plan/spikes/prompts.md).
+The weighted matrix, its weights, and how fragile the ranking is are in [`../plan/tech-backend.md`](../plan/tech-backend.md#weighted-matrix). The raw probe logs are in [`../plan/spikes/backend/runs.md`](../plan/spikes/backend/runs.md), the briefs in [`../plan/spikes/backend/brief.md`](../plan/spikes/backend/brief.md).
 
 ## History
 
 - 2026-11-23: created, `Proposed`. Awaiting the team's acceptance.
 - 2026-11-23: the matrix gains the learning-curve and oral-defense criterion (weight 3); Fastify now leads, 66 against 65. Each member scores the matrix before acceptance.
+- 2026-11-24: recorded that without the learning-curve row Effect leads, 59 against 54; the probes renumbered 0 to 5 as in the runs. Decision unchanged.

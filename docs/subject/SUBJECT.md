@@ -1,6 +1,6 @@
 # AREA — Subject (condensed)
 
-Restates the PDFs of this folder, nothing more: [`area-project.pdf`](area-project.pdf) (common base), [`area-additional_features.pdf`](area-additional_features.pdf) (v6.4.0, condensed in [`FEATURES.md`](FEATURES.md)), [`area-security_evidence.pdf`](area-security_evidence.pdf) (v6.3.2, applied in [`../security/0000-template.md`](../security/0000-template.md)). Our decisions: [`../adr/`](../adr/README.md). The PDF wins.
+Restates the PDFs of this folder, nothing more (the list: [`README.md`](README.md)). Our decisions: [`../adr/`](../adr/README.md). The PDF wins.
 
 ## Spirit
 
@@ -43,7 +43,8 @@ The user subscribes to the Services they hold an account on. Each Service offers
 | ------------ | ------------------------------------------------------------------------------------------- |
 | **Action**   | An event inside the Service the product detects (message posted, file added, deadline near) |
 | **REAction** | A task the product performs inside a Service once an Action is detected                     |
-| **Hook**     | What detects an Action                                                                      |
+
+Detecting an Action is the job of a hook ([Hooks](#hooks)).
 
 The server declares the Services, Actions and REActions and exposes them to the clients.
 
@@ -160,7 +161,12 @@ A milestone is evidence of progress, not a contract. A decision may change when 
 - A task breakdown of the whole project: every task actionable, scheduled, assigned, with dependencies.
 - The project management method and the tools chosen.
 
-**Expected:** main lines understood · every member took part in the exploration · stack, methods, tools and features professionally justified · the plan covers the common base, the selected features, documentation, verification and the MVP deadline.
+**Expected:**
+
+- Main lines understood.
+- Every member took part in the exploration.
+- Stack, methods, tools and features professionally justified.
+- The plan covers the common base, the selected features, documentation, verification and the MVP deadline.
 
 ### 2. MVP
 
@@ -173,7 +179,14 @@ A milestone is evidence of progress, not a contract. A decision may change when 
 - Observable progress on at least one third of the selected catalogue points.
 - Optionally, an updated feature selection: the last chance to change it.
 
-**Expected:** some tests cover important behaviors · on every contribution, automation runs the linter, the tests and the build, and a failure shows on that contribution · the OpenAPI description is served and covers the MVP endpoints · each member explains their own contribution · plan changes come with the evidence that caused them and their cost (an unchanged plan is not better per se) · several selected features advanced enough to be demonstrated, not merely started.
+**Expected:**
+
+- Some tests cover important behaviors.
+- On every contribution, automation runs the linter, the tests and the build, and a failure shows on that contribution.
+- The OpenAPI description is served and covers the MVP endpoints.
+- Each member explains their own contribution.
+- Plan changes come with the evidence that caused them and their cost (an unchanged plan is not better per se).
+- Several selected features advanced enough to be demonstrated, not merely started.
 
 ### 3. Final
 

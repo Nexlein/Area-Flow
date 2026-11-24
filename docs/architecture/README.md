@@ -24,12 +24,12 @@ flowchart LR
 
 The OpenAPI description is the contract between client and server members.
 
-| Question                                                  | Answer |
-| --------------------------------------------------------- | ------ |
-| Written first (contract-first) or generated from the code | ADR    |
-| Served at, with its browsable interface                   |        |
-| Test that fails when code and description disagree        |        |
-| Error format shared by every endpoint                     |        |
+| Question                                                  | Answer                                                                                                                |
+| --------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------- |
+| Written first (contract-first) or generated from the code | Generated from the route schemas, which also validate requests ([ADR 0001](../adr/0001-backend-fastify.md), proposed) |
+| Served at, with its browsable interface                   |                                                                                                                       |
+| Test that fails when code and description disagree        |                                                                                                                       |
+| Error format shared by every endpoint                     |                                                                                                                       |
 
 ## Documents
 

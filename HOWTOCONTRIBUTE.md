@@ -29,7 +29,7 @@ flowchart LR
 
 - **Release:** before every milestone deadline, a PR `dev` → `main`, merged with a merge commit. Only `main` reaches the Epitech repository.
 - **Back-merge:** after anything lands on `main` without coming from `dev` (a Dependabot security update), merge `main` back into `dev` through a branch, since a pull request from `main` itself is never up to date with `dev`: `git switch -c chore/back-merge origin/dev`, `git merge origin/main`, push, then a PR into `dev` titled `chore(release): merge main back into dev`.
-- **Merge method:** release and back-merge PRs always use a merge commit, never squash, or the branches diverge. Feature PRs: squash if one commit, merge commit otherwise. Rebase merging is disabled.
+- **Merge method:** release and back-merge PRs always use a merge commit, never squash, or the branches diverge (the `main` ruleset allows merge commits only). Feature PRs: squash if one commit, merge commit otherwise. Rebase merging is disabled.
 - **PR title:** becomes the commit message (squash or merge), so it follows Conventional Commits too, checked by CI with the `commit-msg` rule. Rename Dependabot security PRs, e.g. `fix(deps): ...`. Releases: `chore(release): ...`.
 - **`Closes #N`:** written in the PR description, it is copied into that commit; the issue closes when the change reaches `main` with the next release.
 - **Admin:** the repository admin may bypass the approval, only by merging a pull request. The required CI check has no bypass: nobody merges a red pull request.
@@ -102,7 +102,7 @@ To replace the key:
 
 ## 6. Extending the product
 
-Written once the engine exists, reproducible as is: with ENG-EXT, a trivial node type is added from it during the defense.
+Written once the engine exists, reproducible as is: if ENG-EXT is selected, a trivial node type is added from it during the defense.
 
 | Add a…             | To write: files, interface, registration, published keys, tests    |
 | ------------------ | ------------------------------------------------------------------ |

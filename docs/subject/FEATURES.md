@@ -302,7 +302,7 @@ Solid arrow: requires. Dotted arrow: needs a deterministic implementation, its o
 - Every merge into the main branch builds the server and web client images once, tags them with their source commit and publishes them to a registry; the evaluator pulls one by its tag.
 - Pushing a version tag produces a release by automation: it references its published images, carries the installable Android app, and lists a changelog generated from the history since the previous release.
 - Deployment runs the published images and never builds on its target; the evaluator matches the version reported by the running product to a release and its commit.
-- A deployment whose post-deployment check fails is stopped and the previous release put back without human action; shown in the automation history or provoked live. This check never requires SYS-HEALTH.
+- A deployment whose post-deployment check fails is stopped and the previous release put back without human action; shown in the automation history or provoked live with a deliberately broken release. This check never requires SYS-HEALTH.
 - One documented command or action redeploys any earlier release, and the evaluator does it.
 - A live status badge in `README.md` shows the state of the main branch and leads to its latest run.
 
