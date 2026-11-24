@@ -14,5 +14,6 @@ One short file per significant choice: why it deserved a record, context, altern
 
 ## Index
 
-| ADR | Topic | Status | Decision | Questions it answers |
-| --- | ----- | ------ | -------- | -------------------- |
+| ADR                             | Topic              | Status   | Decision                   | Questions it answers                                      |
+| ------------------------------- | ------------------ | -------- | -------------------------- | --------------------------------------------------------- |
+| [0001](0001-backend-fastify.md) | Back-end framework | Proposed | Fastify 5.12.x, TypeScript | Why this server framework, and what do we accept with it? |

@@ -60,7 +60,8 @@ Per file: line count and purpose (first sentence of the leading comment, else th
 ## docs/adr
 
 - `0000-template.md` (35): ADR 0000: Template
-- `README.md` (18): Architecture Decision Records
+- `0001-backend-fastify.md` (56): ADR 0001: Back-end framework: Fastify
+- `README.md` (19): Architecture Decision Records
 
 ## docs/architecture
 
@@ -82,9 +83,15 @@ Per file: line count and purpose (first sentence of the leading comment, else th
 - `features-selection.md` (29): Additional features selection
 - `management.md` (31): Project management: method and tools
 - `task-breakdown.md` (57): Task breakdown
-- `tech-backend.md` (27): Technology selection: back-end
+- `tech-backend.md` (75): Technology selection: back-end
 - `tech-frontend.md` (29): Technology selection: front-end
 - `tech-persistence.md` (28): Technology selection: persistence
+
+## docs/plan/spikes
+
+- `prompts.md` (55): The identical prompts, cold-read questions and load settings used for every back-end spike, so no framework got more help than another.
+- `runs.md` (228): Log of every spike probe run: what each framework produced, what was verified independently, and what the result does not prove.
+- `security-and-weight.md` (92): Security advisory history and heaviness of the three back-end spike candidates, with the method, sources and what the numbers cannot tell.
 
 ## docs/security
 
