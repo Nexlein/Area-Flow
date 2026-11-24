@@ -10,7 +10,7 @@ Per file: line count and purpose (first sentence of the leading comment, else th
 - `.gitleaks.toml` (11): Gitleaks rules for the pre-commit hook and CI: the default rules, plus what they miss for this project.
 - `.prettierignore` (5): Files Prettier must not rewrite (Prettier also reads .gitignore; files it has no parser for are skipped anyway).
 - `CLAUDE.md` (56): Area-Flow
-- `HOWTOCONTRIBUTE.md` (112): How to contribute
+- `HOWTOCONTRIBUTE.md` (114): How to contribute
 - `README.md` (76): Area-Flow
 - Also: `.editorconfig`, `.lintstagedrc`, `.prettierrc`, `mise.toml`, `package.json`, `tsconfig.json`
 

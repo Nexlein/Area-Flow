@@ -35,20 +35,22 @@ flowchart LR
 - **Admin:** the repository admin may bypass the approval, only by merging a pull request. The required CI check has no bypass: nobody merges a red pull request.
 - **Commits:** [Conventional Commits](https://www.conventionalcommits.org), `type(scope): subject`, `type` in `feat fix docs style refactor perf test build ci chore revert` (the `commit-msg` hook checks it). Never `--no-verify`.
 - **Epitech repository:** never push by hand: the mirror only fast-forwards and would stop.
+- **Board:** the card of an issue moves by itself: opened → Backlog (P1 by default), assigned → Ready, a branch created from the issue's _Development_ panel → In progress, a pull request with `Closes #N` → In review (In progress while draft), merged into `dev` → On dev, released to `main` → On main and the issue closes. A card never moves back, except a pull request back to draft or closed unmerged.
 - **`.claude/codemap.md`:** if it conflicts, or is stale after GitHub's "Update branch" (no hook runs there), run `npm run codemap`, then commit.
 
 ## 3. Automation
 
-| Hook or command   | When                    | Does                                                                                                                                                                                  |
-| ----------------- | ----------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `pre-commit`      | each commit             | Secret scan (gitleaks with `.gitleaks.toml`, `.env` blocked), Prettier on staged files, code map                                                                                      |
-| `commit-msg`      | each commit             | Conventional Commits check                                                                                                                                                            |
-| `pre-push`        | each push               | `npm run check`                                                                                                                                                                       |
-| `npm run check`   | pre-push, CI            | Formatting of tracked files, typecheck, tests                                                                                                                                         |
-| `npm run format`  | by hand                 | Prettier on tracked files (untracked ones are left alone)                                                                                                                             |
-| `npm run codemap` | pre-commit, by hand     | Regenerates `.claude/codemap.md` from the git index                                                                                                                                   |
-| `npm test`        | `check`                 | Tests of the repo scripts, the secret scan and the `commit-msg` hook (`node --test`, TypeScript run by Node)                                                                          |
-| CI (`ci.yml`)     | each PR, push to `main` | PR title and commit messages, PR into `main` only from `dev` or Dependabot, gitleaks over the full history, actionlint, shellcheck on the hooks, `npm run check`, code map up to date |
+| Hook or command                     | When                              | Does                                                                                                                                                                                  |
+| ----------------------------------- | --------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `pre-commit`                        | each commit                       | Secret scan (gitleaks with `.gitleaks.toml`, `.env` blocked), Prettier on staged files, code map                                                                                      |
+| `commit-msg`                        | each commit                       | Conventional Commits check                                                                                                                                                            |
+| `pre-push`                          | each push                         | `npm run check`                                                                                                                                                                       |
+| `npm run check`                     | pre-push, CI                      | Formatting of tracked files, typecheck, tests                                                                                                                                         |
+| `npm run format`                    | by hand                           | Prettier on tracked files (untracked ones are left alone)                                                                                                                             |
+| `npm run codemap`                   | pre-commit, by hand               | Regenerates `.claude/codemap.md` from the git index                                                                                                                                   |
+| `npm test`                          | `check`                           | Tests of the repo scripts, the secret scan and the `commit-msg` hook (`node --test`, TypeScript run by Node)                                                                          |
+| CI (`ci.yml`)                       | each PR, push to `main`           | PR title and commit messages, PR into `main` only from `dev` or Dependabot, gitleaks over the full history, actionlint, shellcheck on the hooks, `npm run check`, code map up to date |
+| Project board (`project-board.yml`) | issue, branch, PR and push events | Moves the issue's card on the [board](https://github.com/users/Nexlein/projects/12) (below); closes the issue when it reaches `main`                                                  |
 
 Repo tooling is TypeScript only, run by Node 26 without a build. Server, web and mobile commands come with the stack.
 
