@@ -49,7 +49,7 @@ Per file: line count and purpose (first sentence of the leading comment, else th
 
 ## docs
 
-- `README.md` (28): Documentation
+- `README.md` (29): Documentation
 - `defense.md` (21): Defense
 - `postmortem.md` (11): Post-mortem
 
@@ -112,7 +112,7 @@ Per file: line count and purpose (first sentence of the leading comment, else th
 - `BOOTSTRAP.md` (112): Condensed restatement of the AREA bootstrap sandbox (v1.1.1): what each exercise asks and where its output lives in this repository.
 - `FEATURES.md` (317): Additional features catalogue (condensed)
 - `README.md` (13): AREA subject
-- `SUBJECT.md` (201): AREA — Subject (condensed)
+- `SUBJECT.md` (214): AREA — Subject (condensed)
 - Also: `area-additional_features.pdf`, `area-bootstrap.pdf`, `area-project.pdf`, `area-security_evidence.pdf`
 
 ## scripts
