@@ -66,8 +66,12 @@
       "Bash(git push -f*)",
       "Bash(git push * -f*)",
       "Bash(git push * +*)",
-      "Bash(*GIT_CONFIG_*)",
-      "Bash(*core.hooksPath*)",
+      "Bash(*GIT_CONFIG_COUNT*)",
+      "Bash(*GIT_CONFIG_PARAMETERS*)",
+      "Bash(git config*hooksPath*)",
+      "Bash(git config*hookspath*)",
+      "Bash(chmod*.husky*)",
+      "Bash(*HUSKY=0*)",
       "Bash(rm -rf*)",
       "Bash(rm -fr*)"
     ]
