@@ -2,7 +2,7 @@
 
 # Persistence spike briefs
 
-Used verbatim for each candidate. Folder paths (`../postgresql`, `~/dev/...`) are in the spike folder, outside this repository. Summary, matrix and decision: [`../tech-persistence.md`](../tech-persistence.md); runs and checks: [`persistence-runs.md`](persistence-runs.md).
+Used verbatim for each candidate. Folder paths (`../postgresql`, `~/dev/...`) are in the spike folder, outside this repository. Summary, matrix and decision: [`../../tech-persistence.md`](../../tech-persistence.md); runs and checks: [`runs.md`](runs.md).
 
 ## Databases
 
