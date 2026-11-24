@@ -10,9 +10,8 @@ on:
     types: [completed]
     branches: ['main']
 
-concurrency:
-  group: mirror-${{ github.ref }}
-  cancel-in-progress: true
+# No concurrency group: for workflow_run, github.ref is always the default branch, so one group would let a skipped
+# run cancel a real one. Overlapping runs are safe anyway: the tip check and the push without --force below.
 
 # The push to the Epitech repository uses the SSH key, not the GitHub token: read is enough.
 permissions:
@@ -51,17 +50,13 @@ jobs:
           fetch-depth: 0
           persist-credentials: false
 
-      - name: Setup SSH Key
-        if: env.HAS_KEY == 'true'
-        uses: webfactory/ssh-agent@e83874834305fe9a4a2997156cb26c5de65a8555 # v0.10.0
-        with:
-          ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
-
       - name: Push to Epitech Mirror
         if: env.HAS_KEY == 'true'
         env:
           EPITECH_REPO_URL: 'git@github.com:EpitechPGE3-2026/G-YEP-500-MPL-5-1-area-1.git'
           HEAD_SHA: ${{ github.event.workflow_run.head_sha }}
+          # The key reaches only this step, through ssh-agent: no third-party action ever holds it.
+          SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
         run: |
           # A re-run of an older CI run must not rewind the Epitech repository: only the current tip of main is pushed.
           if [ "$(git rev-parse origin/main)" != "$HEAD_SHA" ]; then
@@ -71,6 +66,8 @@ jobs:
           # GitHub's published host key (docs.github.com, "GitHub's SSH key fingerprints"), pinned instead of trusted on first use.
           mkdir -p ~/.ssh
           echo 'github.com ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIOMqqnkVzrm0SdG6UOoqKLsabgH5C9okWi0dh2l9GKJl' >> ~/.ssh/known_hosts
+          eval "$(ssh-agent -s)"
+          printf '%s\n' "$SSH_PRIVATE_KEY" | ssh-add -
           git remote add epitech "$EPITECH_REPO_URL"
           # No --force: a push that is not a fast-forward fails visibly instead of overwriting the Epitech history.
           git push epitech HEAD:refs/heads/main
