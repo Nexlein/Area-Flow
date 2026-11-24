@@ -104,10 +104,10 @@ Per file: line count and purpose (first sentence of the leading comment, else th
 
 ## docs/subject
 
-- `BOOTSTRAP.md` (107): Condensed restatement of the AREA bootstrap sandbox (v1.1.1): what each exercise asks and where its output lives in this repository.
-- `FEATURES.md` (316): Additional features catalogue (condensed)
+- `BOOTSTRAP.md` (112): Condensed restatement of the AREA bootstrap sandbox (v1.1.1): what each exercise asks and where its output lives in this repository.
+- `FEATURES.md` (317): Additional features catalogue (condensed)
 - `README.md` (13): AREA subject
-- `SUBJECT.md` (184): AREA — Subject (condensed)
+- `SUBJECT.md` (201): AREA — Subject (condensed)
 - Also: `area-additional_features.pdf`, `area-bootstrap.pdf`, `area-project.pdf`, `area-security_evidence.pdf`
 
 ## scripts

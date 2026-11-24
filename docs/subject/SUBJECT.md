@@ -4,7 +4,11 @@ Restates the PDFs of this folder, nothing more: [`area-project.pdf`](area-projec
 
 ## Spirit
 
-We act as software architects: understand the need, compare alternatives (state of the art), check them with quick demos (proof of concept), decide, integrate existing components, defend the consequences. Our code is mostly the business glue. The hard part: one product that runs on its own, survives its own failures and can be handed over. Every feature answers a real user need.
+We act as software architects: need → alternatives (state of the art) → quick demos (proof of concept) → decision → integrate existing components → defend the consequences.
+
+- Our code is mostly the business glue.
+- The hard part: one product that runs on its own, survives its own failures and can be handed over.
+- Every feature answers a real user need.
 
 ## Product
 
@@ -16,7 +20,7 @@ A software suite inspired by IFTTT and Zapier.
 | Web client         | Uses the server from a browser; common browsers                        |
 | Mobile client      | Android (iOS is a bonus); the server's network address is configurable |
 
-Full-stack frameworks are strongly discouraged: one codebase blurs the client/server boundary the project requires and makes splitting the work much harder. Clients and server are built in parallel by different members.
+Full-stack frameworks are strongly discouraged: one codebase blurs the client/server boundary the project requires and makes splitting the work much harder. Different members build clients and server in parallel.
 
 ## Accounts and delegated access
 
@@ -29,11 +33,11 @@ Full-stack frameworks are strongly discouraged: one codebase blurs the client/se
 | OIDC      | Who the user is                          | Login                 |
 | OAuth 2.0 | What the app may do on the user's behalf | Service subscriptions |
 
-One provider can take part in both flows; they solve different problems.
+One provider can take part in both flows, but they solve different problems.
 
 ## Services, Actions, REActions
 
-The user picks the Services they hold an account on and subscribes to them. Each Service offers at least two components:
+The user subscribes to the Services they hold an account on. Each Service offers at least two components:
 
 | Component    | What it is                                                                                  |
 | ------------ | ------------------------------------------------------------------------------------------- |
@@ -41,13 +45,16 @@ The user picks the Services they hold an account on and subscribes to them. Each
 | **REAction** | A task the product performs inside a Service once an Action is detected                     |
 | **Hook**     | What detects an Action                                                                      |
 
-The server declares the available Services, Actions and REActions and exposes them to the clients. Any Service is allowed; one we use ourselves gets tested more and demos better. A connector is worth its use case, not its place in a count.
+The server declares the Services, Actions and REActions and exposes them to the clients.
+
+- Any Service is allowed. One we use ourselves gets tested more and demos better.
+- A connector is worth its use case, not its place in a count.
 
 ## Workflows
 
-The server walks the nodes in order once the Action is detected. An **AREA** (one Action → one REAction) is the smallest workflow.
+Action detected → the server walks the nodes in order. An **AREA** (one Action → one REAction) is the smallest workflow.
 
-One possible shape (where the condition sits and what each branch holds is ours to decide: [`../architecture/workflow-model.md`](../architecture/workflow-model.md)):
+One possible shape. Where the condition sits and what each branch holds is ours to decide: [`../architecture/workflow-model.md`](../architecture/workflow-model.md).
 
 ```mermaid
 flowchart LR
@@ -65,40 +72,47 @@ Bounds of the common base:
 5. Workflows without a condition, or with a single reaction, stay valid.
 6. The engine must demo a meaningful workflow with **at least four reaction nodes**; the data model must not make four a structural maximum.
 
-Structural validity is checked **when the workflow is saved**. Cases left open (e.g. is an empty branch valid?) are ours to decide, document and apply consistently. Each workflow we offer should save its user real time or effort.
+- Structural validity is checked **when the workflow is saved**.
+- Cases left open (e.g. is an empty branch valid?): we decide, document and apply consistently.
+- Each workflow we offer should save its user real time or effort.
 
-**Builder** (where users assemble workflows): free form but justified (canvas, step list, form wizard...). **Web only**: nodes and the data mapping between them are edited from the web client alone. The mobile client lists workflows, enables and disables them, shows what they did; no building on mobile.
+**Builder** (where users assemble workflows): free form but justified (canvas, step list, form wizard...).
+
+| Client | Role                                                                                                         |
+| ------ | ------------------------------------------------------------------------------------------------------------ |
+| Web    | Builds workflows, **web only**: nodes and the data mapping between them are edited from the web client alone |
+| Mobile | Lists workflows, enables and disables them, shows what they did; no building on mobile                       |
 
 ### Data between nodes
 
-Every node publishes a declared set of values; later nodes reference them with key paths such as `{{ trigger.subject }}` or `{{ node_2.file_id }}`. Required, implementation free:
+Every node publishes a declared set of values. Later nodes reference them with key paths such as `{{ trigger.subject }}` or `{{ node_2.file_id }}`. Required, implementation free:
 
 - each node type declares the keys it may publish;
 - a reference outside that declaration is rejected when the workflow is saved;
-- a value missing at run time is handled deterministically, following our documented model;
+- a value missing at run time is handled deterministically, per our documented model;
 - substitution replaces data only and never evaluates user-supplied code.
 
 ### Hooks
 
-Hooks detect Actions and start the matching workflow with no client open, and never treat the same occurrence as a new event again and again. How events are identified, scheduled and persisted is an architecture decision to document and defend.
+Hooks detect Actions and start the matching workflow with no client open. They never treat the same occurrence as a new event again and again. How events are identified, scheduled and persisted is an architecture decision to document and defend.
 
 ## Technical requirements
 
-| Topic                 | Requirement                                                                                                                                                                                                                                                                                           |
-| --------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| **API contract**      | The server serves an OpenAPI description of its HTTP API with a browsable interface: the contract between client and server members. It covers every endpoint the clients call, errors included. A test fails when implementation and description disagree.                                           |
-| **Accessibility**     | Both clients meet WCAG level **AA**. A committed audit report states what was measured, with which tool, on which screens, what was fixed, what was left unfixed and why.                                                                                                                             |
-| **Languages**         | Both clients in at least two languages over the whole main flow, from registration to creating an AREA.                                                                                                                                                                                               |
-| **Docker Compose**    | The whole product builds and runs reproducibly with Docker Compose (container split is ours). Server and web client reachable locally; an installable Android app produced. Docs give the commands and the resulting endpoints and artifacts.                                                         |
-| **Service discovery** | While running, the server exposes a machine-readable description of Services, Actions and REActions (identifiers, descriptions, parameters): clients never hard-code the catalogue. Schema is ours: documented, versionable, consistent with what clients offer. The catalogue calls it `about.json`. |
+| Topic                 | Requirement                                                                                                                                                                                                                                                                                        |
+| --------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **API contract**      | The server serves an OpenAPI description of its HTTP API, with a browsable interface: the contract between client and server members. It covers every endpoint the clients call, errors included. A test fails when implementation and description disagree.                                       |
+| **Accessibility**     | Both clients meet WCAG level **AA**. A committed audit report states: what was measured, with which tool, on which screens, what was fixed, what was left unfixed and why.                                                                                                                         |
+| **Languages**         | Both clients in at least two languages over the whole main flow, from registration to creating an AREA.                                                                                                                                                                                            |
+| **Docker Compose**    | The whole product builds and runs reproducibly with Docker Compose (container split is ours). Server and web client reachable locally; an installable Android app produced. Docs give the commands, endpoints and artifacts.                                                                       |
+| **Service discovery** | The running server exposes a machine-readable description of Services, Actions and REActions (identifiers, descriptions, parameters): clients never hard-code the catalogue. The schema is ours: documented, versionable, consistent with what clients offer. The catalogue calls it `about.json`. |
 
 ## Additional features
 
 24 features, with their acceptance criteria: [`FEATURES.md`](FEATURES.md). Each has a domain (AI, ENG, SEC, SYS) and a difficulty: 1 small, 2 medium, 3 large, testing and docs included.
 
-- Chosen and justified at milestone 1, revisable once at milestone 2, then frozen and graded at milestone 3.
-- Choose against the group's weaknesses rather than for comfort, across several domains when possible.
-- Much harder than estimated: tell the local manager early, while the selection can still change, and say it again in the post-mortem.
+- Milestone 1: chosen and justified. Milestone 2: revisable once. Milestone 3: frozen and graded.
+- Choose against the group's weaknesses, not for comfort, and/or across several domains when possible.
+- A feature much harder than estimated: tell the local manager early, while the selection can still change. Say it again in the post-mortem, explaining what made it more complex and demanding than expected.
 - Delivered only when **all** acceptance criteria can be observed. A half-delivered feature gives no points, only material for the post-mortem and the defense.
 - A document is evidence only if its claims can be defended or reproduced live; the evaluator may pick a claim and ask for a demo.
 
@@ -112,20 +126,23 @@ M = members, S = Services available to both clients, A = Actions, R = REActions 
 | A + R ≥ 2 × M + 2                       | A + R ≥ 10                   |
 | D ≥ 2 × M                               | D ≥ 8                        |
 
-Counted on the less complete client. Components picked only to reach a count, with no concrete use, are not valued. Unfinished features count for nothing. Spread the work fairly: concentrating it on a few members puts them and the project at risk.
+- Counted on the less complete client.
+- Components picked only to reach a count, with no concrete use, are not valued.
+- Unfinished features count for nothing.
+- Spread the work fairly: concentrating it on a few members puts them and the project at risk.
 
 ## Documentation
 
-| Document             | Must cover                                                                                                                                                                                                                                                                                                               |
-| -------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| `README.md`          | Setup, operation, public API                                                                                                                                                                                                                                                                                             |
-| `HOWTOCONTRIBUTE.md` | How to add Services, Actions, REActions and workflow nodes                                                                                                                                                                                                                                                               |
-| Technical docs       | Workflow model and failure semantics; persistence model and important data structures; selected features and where each criterion is observed; architecture decisions with alternatives, consequences and later revisions                                                                                                |
-| Individual defense   | At Plan, each member names at least one significant technical question to investigate or contribute to. By Final, each explains one architecture decision they materially contributed to: need, alternatives, evidence, decision, trade-offs, observed result. Git history supports, does not replace, that explanation. |
+| Document             | Must cover                                                                                                                                                                                                                                                                                                             |
+| -------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `README.md`          | Setup, operation, public API                                                                                                                                                                                                                                                                                           |
+| `HOWTOCONTRIBUTE.md` | How to add Services, Actions, REActions and workflow nodes                                                                                                                                                                                                                                                             |
+| Technical docs       | Workflow model and failure semantics; persistence model and important data structures; selected features and where each criterion is observed; architecture decisions with alternatives, consequences and later revisions                                                                                              |
+| Individual defense   | Plan: each member names at least one significant technical question to investigate or contribute to. By Final: each explains one architecture decision they materially contributed to (need, alternatives, evidence, decision, trade-offs, observed result). Git history supports that explanation, never replaces it. |
 
 ## Milestones
 
-A milestone is evidence of progress, not a contract: a decision may change when evidence invalidates it, if the change, its reason and its consequences are documented. Our dates: [`../plan/task-breakdown.md`](../plan/task-breakdown.md).
+A milestone is evidence of progress, not a contract. A decision may change when evidence invalidates it, if the change, its reason and its consequences are documented. Our dates: [`../plan/task-breakdown.md`](../plan/task-breakdown.md).
 
 | Milestone | When            | In one line                                                   |
 | --------- | --------------- | ------------------------------------------------------------- |
