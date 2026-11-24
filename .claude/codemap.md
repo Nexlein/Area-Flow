@@ -11,7 +11,7 @@ Per file: line count and purpose (first sentence of the leading comment, else th
 - `CLAUDE.md` (40): Area-Flow
 - `HOWTOCONTRIBUTE.md` (109): How to contribute
 - `README.md` (76): Area-Flow
-- Also: `.editorconfig`, `.lintstagedrc`, `.prettierignore`, `.prettierrc`, `a.txt`, `mise.toml`, `package.json`, `tsconfig.json`
+- Also: `.editorconfig`, `.lintstagedrc`, `.prettierignore`, `.prettierrc`, `a.txt`, `b.txt`, `mise.toml`, `package.json`, `tsconfig.json`
 
 ## .claude
 
@@ -62,9 +62,9 @@ Per file: line count and purpose (first sentence of the leading comment, else th
 - `0000-template.md` (38): ADR 0000: Template
 - `0001-backend-fastify.md` (59): ADR 0001: Back-end framework: Fastify
 - `0002-frontend-solid-capacitor.md` (61): ADR 0002: Front-end: Solid and Capacitor
-- `0003-persistence-postgresql.md` (63): ADR 0003: Persistence: PostgreSQL with Prisma
+- `0003-persistence-postgresql.md` (58): ADR 0003: Persistence: PostgreSQL
 - `0004-access-layer-prisma.md` (55): ADR 0004: Database access layer: Prisma
-- `README.md` (21): Architecture Decision Records
+- `README.md` (22): Architecture Decision Records
 
 ## docs/architecture
 
