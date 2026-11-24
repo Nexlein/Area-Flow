@@ -62,10 +62,18 @@ jobs:
           BASE_SHA: ${{ github.event.pull_request.base.sha }}
           HEAD_SHA: ${{ github.event.pull_request.head.sha }}
         run: |
+          # On its own line, so a failing rev-list stops the step instead of checking nothing.
+          shas=$(git rev-list --no-merges "$BASE_SHA..$HEAD_SHA")
           status=0
-          for sha in $(git rev-list --no-merges "$BASE_SHA..$HEAD_SHA"); do
+          for sha in $shas; do
             [ "$(git log -1 --format=%an "$sha")" = "dependabot[bot]" ] && continue
-            git log -1 --format=%s "$sha" > "$RUNNER_TEMP/commit-msg"
+            subject=$(git log -1 --format=%s "$sha")
+            # The hook lets these through for local work; once in a pull request they must be squashed or renamed.
+            case "$subject" in
+              "Merge "* | "fixup! "* | "squash! "* | "amend! "*)
+                echo "::error::commit $sha: \"$subject\" must be squashed or renamed before merging"; status=1; continue ;;
+            esac
+            printf '%s\n' "$subject" > "$RUNNER_TEMP/commit-msg"
             sh .husky/commit-msg "$RUNNER_TEMP/commit-msg" || { echo "::error::commit $sha"; status=1; }
           done
           exit "$status"
@@ -98,6 +106,11 @@ jobs:
       # actionlint only checks the shell inside workflows; the git hooks are shell scripts too, every tracked one.
       - name: Git hooks lint (shellcheck)
         run: git ls-files -z .husky | xargs -0 shellcheck
+
+      # git runs .husky/<hook> directly: a hook committed without its executable bit (e.g. from Windows) is silently skipped.
+      - name: Git hooks are executable
+        run: |
+          git ls-files -s .husky | awk '$1 != "100755" { print "::error::" $4 " is not executable: git update-index --chmod=+x " $4; bad = 1 } END { exit bad }'
 
       - uses: actions/cache@55cc8345863c7cc4c66a329aec7e433d2d1c52a9 # v6.1.0
         with:
