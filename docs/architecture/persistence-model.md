@@ -1,6 +1,6 @@
 # Persistence model and data structures
 
-Draft drawn from the subject. Proposed store: PostgreSQL with Prisma ([ADR 0003](../adr/0003-persistence-postgresql.md), [ADR 0004](../adr/0004-access-layer-prisma.md)); the fields the spike used: probe 1 of the [persistence brief](../plan/spikes/persistence/brief.md#probes). Final shape at the MVP.
+Draft drawn from the subject. Proposed store: PostgreSQL with Prisma ([ADR 0003](../adr/0003-persistence-postgresql.md), [ADR 0004](../adr/0004-access-layer-prisma.md)); the fields the spike used: probe 1 of the [persistence brief](../plan/spikes/persistence/brief.md#probes). First version at the MVP; final at the Final.
 
 ```mermaid
 erDiagram

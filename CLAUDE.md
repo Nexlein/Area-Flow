@@ -4,7 +4,7 @@ Epitech Tek3 AREA (G-YEP-500): an IFTTT-like automation platform. Server (all bu
 
 ## Current state
 
-Milestone 1 (Plan), due 2026-11-30. **Stack proposed, not accepted:** Fastify ([ADR 0001](docs/adr/0001-backend-fastify.md)), Solid with Capacitor ([ADR 0002](docs/adr/0002-frontend-solid-capacitor.md)), PostgreSQL ([ADR 0003](docs/adr/0003-persistence-postgresql.md)) with Prisma ([ADR 0004](docs/adr/0004-access-layer-prisma.md)). Write "proposed", never "chosen". No server, web or mobile code until the team accepts them; what is left before that: [`docs/plan/README.md`](docs/plan/README.md).
+Milestone 1 (Plan; dates: [`docs/plan/task-breakdown.md`](docs/plan/task-breakdown.md#timeline)). **Stack proposed, not accepted:** Fastify ([ADR 0001](docs/adr/0001-backend-fastify.md)), Solid with Capacitor ([ADR 0002](docs/adr/0002-frontend-solid-capacitor.md)), PostgreSQL ([ADR 0003](docs/adr/0003-persistence-postgresql.md)) with Prisma ([ADR 0004](docs/adr/0004-access-layer-prisma.md)). Write "proposed", never "chosen". No server, web or mobile code until the team accepts them; what is left before that: [`docs/plan/README.md`](docs/plan/README.md).
 
 ## Read when needed
 
@@ -32,15 +32,19 @@ Git:
 
 - Branch from `dev`, pull requests into `dev`. `main` takes release PRs from `dev` and Dependabot security updates only; after a security update, merge `main` back into `dev` (HOWTOCONTRIBUTE.md).
 - Commits and pull request titles follow Conventional Commits; the `commit-msg` hook and CI check them.
-- Never `--no-verify`, never force-push, never push without being asked, never push to the Epitech repository by hand (the mirror does it). Ask before adding a dependency. The settings deny list is a guard, not a guarantee.
+- Never `--no-verify`, never force-push, never push without being asked, never push to the Epitech repository by hand (the mirror does it). Ask before adding a dependency. The deny list of `.claude/settings.json` is a guard, not a guarantee.
 - Never add a `Co-Authored-By` trailer or any generated-by attribution line to a commit message or a pull request description.
 - Never edit `.claude/codemap.md` by hand: `npm run codemap` (it reads the git index).
 
 Docs and ADRs:
 
 - Short and table-first: tables, lists, diagrams; prose only where a table would lose the reasoning. One place per fact (dates: `docs/plan/task-breakdown.md`); link it instead of copying it.
-- `docs/subject/*.md` restate the PDFs only, never add to them.
-- ADR choices are the team's: propose options with trade-offs, never mark an ADR `Accepted` yourself. One decision per ADR, from `docs/adr/0000-template.md`: alternatives rejected "for this project", Consequences as `| Cost or limit | How we survive it |` with no invented reason, `Fact:` lines with a source, a History line for every change; a reversal is a new ADR.
+- `docs/subject/*.md` restate the PDFs and never add a requirement; only `BOOTSTRAP.md` also maps each bootstrap output to our files, with its status.
+- ADR choices are the team's: propose options with trade-offs, never mark an ADR `Accepted` yourself. Each ADR, from `docs/adr/0000-template.md`:
+  - one decision per ADR, alternatives rejected "for this project";
+  - Consequences as `| Cost or limit | How we survive it |`, with no invented reason ("—" when there is no remedy);
+  - `Fact:` lines with a source;
+  - a History line for every change; a reversal is a new ADR.
 - Every member defends the project orally, so what you write must be explainable by the user who asked for it.
 
 Personal preferences for your own agent (style, level of detail) go in `CLAUDE.local.md`, which is gitignored and not shared.
