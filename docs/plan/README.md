@@ -6,7 +6,7 @@ Milestone 1 deliverables ([subject](../subject/SUBJECT.md#1-plan)), then the pla
 
 | Deliverable                                 | File                                                     | Owner         | Status                   |
 | ------------------------------------------- | -------------------------------------------------------- | ------------- | ------------------------ |
-| Front-end technology selection              | [`tech-frontend.md`](tech-frontend.md)                   |               | To do                    |
+| Front-end technology selection              | [`tech-frontend.md`](tech-frontend.md)                   | TeddyBertrand | Draft, ADR 0002 proposed |
 | Back-end technology selection               | [`tech-backend.md`](tech-backend.md)                     | TeddyBertrand | Draft, ADR 0001 proposed |
 | Persistence technology selection            | [`tech-persistence.md`](tech-persistence.md)             |               | To do                    |
 | Features selection, rationale and ownership | [`features-selection.md`](features-selection.md)         |               | To do                    |
