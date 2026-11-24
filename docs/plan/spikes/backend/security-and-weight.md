@@ -5,7 +5,7 @@
 Two comparisons the probes did not cover: how often each framework has had security advisories, and how heavy each is.
 
 - Data collected by TeddyBertrand on 2026-11-23 ("I" below).
-- Feeds the "Security: auth libraries, input validation, advisories, defaults" criterion of [`../tech-backend.md`](../tech-backend.md).
+- Feeds the "Security: advisories, defaults, auth libraries" criterion of [`../../tech-backend.md`](../../tech-backend.md).
 - Probe results: [`runs.md`](runs.md).
 
 ## Method and sources

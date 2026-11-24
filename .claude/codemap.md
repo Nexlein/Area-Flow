@@ -81,22 +81,26 @@ Per file: line count and purpose (first sentence of the leading comment, else th
 
 ## docs/plan
 
-- `README.md` (31): Plan
+- `README.md` (40): Plan
 - `architecture-questions.md` (10): Architecture questions
 - `features-selection.md` (29): Additional features selection
 - `management.md` (31): Project management: method and tools
+- `scores.md` (83): Each member's own scores of the four technology matrices, filled alone before comparing, and the gaps the team discussed.
 - `task-breakdown.md` (57): Task breakdown
-- `tech-backend.md` (100): Technology selection: back-end
+- `tech-backend.md` (120): Technology selection: back-end
 - `tech-frontend.md` (93): Technology selection: front-end
-- `tech-persistence.md` (133): Technology selection: persistence
+- `tech-persistence.md` (135): Technology selection: persistence
 
-## docs/plan/spikes
+## docs/plan/spikes/backend
 
-- `persistence-brief.md` (63): The identical briefs used for every persistence spike (databases, then access layers), so no candidate got more help than another.
-- `persistence-runs.md` (56): Log of every persistence spike run: what each database and access layer produced, what was checked outside the drafting sessions, and wha...
-- `prompts.md` (55): The identical prompts, cold-read questions and load settings used for every back-end spike, so no framework got more help than another.
-- `runs.md` (228): Log of every spike probe run: what each framework produced, what was verified independently, and what the result does not prove.
+- `brief.md` (57): The identical prompts, cold-read questions and load settings used for every back-end spike, so no framework got more help than another.
+- `runs.md` (228): Log of every back-end spike probe run: what each framework produced, what was verified independently, and what the result does not prove.
 - `security-and-weight.md` (116): Security advisory history and heaviness of the three back-end spike candidates, with the method, sources and what the numbers cannot tell.
+
+## docs/plan/spikes/persistence
+
+- `brief.md` (63): The identical briefs used for every persistence spike (databases, then access layers), so no candidate got more help than another.
+- `runs.md` (56): Log of every persistence spike run: what each database and access layer produced, what was checked outside the drafting sessions, and wha...
 
 ## docs/security
 

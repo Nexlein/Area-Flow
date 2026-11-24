@@ -1,8 +1,8 @@
-<!-- Log of every spike probe run: what each framework produced, what was verified independently, and what the result does not prove. -->
+<!-- Log of every back-end spike probe run: what each framework produced, what was verified independently, and what the result does not prove. -->
 
 # Spike runs
 
-One section per probe, in order. The summary, matrix and decision are in [`../tech-backend.md`](../tech-backend.md); the briefs are in [`prompts.md`](prompts.md). Every run so far is a **single run** by one agent per framework, in parallel, in the folders `~/projects/spikes-area/{nestjs,fastify,effect}` (outside this repository). Run and checked by TeddyBertrand on 2026-11-23 ("I" below). "Verified by me" means I reran the check myself after the agent reported; everything else is the agent's own report.
+One section per probe, in order. The summary, matrix and decision are in [`../../tech-backend.md`](../../tech-backend.md); the briefs are in [`brief.md`](brief.md). Every run so far is a **single run** by one agent per framework, in parallel, in the folders `~/projects/spikes-area/{nestjs,fastify,effect}` (outside this repository). Run and checked by TeddyBertrand on 2026-11-23 ("I" below). "Verified by me" means I reran the check myself after the agent reported; everything else is the agent's own report.
 
 Versions: Node 26.13.0, npm 11.20.0. NestJS 12.6.0, Fastify 5.12.8, Effect 4.1.5.
 

@@ -1,6 +1,6 @@
 # Project management: method and tools
 
-**Status:** Draft
+**Status:** To do
 
 ## Method
 
@@ -28,4 +28,4 @@
 
 ## Working agreement
 
-Every task is an issue; every change is a pull request that closes it. Done = the issue's "Done when" is observable, checks pass, docs and ADRs updated. Git flow: [`../../HOWTOCONTRIBUTE.md`](../../HOWTOCONTRIBUTE.md).
+Every task is an issue; every change is a pull request that names it with `Closes #N` (the issue closes when the change reaches `main` with the next release). Done = the issue's "Done when" is observable, checks pass, docs and ADRs updated. Git flow: [`../../HOWTOCONTRIBUTE.md`](../../HOWTOCONTRIBUTE.md).
