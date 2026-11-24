@@ -62,7 +62,8 @@ Per file: line count and purpose (first sentence of the leading comment, else th
 - `0000-template.md` (35): ADR 0000: Template
 - `0001-backend-fastify.md` (56): ADR 0001: Back-end framework: Fastify
 - `0002-frontend-solid-capacitor.md` (58): ADR 0002: Front-end: Solid and Capacitor
-- `README.md` (20): Architecture Decision Records
+- `0003-persistence-postgresql.md` (61): ADR 0003: Persistence: PostgreSQL with Prisma
+- `README.md` (21): Architecture Decision Records
 
 ## docs/architecture
 
@@ -86,10 +87,12 @@ Per file: line count and purpose (first sentence of the leading comment, else th
 - `task-breakdown.md` (57): Task breakdown
 - `tech-backend.md` (75): Technology selection: back-end
 - `tech-frontend.md` (85): Technology selection: front-end
-- `tech-persistence.md` (28): Technology selection: persistence
+- `tech-persistence.md` (133): Technology selection: persistence
 
 ## docs/plan/spikes
 
+- `persistence-brief.md` (63): The identical briefs used for every persistence spike (databases, then access layers), so no candidate got more help than another.
+- `persistence-runs.md` (56): Log of every persistence spike run: what each database and access layer produced, what was checked outside the drafting sessions, and wha...
 - `prompts.md` (55): The identical prompts, cold-read questions and load settings used for every back-end spike, so no framework got more help than another.
 - `runs.md` (228): Log of every spike probe run: what each framework produced, what was verified independently, and what the result does not prove.
 - `security-and-weight.md` (92): Security advisory history and heaviness of the three back-end spike candidates, with the method, sources and what the numbers cannot tell.
