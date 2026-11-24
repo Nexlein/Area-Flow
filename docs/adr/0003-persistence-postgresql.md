@@ -1,6 +1,6 @@
 # ADR 0003: Persistence: PostgreSQL with Prisma
 
-**Status:** Proposed · **Date:** 2026-11-24 · **Owner:** Nexlein · **Issues:** none yet
+**Status:** Proposed · **Date:** 2026-11-24 · **Owner:** Nexlein · **Issues:** #28
 
 ## Why a record
 
