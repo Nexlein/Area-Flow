@@ -8,7 +8,7 @@ Milestone 1 deliverables ([subject](../subject/SUBJECT.md#1-plan)), then the pla
 | ------------------------------------------- | -------------------------------------------------------- | ------------- | ------------------------ |
 | Front-end technology selection              | [`tech-frontend.md`](tech-frontend.md)                   | TeddyBertrand | Draft, ADR 0002 proposed |
 | Back-end technology selection               | [`tech-backend.md`](tech-backend.md)                     | TeddyBertrand | Draft, ADR 0001 proposed |
-| Persistence technology selection            | [`tech-persistence.md`](tech-persistence.md)             |               | To do                    |
+| Persistence technology selection            | [`tech-persistence.md`](tech-persistence.md)             | Nexlein       | Draft, ADR 0003 proposed |
 | Features selection, rationale and ownership | [`features-selection.md`](features-selection.md)         |               | To do                    |
 | One architecture question per member        | [`architecture-questions.md`](architecture-questions.md) |               | To do                    |
 | Task breakdown                              | [`task-breakdown.md`](task-breakdown.md), GitHub issues  |               | To do                    |
