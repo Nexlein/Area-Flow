@@ -55,4 +55,4 @@ The weighted matrix, its weights and how fragile the ranking is are in [`../plan
 
 - 2026-11-23: created, `Proposed`. Awaiting the team's acceptance.
 - 2026-11-23: review: accessibility and two languages at weight 3, the learning-curve criterion added (Solid 83, Svelte 82, React 69), and Capacitor 8 on JDK 21 proposed, pending a rerun of the Android probe. Each member scores the matrix before acceptance.
-- 2026-11-25: the whole team has used React, so React scores 5 on the learning curve (React 75, Solid and Svelte unchanged). The owner's preference for React is recorded as an open team disagreement in [`../plan/tech-frontend.md`](../plan/tech-frontend.md#decision).
+- 2026-11-24: the whole team has used React, so React scores 5 on the learning curve (React 75, Solid and Svelte unchanged). The owner's preference for React is recorded as an open team disagreement in [`../plan/tech-frontend.md`](../plan/tech-frontend.md#decision).
