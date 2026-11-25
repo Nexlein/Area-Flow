@@ -98,6 +98,10 @@ Per file: line count and purpose (first sentence of the leading comment, else th
 - `runs.md` (228): Log of every back-end spike probe run: what each framework produced, what was verified independently, and what the result does not prove.
 - `security-and-weight.md` (116): Security advisory history and heaviness of the three back-end spike candidates, with the method, sources and what the numbers cannot tell.
 
+## docs/plan/spikes/backend-languages
+
+- `runs.md` (69): Results of the back-end language spikes (Go, Rust, C++): the fixes, findings per probe, load figures and what they do not prove.
+
 ## docs/plan/spikes/persistence
 
 - `brief.md` (63): The identical briefs used for every persistence spike (databases, then access layers), so no candidate got more help than another.
