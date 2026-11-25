@@ -19,7 +19,7 @@
 | ------------------------ | ------------------------------------------------------------------------------ | --------- |
 | Task tracking            | GitHub Issues ("Task" template), milestones Plan / MVP / Final                 | Set up    |
 | Board view               |                                                                                | To choose |
-| Code review              | PRs into `dev`, releases `dev` → `main`: CI, 1 approval                        | Set up    |
+| Code review              | PRs into `dev`, releases `dev` → `main`: CI, approval optional                 | Set up    |
 | Automation               | GitHub Actions (CI, Epitech mirror), Dependabot, Renovate (`mise.toml`)        | Set up    |
 | Local quality gates      | Husky hooks: secret scan, Prettier, typecheck and tests on push, commit format | Set up    |
 | Documentation, decisions | Markdown in `docs/`, ADRs in `docs/adr/`                                       | Set up    |
