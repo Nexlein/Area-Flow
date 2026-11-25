@@ -24,7 +24,7 @@ flowchart LR
 
 | Branch | Receives                                             | Rules (rulesets)                                                                                                                |
 | ------ | ---------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------- |
-| `dev`  | Feature PRs, Dependabot and Renovate version updates | PR only · CI green · branch up to date · 1 approval of the last push · conversations resolved · no force-push or deletion       |
+| `dev`  | Feature PRs, Dependabot and Renovate version updates | PR only · CI green · branch up to date · no approval required · conversations resolved · no force-push or deletion              |
 | `main` | Release PRs from `dev`; Dependabot security updates  | Same, except the branch need not be up to date (a release PR is already tested on `dev`); CI rejects a PR from any other branch |
 
 - **Release:** before every milestone deadline, a PR `dev` → `main`, merged with a merge commit. Only `main` reaches the Epitech repository.
@@ -32,7 +32,7 @@ flowchart LR
 - **Merge method:** release and back-merge PRs always use a merge commit, never squash, or the branches diverge (the `main` ruleset allows merge commits only). Feature PRs: squash if one commit, merge commit otherwise. Rebase merging is disabled.
 - **PR title:** becomes the commit message (squash or merge), so it follows Conventional Commits too, checked by CI with the `commit-msg` rule. Rename Dependabot security PRs, e.g. `fix(deps): ...`. Releases: `chore(release): ...`.
 - **`Closes #N`:** written in the PR description, it is copied into that commit; the issue closes when the change reaches `main` with the next release.
-- **Admin:** the repository admin may bypass the approval, only by merging a pull request. The required CI check has no bypass: nobody merges a red pull request.
+- **Admin:** the repository admin may bypass the `dev` and `main` rulesets, only by merging a pull request. The required CI check has no bypass: nobody merges a red pull request.
 - **Commits:** [Conventional Commits](https://www.conventionalcommits.org), `type(scope): subject`, `type` in `feat fix docs style refactor perf test build ci chore revert` (the `commit-msg` hook checks it). Never `--no-verify`.
 - **Epitech repository:** never push by hand: the mirror only fast-forwards and would stop.
 - **`.claude/codemap.md`:** if it conflicts, or is stale after GitHub's "Update branch" (no hook runs there), run `npm run codemap`, then commit.
@@ -71,7 +71,7 @@ Code, comments, commits and docs: English. Every source file opens with a commen
 
 - After CI passes on a push to `main`, [`mirror.yml`](.github/workflows/mirror.yml) pushes `main` to `EpitechPGE3-2026/G-YEP-500-MPL-5-1-area-1`.
 - Students are not admin there, so no deploy key: it uses an SSH key of the owner's GitHub account (title "GitHub Action Mirror"), private half in the secret `SSH_PRIVATE_KEY` of the **`epitech-mirror` environment**.
-- That environment only deploys from `main`: a workflow pushed on any other branch cannot read the key, and `main` needs an approved pull request.
+- That environment only deploys from `main`: a workflow pushed on any other branch cannot read the key. `main` takes pull requests only, with no required approval: any member with write access can merge a workflow change that reads the key.
 - The mirror copies the workflows too, but Actions cannot start in the Epitech repository (no minutes): every job excludes the `EpitechPGE3-2026` organization and is skipped there.
 - Dependabot also reads the copied config there, and finds no `dev` branch to target.
 
