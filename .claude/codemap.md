@@ -98,6 +98,18 @@ Per file: line count and purpose (first sentence of the leading comment, else th
 - `runs.md` (228): Log of every back-end spike probe run: what each framework produced, what was verified independently, and what the result does not prove.
 - `security-and-weight.md` (116): Security advisory history and heaviness of the three back-end spike candidates, with the method, sources and what the numbers cannot tell.
 
+## docs/plan/spikes/frontend
+
+- `Dockerfile.android` (27): Image for the front-end F6 probe on Capacitor 8: Node 22, JDK 21 and Android SDK 36, no local SDK needed.
+- `brief.md` (37): The method of the front-end spike probes, and how the Capacitor 8 rerun of the Android probe (F6) was made so it can be repeated.
+- `runs.md` (36): Results of the front-end F6 (Android) rerun on Capacitor 8: build times, APK sizes, permissions, deviations, and what the rerun does not...
+- Also: `f6.sh`
+
+## docs/plan/spikes/frontend/logs
+
+- `f6-image-build.txt` (169): 0 building with "default" instance using docker driver
+- Also: `f6-react-capacitor8.txt`, `f6-solid-capacitor8-json-config.txt`, `f6-solid-capacitor8-ts-config.txt`
+
 ## docs/plan/spikes/persistence
 
 - `brief.md` (63): The identical briefs used for every persistence spike (databases, then access layers), so no candidate got more help than another.

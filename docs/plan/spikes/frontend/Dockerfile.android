@@ -1,0 +1,27 @@
+# Image for the front-end F6 probe on Capacitor 8: Node 22, JDK 21 and Android SDK 36, no local SDK needed.
+FROM node:22-bookworm
+
+ENV ANDROID_HOME=/opt/android-sdk
+ENV ANDROID_SDK_ROOT=/opt/android-sdk
+
+# Bookworm ships JDK 17 only, so JDK 21 comes from the Temurin archive.
+RUN apt-get update \
+    && apt-get install -y --no-install-recommends unzip curl ca-certificates \
+    && rm -rf /var/lib/apt/lists/* \
+    && mkdir -p /opt/jdk21 \
+    && curl -fsSL "https://api.adoptium.net/v3/binary/latest/21/ga/linux/x64/jdk/hotspot/normal/eclipse" \
+       | tar -xz -C /opt/jdk21 --strip-components=1
+ENV JAVA_HOME=/opt/jdk21
+ENV PATH=/opt/jdk21/bin:$PATH
+
+RUN mkdir -p $ANDROID_HOME/cmdline-tools && cd /tmp \
+    && curl -fsSL -o tools.zip https://dl.google.com/android/repository/commandlinetools-linux-11076708_latest.zip \
+    && unzip -q tools.zip -d $ANDROID_HOME/cmdline-tools \
+    && mv $ANDROID_HOME/cmdline-tools/cmdline-tools $ANDROID_HOME/cmdline-tools/latest \
+    && rm tools.zip
+ENV PATH=$PATH:$ANDROID_HOME/cmdline-tools/latest/bin:$ANDROID_HOME/platform-tools
+
+RUN yes | sdkmanager --licenses >/dev/null \
+    && sdkmanager "platform-tools" "platforms;android-36" "build-tools;36.0.0" \
+    && chmod -R a+rwX $ANDROID_HOME
+WORKDIR /app
