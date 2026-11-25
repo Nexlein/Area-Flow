@@ -4,15 +4,16 @@ Milestone 1 deliverables ([subject](../subject/SUBJECT.md#1-plan)), then the pla
 
 ## Milestone 1 checklist
 
-| Deliverable                                 | File                                                     | Owner         | Status                             |
-| ------------------------------------------- | -------------------------------------------------------- | ------------- | ---------------------------------- |
-| Front-end technology selection              | [`tech-frontend.md`](tech-frontend.md)                   | TeddyBertrand | Draft, ADR 0002 proposed           |
-| Back-end technology selection               | [`tech-backend.md`](tech-backend.md)                     | TeddyBertrand | Draft, ADR 0001 proposed           |
-| Persistence technology selection            | [`tech-persistence.md`](tech-persistence.md)             | Nexlein       | Draft, ADRs 0003 and 0004 proposed |
-| Features selection, rationale and ownership | [`features-selection.md`](features-selection.md)         |               | To do                              |
-| One architecture question per member        | [`architecture-questions.md`](architecture-questions.md) |               | 1 of 4 (Nexlein)                   |
-| Task breakdown                              | [`task-breakdown.md`](task-breakdown.md), GitHub issues  |               | To do                              |
-| Management method and tools                 | [`management.md`](management.md)                         |               | To do                              |
+| Deliverable                                               | File                                                     | Owner         | Status                             |
+| --------------------------------------------------------- | -------------------------------------------------------- | ------------- | ---------------------------------- |
+| Front-end technology selection                            | [`tech-frontend.md`](tech-frontend.md)                   | TeddyBertrand | Draft, ADR 0002 proposed           |
+| Back-end technology selection                             | [`tech-backend.md`](tech-backend.md)                     | TeddyBertrand | Draft, ADR 0001 proposed           |
+| Back-end language comparison (evidence only, no decision) | [`tech-backend-languages.md`](tech-backend-languages.md) | TeddyBertrand | Draft, no ADR                      |
+| Persistence technology selection                          | [`tech-persistence.md`](tech-persistence.md)             | Nexlein       | Draft, ADRs 0003 and 0004 proposed |
+| Features selection, rationale and ownership               | [`features-selection.md`](features-selection.md)         |               | To do                              |
+| One architecture question per member                      | [`architecture-questions.md`](architecture-questions.md) |               | 1 of 4 (Nexlein)                   |
+| Task breakdown                                            | [`task-breakdown.md`](task-breakdown.md), GitHub issues  |               | To do                              |
+| Management method and tools                               | [`management.md`](management.md)                         |               | To do                              |
 
 ### Before the stack ADRs are accepted
 
