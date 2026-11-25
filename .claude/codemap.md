@@ -62,7 +62,7 @@ Per file: line count and purpose (first sentence of the leading comment, else th
 
 - `0000-template.md` (38): ADR 0000: Template
 - `0001-backend-fastify.md` (60): ADR 0001: Back-end framework: Fastify
-- `0002-frontend-solid-capacitor.md` (63): ADR 0002: Front-end: Solid and Capacitor
+- `0002-frontend-solid-capacitor.md` (64): ADR 0002: Front-end: Solid and Capacitor
 - `0003-persistence-postgresql.md` (58): ADR 0003: Persistence: PostgreSQL
 - `0004-access-layer-prisma.md` (55): ADR 0004: Database access layer: Prisma
 - `README.md` (22): Architecture Decision Records
@@ -89,7 +89,7 @@ Per file: line count and purpose (first sentence of the leading comment, else th
 - `scores.md` (83): Each member's own scores of the four technology matrices, filled alone before comparing, and the gaps the team discussed.
 - `task-breakdown.md` (57): Task breakdown
 - `tech-backend.md` (122): Technology selection: back-end
-- `tech-frontend.md` (93): Technology selection: front-end
+- `tech-frontend.md` (95): Technology selection: front-end
 - `tech-persistence.md` (135): Technology selection: persistence
 
 ## docs/plan/spikes/backend
@@ -97,6 +97,12 @@ Per file: line count and purpose (first sentence of the leading comment, else th
 - `brief.md` (57): The identical prompts, cold-read questions and load settings used for every back-end spike, so no framework got more help than another.
 - `runs.md` (228): Log of every back-end spike probe run: what each framework produced, what was verified independently, and what the result does not prove.
 - `security-and-weight.md` (116): Security advisory history and heaviness of the three back-end spike candidates, with the method, sources and what the numbers cannot tell.
+
+## docs/plan/spikes/frontend
+
+- `Dockerfile.android` (27): Image for the front-end F6 probe on Capacitor 8: Node 22, JDK 21 and Android SDK 36, no local SDK needed.
+- `brief.md` (48): The method of the front-end spike probes, and how the Capacitor 8 rerun of the Android probe (F6) was made so it can be repeated.
+- `runs.md` (52): Results of the front-end F6 (Android) rerun on Capacitor 8: build times, APK sizes, permissions, deviations, and what the rerun does not...
 
 ## docs/plan/spikes/persistence
 
