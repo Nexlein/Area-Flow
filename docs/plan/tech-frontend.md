@@ -52,7 +52,7 @@ Then four measurements: bundle size and a cold load in Chromium (median of 11), 
 | All three wrote OIDC and PKCE by hand                                                                                                                                                                | Refresh, logout and provider errors were not tested                                                                                                                                       |
 | Not tested: install on a device or emulator, rendering in the WebView or React Native, the real network call from the app, release-build permissions, native accessibility (TalkBack), phone layouts | The pages are unstyled: no overflow was found, but nothing was designed for touch (default controls are under 24 px). Responsive layout is CSS work that does not depend on the framework |
 
-Spike code is in local repositories, not pushed. The method, the Capacitor 8 rerun of F6 (Solid and React, JDK 21, SDK 36: both built a debug APK, and `capacitor.config.ts` loads under TypeScript 7) and the commands to repeat it are in [`spikes/frontend/`](spikes/frontend/runs.md).
+Spike code is in local repositories, not pushed. The method, the Capacitor 8 rerun of F6 (Solid, 4.13 MB in 82 s, and React with Capacitor, a fourth candidate built for this probe only, 4.20 MB in 76 s; JDK 21, SDK 36; and `capacitor.config.ts` loads under TypeScript 7) and the commands to repeat it are in [`spikes/frontend/`](spikes/frontend/runs.md).
 
 ## Weighted matrix
 
@@ -86,7 +86,7 @@ Learning curve, weight 3 as in the back-end matrix:
 
 **Proposed choice: Solid (TypeScript, Vite single-page app) with Capacitor for Android**, the matrix winner, pending the team's acceptance of [ADR 0002](../adr/0002-frontend-solid-capacitor.md).
 
-- **The criteria that decided it:** against React, the Android build in Docker with the web code reused (a 3.8 MB APK built in 92 seconds, three mobile packages); against Svelte, security (its recent XSS advisories), weight (12 kB of JavaScript) and fewer fixes (9 against 12). Leveling any of these three hands the lead to Svelte.
+- **The criteria that decided it:** against React, the Android build in Docker with the web code reused (a 4.1 MB APK built in 82 seconds on Capacitor 8, 3.8 MB in 92 seconds on Capacitor 6, three mobile packages); against Svelte, security (its recent XSS advisories), weight (12 kB of JavaScript) and fewer fixes (9 against 12). Leveling any of these three hands the lead to Svelte.
 - **Trade-off we accept:** a smaller ecosystem, Solid 1.9 rather than 2.0 (released 2026-11-17 with a new Vite plugin, untested; the web probes are rerun on it before the MVP), and a WebView app with untested native feel. To survive it: keep mobile screens small (list, toggle, history); run a TalkBack check and a 200-workflow scroll test before the MVP.
 - **Capacitor version:** Capacitor 8, the current major (never below 8.5.1, the critical advisory's fix), on a Docker image with JDK 21 (required) and Android SDK 36 (its default); its command-line tool needs Node 22 or later, the repository uses 26. The spike built Capacitor 6; F6 was rerun with Capacitor 8.6.2 on 2026-11-25, TypeScript configuration included, and passed ([`runs.md`](spikes/frontend/runs.md)), so the Capacitor 6 fallback is not needed. Capacitor 9 is a release candidate (9.0.0-rc.0, 2026-11-12).
 - **Runner-up: Svelte with Capacitor** (82 against 83): a better builder, easier templates, but the most security advisories and fixes.
