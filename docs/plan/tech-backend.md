@@ -21,7 +21,7 @@ TypeScript was set for the whole repository before the spikes; it is not scored 
 - The clients' types come from the OpenAPI description and the compiler checks them, in strict mode (probe F1 of [`tech-frontend.md`](tech-frontend.md)).
 - The repository tooling is already TypeScript, run by Node without a build step.
 
-Go, Python and Java (server), Kotlin and Flutter (mobile) were left out by that rule, not compared. Comparing languages would be a new ADR.
+Go, Python and Java (server), Kotlin and Flutter (mobile) were left out by that rule, not compared. Comparing languages would be a new ADR; the evidence for that discussion (Go, Rust and C++ on the same probes) is in [`tech-backend-languages.md`](tech-backend-languages.md), with no decision.
 
 ## Tests made
 

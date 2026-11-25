@@ -82,12 +82,13 @@ Per file: line count and purpose (first sentence of the leading comment, else th
 
 ## docs/plan
 
-- `README.md` (40): Plan
+- `README.md` (41): Plan
 - `architecture-questions.md` (10): Architecture questions
 - `features-selection.md` (29): Additional features selection
 - `management.md` (31): Project management: method and tools
 - `scores.md` (83): Each member's own scores of the four technology matrices, filled alone before comparing, and the gaps the team discussed.
 - `task-breakdown.md` (57): Task breakdown
+- `tech-backend-languages.md` (48): Technology selection: back-end language (Go, Rust, C++)
 - `tech-backend.md` (122): Technology selection: back-end
 - `tech-frontend.md` (93): Technology selection: front-end
 - `tech-persistence.md` (135): Technology selection: persistence
