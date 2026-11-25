@@ -89,7 +89,7 @@ Per file: line count and purpose (first sentence of the leading comment, else th
 - `scores.md` (83): Each member's own scores of the four technology matrices, filled alone before comparing, and the gaps the team discussed.
 - `task-breakdown.md` (57): Task breakdown
 - `tech-backend.md` (122): Technology selection: back-end
-- `tech-frontend.md` (93): Technology selection: front-end
+- `tech-frontend.md` (95): Technology selection: front-end
 - `tech-persistence.md` (135): Technology selection: persistence
 
 ## docs/plan/spikes/backend
