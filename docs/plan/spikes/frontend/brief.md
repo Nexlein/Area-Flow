@@ -17,7 +17,7 @@ Each candidate went through the same seven probes, one on top of the other in th
 - Image [`Dockerfile.android`](Dockerfile.android): Node 22 (the Capacitor 8 command-line tool needs 22 or later), Temurin JDK 21.0.13, Android SDK platform 36 and build-tools 36.0.0. The repository itself uses Node 26; the image does not.
 - Capacitor `@capacitor/core`, `@capacitor/android` and `@capacitor/cli` at `^8.6.2` (the ADR floor is 8.5.1), TypeScript 7.0.2, Vite 8.3.8.
 - Work on throwaway copies of the spike folders (without `node_modules`, `android` and build output), so the original spike is untouched.
-- Steps, in [`f6.sh`](f6.sh), run inside the container as the host user: `npm install`, `npm run build:mobile`, `npx cap add android`, `npx cap sync android`, then `./gradlew assembleDebug --no-daemon`, timed. Gradle's cache is not shared between runs, so every run is a cold build (the Gradle and Android Gradle plugin downloads are included in the time).
+- Steps, run inside the container as the host user (see "How to repeat"): `npm install`, `npm run build:mobile`, `npx cap add android`, `npx cap sync android`, then `./gradlew assembleDebug --no-daemon`, timed. Gradle's cache is not shared between runs, so every run is a cold build (the Gradle and Android Gradle plugin downloads are included in the time).
 - Permissions read with `aapt2 dump permissions` from the SDK build-tools.
 
 **Three runs:**
@@ -28,10 +28,21 @@ Each candidate went through the same seven probes, one on top of the other in th
 
 ## How to repeat
 
-```bash
-docker build -f Dockerfile.android -t area-android-cap8 .
-docker run --rm -v "$PWD/<spike folder>:/app" -v "$PWD/f6.sh:/f6.sh:ro" -u "$(id -u):$(id -g)" \
-  -e HOME=/tmp -e GRADLE_USER_HOME=/tmp/gradle area-android-cap8 bash /f6.sh
-```
+[`Dockerfile.android`](Dockerfile.android) is evidence for this spike, not the product's build image: the JDK floats on the latest 21 release, and the real client gets its own pinned image with the stack.
 
-Add `-e NPM_FLAGS=--legacy-peer-deps` for the React folder (see the deviation in [`runs.md`](runs.md)).
+1. Build the image, from this folder:
+
+   ```bash
+   docker build -f Dockerfile.android -t area-android-cap8 .
+   ```
+
+2. Open a shell in it on a copy of a spike folder, as the host user:
+
+   ```bash
+   docker run --rm -it -v "<spike folder>:/app" -u "$(id -u):$(id -g)" \
+     -e HOME=/tmp -e GRADLE_USER_HOME=/tmp/gradle area-android-cap8 bash
+   ```
+
+3. Inside it, run the steps above in order. Time the last one with `time ./gradlew assembleDebug --no-daemon`, then read the APK with `$ANDROID_HOME/build-tools/36.0.0/aapt2 dump permissions android/app/build/outputs/apk/debug/app-debug.apk`.
+
+For the React folder, install with `npm install --legacy-peer-deps` (see the deviation in [`runs.md`](runs.md)).

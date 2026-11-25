@@ -101,9 +101,8 @@ Per file: line count and purpose (first sentence of the leading comment, else th
 ## docs/plan/spikes/frontend
 
 - `Dockerfile.android` (27): Image for the front-end F6 probe on Capacitor 8: Node 22, JDK 21 and Android SDK 36, no local SDK needed.
-- `brief.md` (37): The method of the front-end spike probes, and how the Capacitor 8 rerun of the Android probe (F6) was made so it can be repeated.
+- `brief.md` (48): The method of the front-end spike probes, and how the Capacitor 8 rerun of the Android probe (F6) was made so it can be repeated.
 - `runs.md` (52): Results of the front-end F6 (Android) rerun on Capacitor 8: build times, APK sizes, permissions, deviations, and what the rerun does not...
-- Also: `f6.sh`
 
 ## docs/plan/spikes/persistence
 

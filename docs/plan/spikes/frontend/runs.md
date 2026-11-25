@@ -2,7 +2,7 @@
 
 # Spike runs: F6 on Capacitor 8
 
-Method and conditions: [`brief.md`](brief.md). The runs are repeatable with [`Dockerfile.android`](Dockerfile.android) and [`f6.sh`](f6.sh), so full build output is not kept. Single run of each build, by TeddyBertrand with an agent, on 2026-11-25, on one machine (WSL2). Every Gradle build was cold.
+Method and conditions: [`brief.md`](brief.md). The runs are repeatable with [`Dockerfile.android`](Dockerfile.android) and the steps in the brief, so full build output is not kept. Single run of each build, by TeddyBertrand with an agent, on 2026-11-25, on one machine (WSL2). Every Gradle build was cold.
 
 Versions: Node 22.23.5, JDK Temurin 21.0.13, Android SDK 36 (build-tools 36.0.0), Capacitor 8.6.2 (core, android, cli), TypeScript 7.0.2.
 
@@ -38,7 +38,7 @@ targetSdkVersion:'36'
 
 ## Deviations and manual fixes
 
-- **React install needs `--legacy-peer-deps`.** `openapi-typescript` 7.13.0 declares a TypeScript 5 peer and the spike uses 7.0.2, so a plain `npm install` fails with `ERESOLVE`. It is the TypeScript 7 friction already in the ADR, not a Capacitor problem. As a consequence `npm ls` exits non-zero (`ELSPROBLEMS`); the script tolerates it.
+- **React install needs `--legacy-peer-deps`.** `openapi-typescript` 7.13.0 declares a TypeScript 5 peer and the spike uses 7.0.2, so a plain `npm install` fails with `ERESOLVE`. It is the TypeScript 7 friction already in the ADR, not a Capacitor problem. As a consequence `npm ls` exits non-zero (`ELSPROBLEMS`); the run went on regardless.
 - **React mobile entry written for this run:** `mobile/index.html`, `src/mobile/main.tsx`, `src/mobile/serverAddress.ts`, `vite.mobile.config.ts` and `capacitor.config.ts`, copied in shape from the Solid mobile entry. About 90 lines, no fix needed after the first write.
 - Solid needed only the three package versions raised from `^6.2.3` to `^8.6.2`; no source change.
 
@@ -49,4 +49,4 @@ targetSdkVersion:'36'
 - React + Capacitor passed F6 only. Its probes F0 to F5 are the React web results already scored; nothing was rerun.
 - Release builds (signing, minification, release-only permissions) were not made.
 - The scores in `docs/plan/scores.md` are not changed here.
-- The build times and the TypeScript configuration result come from console output that was not kept; they can be reproduced with `f6.sh`.
+- The build times and the TypeScript configuration result come from console output that was not kept; they can be reproduced with the steps in the brief.
