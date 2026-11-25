@@ -1,0 +1,61 @@
+# Moves the cards of the GitHub Project board (Status, Priority) on issue, pull request and dev/main push events.
+# The board token lives in the `project-board` environment, which only deploys from main and dev: a workflow pushed on
+# any other branch cannot read it. Every event used here runs on main or dev, and the job checks out the default
+# branch's script, never a pull request's: pull_request_target only hands the script a title and a description to read.
+# Tokens: PROJECT_TOKEN (classic, scope `project` only) for the board; GITHUB_TOKEN for reading and closing issues.
+name: Project board
+
+on:
+  issues:
+    types: [opened, reopened, assigned, unassigned]
+  push:
+    branches: [dev, main]
+  pull_request_target:
+    types: [opened, reopened, edited, ready_for_review, converted_to_draft, closed]
+
+# No concurrency group: GitHub cancels the pending run of a group when a new one queues, which would drop events.
+# Each move re-reads the card just before writing, so overlapping runs rarely conflict; a near-simultaneous pair still can.
+
+permissions:
+  contents: read
+  issues: write # close issues once released to main
+
+env:
+  PROJECT_OWNER: Nexlein
+  PROJECT_NUMBER: '12'
+  DEV_BRANCH: dev
+  MAIN_BRANCH: main
+  DEFAULT_PRIORITY: P1
+
+jobs:
+  sync:
+    # Skipped in the Epitech mirror (no Actions minutes there), for Dependabot (it gets no secrets), and for pull
+    # requests from forks, so outsiders cannot move the team's cards.
+    if: >-
+      github.repository_owner != 'EpitechPGE3-2026' &&
+      github.actor != 'dependabot[bot]' &&
+      (github.event_name != 'pull_request_target' || github.event.pull_request.head.repo.full_name == github.repository)
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    environment: project-board # holds PROJECT_TOKEN, deployments from main and dev only
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          ref: ${{ github.event.repository.default_branch }}
+          persist-credentials: false
+
+      # Node only, the version pinned in mise.toml, as for the other repo scripts.
+      - uses: jdx/mise-action@90f833d396d0cc3674b631d2d225e306476c303a # v5.2.10
+        with:
+          install_args: node
+
+      - name: Sync the board
+        env:
+          PROJECT_TOKEN: ${{ secrets.PROJECT_TOKEN }}
+          GITHUB_TOKEN: ${{ github.token }}
+        run: |
+          if [ ! -f scripts/project-board.ts ]; then
+            echo "::notice::scripts/project-board.ts is not on the default branch yet: the board syncs after the next release."
+            exit 0
+          fi
+          node scripts/project-board.ts

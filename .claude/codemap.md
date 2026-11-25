@@ -10,7 +10,7 @@ Per file: line count and purpose (first sentence of the leading comment, else th
 - `.gitleaks.toml` (11): Gitleaks rules for the pre-commit hook and CI: the default rules, plus what they miss for this project.
 - `.prettierignore` (5): Files Prettier must not rewrite (Prettier also reads .gitignore; files it has no parser for are skipped anyway).
 - `CLAUDE.md` (56): Area-Flow
-- `HOWTOCONTRIBUTE.md` (112): How to contribute
+- `HOWTOCONTRIBUTE.md` (114): How to contribute
 - `README.md` (76): Area-Flow
 - Also: `.editorconfig`, `.lintstagedrc`, `.prettierrc`, `mise.toml`, `package.json`, `tsconfig.json`
 
@@ -36,6 +36,7 @@ Per file: line count and purpose (first sentence of the leading comment, else th
 
 - `ci.yml` (127): Repo-wide checks on every contribution: secret scan over the full history, formatting, tooling tests, fresh code map.
 - `mirror.yml` (73): Pushes main to the Epitech repository once CI passed on it: Epitech grades that repository.
+- `project-board.yml` (61): Moves the cards of the GitHub Project board (Status, Priority) on issue, pull request and dev/main push events.
 
 ## .husky
 
@@ -121,4 +122,6 @@ Per file: line count and purpose (first sentence of the leading comment, else th
 - `codemap.test.ts` (137): Tests for scripts/codemap.ts: purpose extraction per language and the rendered layout.
 - `codemap.ts` (164): Generates .claude/codemap.md: every tracked file grouped by folder, with its line count and purpose.
 - `format.ts` (38): Runs Prettier on the files git tracks only, so untracked personal notes never block a check or get rewritten.
-- `hooks.test.ts` (213): Tests for the git hooks: the secret scan blocks .env files and private keys, commit-msg enforces Conventional Commits.
+- `hooks.test.ts` (215): Tests for the git hooks: the secret scan blocks .env files and private keys, commit-msg enforces Conventional Commits.
+- `project-board.test.ts` (379): Tests for the project board script: card moves per event, closing only on main, and the GitHub API callers.
+- `project-board.ts` (552): Moves the cards of the GitHub Project board when issues and pull requests change, and closes issues released to main.

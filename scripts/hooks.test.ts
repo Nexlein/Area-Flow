@@ -110,7 +110,9 @@ test('secret scan blocks .env files in any folder', () => {
 });
 
 test('secret scan blocks .envrc and a path git would quote', () => {
-  for (const name of ['.envrc', 'a"b/.env']) {
+  // Windows forbids `"` in file names; a non-ASCII folder is quoted by git too and is valid there.
+  const quoted = process.platform === 'win32' ? 'é/.env' : 'a"b/.env';
+  for (const name of ['.envrc', quoted]) {
     const result = commit({ [name]: 'TOKEN=1\n' }, 'chore: add env');
     assert.notEqual(result.status, 0, name);
     assert.match(result.stderr, /must not be committed/, name);
