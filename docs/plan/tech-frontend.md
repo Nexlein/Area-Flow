@@ -52,7 +52,7 @@ Then four measurements: bundle size and a cold load in Chromium (median of 11), 
 | All three wrote OIDC and PKCE by hand                                                                                                                                                                | Refresh, logout and provider errors were not tested                                                                                                                                       |
 | Not tested: install on a device or emulator, rendering in the WebView or React Native, the real network call from the app, release-build permissions, native accessibility (TalkBack), phone layouts | The pages are unstyled: no overflow was found, but nothing was designed for touch (default controls are under 24 px). Responsive layout is CSS work that does not depend on the framework |
 
-Spike code is in local repositories, not pushed. The method, the Capacitor 8 rerun of F6 (Solid and React, JDK 21, SDK 36: both built a debug APK, and `capacitor.config.ts` loads under TypeScript 7) and the raw logs are in [`spikes/frontend/`](spikes/frontend/runs.md).
+Spike code is in local repositories, not pushed. The method, the Capacitor 8 rerun of F6 (Solid and React, JDK 21, SDK 36: both built a debug APK, and `capacitor.config.ts` loads under TypeScript 7) and the commands to repeat it are in [`spikes/frontend/`](spikes/frontend/runs.md).
 
 ## Weighted matrix
 

@@ -53,7 +53,7 @@ All three candidates passed the seven probes. Web figures come from the producti
 | Runtime packages, mobile     | 3                | 3                 | 478                               |
 | Manual fixes over the probes | 9                | 12                | 7                                 |
 
-The weighted matrix, its weights and how fragile the ranking is are in [`../plan/tech-frontend.md`](../plan/tech-frontend.md#weighted-matrix). The method, the Android rerun results and the raw logs are in [`../plan/spikes/frontend/`](../plan/spikes/frontend/runs.md).
+The weighted matrix, its weights and how fragile the ranking is are in [`../plan/tech-frontend.md`](../plan/tech-frontend.md#weighted-matrix). The method, the Android rerun results and the commands to repeat them are in [`../plan/spikes/frontend/`](../plan/spikes/frontend/runs.md).
 
 ## History
 
@@ -61,4 +61,4 @@ The weighted matrix, its weights and how fragile the ranking is are in [`../plan
 - 2026-11-23: review: accessibility and two languages at weight 3, the learning-curve criterion added (Solid 83, Svelte 82, React 69), and Capacitor 8 on JDK 21 proposed, pending a rerun of the Android probe. Each member scores the matrix before acceptance.
 - 2026-11-24: the whole team has used React, so React scores 5 on the learning curve (React 75, Solid and Svelte unchanged). The owner's preference for React is recorded as an open team disagreement in [`../plan/tech-frontend.md`](../plan/tech-frontend.md#decision).
 - 2026-11-24: the Capacitor 6 fallback moved from Decision to Consequences, and the chosen option renamed "proposed". Decision unchanged.
-- 2026-11-25: F6 rerun on Capacitor 8.6.2 (JDK 21, SDK 36, Docker): debug APK built for Solid (4.13 MB, 82 s, `INTERNET` only) and for React with Capacitor (4.20 MB, 76 s), and the TypeScript configuration file loads under TypeScript 7. Capacitor 8 stays; the Capacitor 6 fallback is not needed. Not installed on a device. Logs in [`../plan/spikes/frontend/`](../plan/spikes/frontend/runs.md) (#35).
+- 2026-11-25: F6 rerun on Capacitor 8.6.2 (JDK 21, SDK 36, Docker): debug APK built for Solid (4.13 MB, 82 s, `INTERNET` only) and for React with Capacitor (4.20 MB, 76 s), and the TypeScript configuration file loads under TypeScript 7. Capacitor 8 stays; the Capacitor 6 fallback is not needed. Not installed on a device. Results in [`../plan/spikes/frontend/`](../plan/spikes/frontend/runs.md) (#35).
